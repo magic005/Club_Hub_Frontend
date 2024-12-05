@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Shared Interests - AGK
+title: Club Hub
 search_exclude: true
 permalink: /shared_interests/agk/agk.html
 menu: nav/shared_interests.html
