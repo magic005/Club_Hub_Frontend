@@ -112,7 +112,7 @@ author: Mihir, Pradyun, Derek, Ansh
 
 <body>
     <div class="header">
-        <h1>Welcome to AGK</h1>
+        <h1>Welcome to Club Hub</h1>
         <p>Your platform for exploring extracurricular activities!</p>
     </div>
     <div class="container">
