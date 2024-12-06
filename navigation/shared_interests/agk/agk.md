@@ -4,7 +4,7 @@ title: Club Hub
 search_exclude: true
 permalink: /shared_interests/agk/agk.html
 menu: nav/shared_interests.html
-author: Mihir, Pradyun, Derek, Ansh
+author: Ansh, Ethan, Gyutae, Aarav, Jonah
 ---
 <head>
     <meta charset="UTF-8">
