@@ -424,6 +424,7 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         }
         .message-form {
             display: flex;
+            align-items: center;
         }
         #messageInput {
             flex: 1;
@@ -454,7 +455,21 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         .chatroom-link:hover {
             background-color: #733f3f;
         }
+        /* Styling for the Delete All button */
+        .delete-btn {
+            background-color: #ff4747;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
     </style>
+</head>
 <body>
 <div class="chatroom-container">
     <header class="chatroom-header">
@@ -467,6 +482,8 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
     <form class="message-form" id="messageForm">
         <input type="text" id="messageInput" placeholder="Enter your message..." required>
         <button type="submit">Send</button>
+        <!-- Delete all messages button -->
+        <button type="button" class="delete-btn" onclick="deleteAllMessages()">Delete All</button>
     </form>
     <a href="{{site.baseurl}}/shared_interests/agk/agk.html" class="chatroom-link">Back to Home</a>
 </div>
@@ -479,21 +496,20 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
     // Load messages from localStorage
     function loadMessages() {
         const savedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        savedMessages.forEach(messageText => addMessageToChat(messageText));
+        savedMessages.forEach((message, index) => addMessageToChat(message, index));
     }
 
     // Save messages to localStorage
-    function saveMessage(messageText) {
-        const savedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        savedMessages.push(messageText);
-        localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
+    function saveMessages(messages) {
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
     }
 
     // Add a message to the chat area
-    function addMessageToChat(messageText) {
+    function addMessageToChat(message, index) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', 'sent');
-        messageElement.textContent = messageText;
+        messageElement.textContent = message.text;
+
         chatArea.appendChild(messageElement);
         chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll
     }
@@ -503,11 +519,24 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         e.preventDefault();
         const messageText = messageInput.value.trim();
         if (messageText !== "") {
-            addMessageToChat(messageText);
-            saveMessage(messageText);
+            const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            const newMessage = {
+                text: messageText
+            };
+            messages.push(newMessage);
+            saveMessages(messages);
+            addMessageToChat(newMessage, messages.length - 1);
             messageInput.value = "";
         }
     });
+
+    // Delete all messages
+    function deleteAllMessages() {
+        if (confirm("Are you sure you want to delete all messages?")) {
+            localStorage.removeItem('chatMessages'); // Remove all messages from localStorage
+            chatArea.innerHTML = ''; // Clear the chat area
+        }
+    }
 
     // Handle "Enter" key submission
     messageInput.addEventListener('keydown', function (e) {
@@ -521,6 +550,8 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
     loadMessages();
 </script>
 </body>
+</html>
+
 
 
 
