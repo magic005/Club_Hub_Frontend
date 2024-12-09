@@ -373,6 +373,8 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
     fetchGroups();
 </script>
 
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -520,6 +522,8 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
 </script>
 </body>
 
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -536,9 +540,9 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
             display: none; /* Hidden initially */
             margin-top: 20px;
             padding: 20px;
-            border: 2px solid #007bff;
+            border: 2px solid #FF3B3B;
             border-radius: 8px;
-            background-color: #f0f8ff;
+            background-color: #001F3F;
             width: 50%;
             margin: 0 auto;
         }
@@ -580,6 +584,24 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         .show-form-btn:hover {
             background-color: #218838;
         }
+        .club-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #FF3B3B;
+            border-radius: 8px;
+            background-color: #073461;
+            color: white;
+            width: 50%;
+            margin: 20px auto;
+        }
+        .club-box h3 {
+            margin: 0;
+            padding-bottom: 10px;
+            font-size: 24px;
+        }
+        .club-box p {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -603,24 +625,40 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
             <button type="submit" class="submit-btn">Create Club</button>
         </form>
     </div>
+    <div id="clubListContainer">
+        <!-- New clubs will appear here -->
+    </div>
     <script>
         const showFormBtn = document.getElementById('showFormBtn');
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
-        // Show the form when button is clicked
+        const clubListContainer = document.getElementById('clubListContainer');
+        // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
             formContainer.style.display = 'block';
         });
         // Handle form submission
         clubForm.addEventListener('submit', function (e) {
             e.preventDefault();
+            // Get values from form inputs
             const clubName = document.getElementById('clubName').value.trim();
             const clubDescription = document.getElementById('clubDescription').value.trim();
             const clubLeader = document.getElementById('clubLeader').value.trim();
             if (clubName && clubDescription && clubLeader) {
-                alert(`Club Created!\nName: ${clubName}\nDescription: ${clubDescription}\nLeader: ${clubLeader}`);
-                clubForm.reset(); // Clear the form
-                formContainer.style.display = 'none'; // Hide the form
+                // Create a new club box
+                const clubBox = document.createElement('div');
+                clubBox.classList.add('club-box');
+                // Set club details
+                clubBox.innerHTML = `
+                    <h3>${clubName}</h3>
+                    <p><strong>Description:</strong> ${clubDescription}</p>
+                    <p><strong>Leader:</strong> ${clubLeader}</p>
+                `;
+                // Append the new club box to the club list container
+                clubListContainer.appendChild(clubBox);
+                // Reset the form and hide it
+                clubForm.reset();
+                formContainer.style.display = 'none';
             } else {
                 alert("Please fill out all fields!");
             }
