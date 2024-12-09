@@ -453,4 +453,70 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
             background-color: #733f3f;
         }
     </style>
+<body>
+<div class="chatroom-container">
+    <header class="chatroom-header">
+        <h1>Activity Chatroom</h1>
+        <p>Discuss your favorite activities!</p>
+    </header>
+    <div class="chat-area" id="chatArea">
+        <!-- Messages will appear here -->
+    </div>
+    <form class="message-form" id="messageForm">
+        <input type="text" id="messageInput" placeholder="Enter your message..." required>
+        <button type="submit">Send</button>
+    </form>
+    <a href="{{site.baseurl}}/shared_interests/agk/agk.html" class="chatroom-link">Back to Home</a>
+</div>
 
+<script>
+    const chatArea = document.getElementById('chatArea');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+
+    // Load messages from localStorage
+    function loadMessages() {
+        const savedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        savedMessages.forEach(messageText => addMessageToChat(messageText));
+    }
+
+    // Save messages to localStorage
+    function saveMessage(messageText) {
+        const savedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        savedMessages.push(messageText);
+        localStorage.setItem('chatMessages', JSON.stringify(savedMessages));
+    }
+
+    // Add a message to the chat area
+    function addMessageToChat(messageText) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'sent');
+        messageElement.textContent = messageText;
+        chatArea.appendChild(messageElement);
+        chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll
+    }
+
+    // Handle form submission
+    messageForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const messageText = messageInput.value.trim();
+        if (messageText !== "") {
+            addMessageToChat(messageText);
+            saveMessage(messageText);
+            messageInput.value = "";
+        }
+    });
+
+    // Handle "Enter" key submission
+    messageInput.addEventListener('keydown', function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault(); // Prevent new line
+            messageForm.requestSubmit(); // Trigger form submit
+        }
+    });
+
+    // Initial load
+    loadMessages();
+</script>
+</body>
+</html>
