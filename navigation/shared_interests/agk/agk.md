@@ -573,7 +573,7 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
             color: white;
             padding: 10px 20px;
             font-size: 16px;
-            border: none;
+            border: 2px solid #FF3B3B;
             border-radius: 5px;
             cursor: pointer;
         }
