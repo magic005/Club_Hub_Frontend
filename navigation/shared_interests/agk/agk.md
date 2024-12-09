@@ -582,3 +582,49 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         }
     </style>
 </head>
+<body>
+    <h1>Create a Club</h1>
+    <button class="show-form-btn" id="showFormBtn">Start a New Club</button>
+    <div class="form-container" id="formContainer">
+        <h2>Club Registration Form</h2>
+        <form id="clubForm">
+            <div class="form-group">
+                <label for="clubName">Club Name</label>
+                <input type="text" id="clubName" placeholder="Enter club name" required>
+            </div>
+            <div class="form-group">
+                <label for="clubDescription">Club Description</label>
+                <input type="text" id="clubDescription" placeholder="Describe your club" required>
+            </div>
+            <div class="form-group">
+                <label for="clubLeader">Club Leader Name</label>
+                <input type="text" id="clubLeader" placeholder="Enter leader's name" required>
+            </div>
+            <button type="submit" class="submit-btn">Create Club</button>
+        </form>
+    </div>
+    <script>
+        const showFormBtn = document.getElementById('showFormBtn');
+        const formContainer = document.getElementById('formContainer');
+        const clubForm = document.getElementById('clubForm');
+        // Show the form when button is clicked
+        showFormBtn.addEventListener('click', function () {
+            formContainer.style.display = 'block';
+        });
+        // Handle form submission
+        clubForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const clubName = document.getElementById('clubName').value.trim();
+            const clubDescription = document.getElementById('clubDescription').value.trim();
+            const clubLeader = document.getElementById('clubLeader').value.trim();
+            if (clubName && clubDescription && clubLeader) {
+                alert(`Club Created!\nName: ${clubName}\nDescription: ${clubDescription}\nLeader: ${clubLeader}`);
+                clubForm.reset(); // Clear the form
+                formContainer.style.display = 'none'; // Hide the form
+            } else {
+                alert("Please fill out all fields!");
+            }
+        });
+    </script>
+</body>
+</html>
