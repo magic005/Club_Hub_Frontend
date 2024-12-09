@@ -519,4 +519,66 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
     loadMessages();
 </script>
 </body>
-</html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FDF5E6;
+            text-align: center;
+            padding: 50px;
+        }
+        .form-container {
+            display: none; /* Hidden initially */
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            background-color: #f0f8ff;
+            width: 50%;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-group label {
+            display: block;
+            font-size: 18px;
+        }
+        .form-group input {
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .show-form-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .show-form-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
