@@ -487,7 +487,6 @@ menu: nav/home.html
         <!-- Delete all messages button -->
         <button type="button" class="delete-btn" onclick="deleteAllMessages()">Delete All</button>
     </form>
-    <a href="{{site.baseurl}}/shared_interests/agk/agk.html" class="chatroom-link">Back to Home</a>
 </div>
 
 <script>
