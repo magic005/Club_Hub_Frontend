@@ -1,0 +1,177 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Hub Chatroom</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #FDF5E6;
+        }
+        .chatroom-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #360000;
+            border-radius: 8px;
+            background-color: #001F3F;
+        }
+        .chatroom-header {
+            text-align: center;
+            color: #ff4747;
+        }
+        .chat-area {
+            height: 400px;
+            overflow-y: auto;
+            background-color: #404040;
+            border: 2px solid #360000;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            max-width: 80%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 20px;
+            position: relative;
+        }
+        .message.sent {
+            background-color: #ffd700;
+            color: black;
+            align-self: flex-end;
+        }
+        .message-form {
+            display: flex;
+            align-items: center;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #360000;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #FFD700;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #733f3f;
+        }
+        .chatroom-link {
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #1A2A6C;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .chatroom-link:hover {
+            background-color: #733f3f;
+        }
+        /* Styling for the Delete All button */
+        .delete-btn {
+            background-color: #ff4747;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+<div class="chatroom-container">
+    <header class="chatroom-header">
+        <h1>Activity Chatroom</h1>
+        <p>Discuss your favorite activities!</p>
+    </header>
+    <div class="chat-area" id="chatArea">
+        <!-- Messages will appear here -->
+    </div>
+    <form class="message-form" id="messageForm">
+        <input type="text" id="messageInput" placeholder="Enter your message..." required>
+        <button type="submit">Send</button>
+        <!-- Delete all messages button -->
+        <button type="button" class="delete-btn" onclick="deleteAllMessages()">Delete All</button>
+    </form>
+</div>
+
+<script>
+    const chatArea = document.getElementById('chatArea');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+
+    // Load messages from localStorage
+    function loadMessages() {
+        const savedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        savedMessages.forEach((message, index) => addMessageToChat(message, index));
+    }
+
+    // Save messages to localStorage
+    function saveMessages(messages) {
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+
+    // Add a message to the chat area
+    function addMessageToChat(message, index) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'sent');
+        messageElement.textContent = message.text;
+
+        chatArea.appendChild(messageElement);
+        chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll
+    }
+
+    // Handle form submission
+    messageForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const messageText = messageInput.value.trim();
+        if (messageText !== "") {
+            const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            const newMessage = {
+                text: messageText
+            };
+            messages.push(newMessage);
+            saveMessages(messages);
+            addMessageToChat(newMessage, messages.length - 1);
+            messageInput.value = "";
+        }
+    });
+
+    // Delete all messages
+    function deleteAllMessages() {
+        if (confirm("Are you sure you want to delete all messages?")) {
+            localStorage.removeItem('chatMessages'); // Remove all messages from localStorage
+            chatArea.innerHTML = ''; // Clear the chat area
+        }
+    }
+
+    // Handle "Enter" key submission
+    messageInput.addEventListener('keydown', function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault(); // Prevent new line
+            messageForm.requestSubmit(); // Trigger form submit
+        }
+    });
+
+    // Initial load
+    loadMessages();
+</script>
+</body>
+</html>
+
+<button class="navigate-btn" onclick="window.location.href='../../../../index.html'">Go Back to Home</button>

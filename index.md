@@ -553,7 +553,7 @@ menu: nav/home.html
 </body>
 </html>
 
-
+---
 
 
 <html lang="en">
@@ -698,3 +698,7 @@ menu: nav/home.html
     </script>
 </body>
 </html>
+
+---
+
+<button class="navigate-btn" onclick="window.location.href='navigation/shared_interests/agk/chatroom1.html'">Go to Chatroom</button>
