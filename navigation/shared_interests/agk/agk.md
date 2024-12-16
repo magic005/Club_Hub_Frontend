@@ -730,12 +730,10 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
         const clubListContainer = document.getElementById('clubListContainer');
-        
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
             formContainer.style.display = 'block';
         });
-
         // Handle form submission
         clubForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -747,44 +745,36 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
                 // Create a new club box
                 const clubBox = document.createElement('div');
                 clubBox.classList.add('club-box');
-                
                 // Create a "Join" button
                 const joinButton = document.createElement('button');
                 joinButton.classList.add('join-btn');
                 joinButton.textContent = 'Join';
-                
                 // Handle Join button click
                 joinButton.addEventListener('click', function () {
                     joinButton.style.display = 'none';  // Hide Join button
                     leaveButton.style.display = 'inline';  // Show Leave button
                 });
-                
                 // Create a "Leave" button
                 const leaveButton = document.createElement('button');
                 leaveButton.classList.add('leave-btn');
                 leaveButton.textContent = 'Leave';
                 leaveButton.style.display = 'none';  // Hide Leave button initially
-
                 // Handle Leave button click
                 leaveButton.addEventListener('click', function () {
                     leaveButton.style.display = 'none';  // Hide Leave button
                     joinButton.style.display = 'inline';  // Show Join button
                 });
-
                 // Set club details
                 clubBox.innerHTML = `
                     <h3>${clubName}</h3>
                     <p><strong>Description:</strong> ${clubDescription}</p>
                     <p><strong>Leader:</strong> ${clubLeader}</p>
                 `;
-                
                 // Append buttons to the club box
                 clubBox.appendChild(joinButton);
                 clubBox.appendChild(leaveButton);
-
                 // Append the new club box to the club list container
                 clubListContainer.appendChild(clubBox);
-
                 // Reset the form and hide it
                 clubForm.reset();
                 formContainer.style.display = 'none';
