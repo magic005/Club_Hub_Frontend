@@ -635,6 +635,72 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Club</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        input {
+            padding: 8px;
+            width: 250px;
+            margin: 5px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .club-box {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .club-box h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .club-box p {
+            margin: 5px 0;
+        }
+        .join-btn, .leave-btn {
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .join-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .leave-btn {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
 <body>
     <h1>Create a Club</h1>
     <button class="show-form-btn" id="showFormBtn">Start a New Club</button>
@@ -664,10 +730,12 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
         const clubListContainer = document.getElementById('clubListContainer');
+        
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
             formContainer.style.display = 'block';
         });
+
         // Handle form submission
         clubForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -679,14 +747,44 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
                 // Create a new club box
                 const clubBox = document.createElement('div');
                 clubBox.classList.add('club-box');
+                
+                // Create a "Join" button
+                const joinButton = document.createElement('button');
+                joinButton.classList.add('join-btn');
+                joinButton.textContent = 'Join';
+                
+                // Handle Join button click
+                joinButton.addEventListener('click', function () {
+                    joinButton.style.display = 'none';  // Hide Join button
+                    leaveButton.style.display = 'inline';  // Show Leave button
+                });
+                
+                // Create a "Leave" button
+                const leaveButton = document.createElement('button');
+                leaveButton.classList.add('leave-btn');
+                leaveButton.textContent = 'Leave';
+                leaveButton.style.display = 'none';  // Hide Leave button initially
+
+                // Handle Leave button click
+                leaveButton.addEventListener('click', function () {
+                    leaveButton.style.display = 'none';  // Hide Leave button
+                    joinButton.style.display = 'inline';  // Show Join button
+                });
+
                 // Set club details
                 clubBox.innerHTML = `
                     <h3>${clubName}</h3>
                     <p><strong>Description:</strong> ${clubDescription}</p>
                     <p><strong>Leader:</strong> ${clubLeader}</p>
                 `;
+                
+                // Append buttons to the club box
+                clubBox.appendChild(joinButton);
+                clubBox.appendChild(leaveButton);
+
                 // Append the new club box to the club list container
                 clubListContainer.appendChild(clubBox);
+
                 // Reset the form and hide it
                 clubForm.reset();
                 formContainer.style.display = 'none';
@@ -697,3 +795,4 @@ author: Ansh, Ethan, Gyutae, Aarav, Jonah
     </script>
 </body>
 </html>
+
