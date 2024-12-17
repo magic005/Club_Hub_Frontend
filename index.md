@@ -473,21 +473,6 @@ menu: nav/home.html
     </style>
 </head>
 <body>
-<div class="chatroom-container">
-    <header class="chatroom-header">
-        <h1>Activity Chatroom</h1>
-        <p>Discuss your favorite activities!</p>
-    </header>
-    <div class="chat-area" id="chatArea">
-        <!-- Messages will appear here -->
-    </div>
-    <form class="message-form" id="messageForm">
-        <input type="text" id="messageInput" placeholder="Enter your message..." required>
-        <button type="submit">Send</button>
-        <!-- Delete all messages button -->
-        <button type="button" class="delete-btn" onclick="deleteAllMessages()">Delete All</button>
-    </form>
-</div>
 
 <script>
     const chatArea = document.getElementById('chatArea');
