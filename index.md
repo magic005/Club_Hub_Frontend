@@ -127,6 +127,10 @@ menu: nav/home.html
                 <h3>New Competition Announced!</h3>
                 <p>We're excited to announce that the next CyberPatriot competition will be held on January 25th. Prepare your teams!</p>
             </div>
+             <div class="buttons">
+                <button class="join-btn" onclick="joinClub(this, 'Cyber Club')">Join Club</button>
+                <button class="leave-btn" onclick="leaveClub(this, 'Cyber Club')" style="display: none;">Leave Club</button>
+            </div> 
         </div>
         <br>
         <div class="category">
@@ -139,6 +143,32 @@ menu: nav/home.html
                 <h3>New Competition Announced!</h3>
                 <p>We're excited to announce that the next FRC competition will be held on December 12th. Prepare your robots!</p>
             </div>
+            <div class="buttons">
+                <button class="join-btn" onclick="joinClub(this, 'Robotics Club')">Join Club</button>
+                <button class="leave-btn" onclick="leaveClub(this, 'Robotics Club')" style="display: none;">Leave Club</button>
+            </div>  
+<script> 
+    function joinClub(button, clubName) {
+        // Alert the user
+        alert(`You have joined the ${clubName}!`);
+        // Hide the "Join" button and show the "Leave" button
+        const parentDiv = button.parentElement;
+        const joinBtn = parentDiv.querySelector('.join-btn');
+        const leaveBtn = parentDiv.querySelector('.leave-btn');
+        joinBtn.style.display = 'none';
+        leaveBtn.style.display = 'inline-block';
+    }
+    function leaveClub(button, clubName) {
+        // Alert the user
+        alert(`You have left the ${clubName}.`);
+        // Hide the "Leave" button and show the "Join" button
+        const parentDiv = button.parentElement;
+        const joinBtn = parentDiv.querySelector('.join-btn');
+        const leaveBtn = parentDiv.querySelector('.leave-btn');
+        leaveBtn.style.display = 'none';
+        joinBtn.style.display = 'inline-block';
+    }
+</script>
         </div>
         <!--<a href="{{site.baseurl}}/shared_interests/agk/agk-chatroom.html" class="chatroom-link">Join the currently available chatrooms!</a>-->
     </div>
