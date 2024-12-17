@@ -127,6 +127,25 @@ menu: nav/home.html
                 <h3>New Competition Announced!</h3>
                 <p>We're excited to announce that the next CyberPatriot competition will be held on January 25th. Prepare your teams!</p>
             </div>
+             <div class="buttons">
+        <button class="join-btn" onclick="showJoinForm(this, 'Cyber Club')">Join Club</button>
+        <button class="leave-btn" onclick="leaveClub(this, 'Cyber Club')" style="display: none;">Leave Club</button>
+    </div>
+    <div class="join-form" style="display: none;">
+        <h4>Enter Your Details</h4>
+        <input type="text" placeholder="Your Name" class="user-name" required>
+        <select class="user-role" required>
+            <option value="" disabled selected>Select Role</option>
+            <option value="President">President</option>
+            <option value="Vice President">Vice President</option>
+            <option value="Member">Member</option>
+        </select>
+        <button onclick="joinClub(this, 'Cyber Club')">Confirm Join</button>
+    </div>
+    <div class="members-list" style="margin-top: 10px;">
+        <h4>Current Members:</h4>
+        <ul></ul>
+    </div>
         </div>
         <br>
         <div class="category">
@@ -139,6 +158,70 @@ menu: nav/home.html
                 <h3>New Competition Announced!</h3>
                 <p>We're excited to announce that the next FRC competition will be held on December 12th. Prepare your robots!</p>
             </div>
+            <div class="buttons">
+        <button class="join-btn" onclick="showJoinForm(this, 'Robotics Club')">Join Club</button>
+        <button class="leave-btn" onclick="leaveClub(this, 'Robotics Club')" style="display: none;">Leave Club</button>
+    </div>
+    <div class="join-form" style="display: none;">
+        <h4>Enter Your Details</h4>
+        <input type="text" placeholder="Your Name" class="user-name" required>
+        <select class="user-role" required>
+            <option value="" disabled selected>Select Role</option>
+            <option value="President">President</option>
+            <option value="Vice President">Vice President</option>
+            <option value="Member">Member</option>
+        </select>
+        <button onclick="joinClub(this, 'Cyber Club')">Confirm Join</button>
+    </div>
+    <div class="members-list" style="margin-top: 10px;">
+        <h4>Current Members:</h4>
+        <ul></ul>
+            
+<script> 
+    function showJoinForm(button, clubName) {
+    // Display the form for entering user details
+    const parentDiv = button.parentElement.parentElement;
+    const joinForm = parentDiv.querySelector('.join-form');
+    joinForm.style.display = 'block';
+    button.style.display = 'none'; // Hide the "Join Club" button
+}
+function joinClub(button, clubName) {
+    // Get user details
+    const parentDiv = button.parentElement.parentElement;
+    const userName = parentDiv.querySelector('.user-name').value.trim();
+    const userRole = parentDiv.querySelector('.user-role').value;
+    if (userName && userRole) {
+        // Add the user to the members list
+        const membersList = parentDiv.querySelector('.members-list ul');
+        const listItem = document.createElement('li');
+        listItem.textContent = `${userName} (${userRole})`;
+        membersList.appendChild(listItem);
+        // Hide the form and show the "Leave Club" button
+        const joinForm = parentDiv.querySelector('.join-form');
+        joinForm.style.display = 'none';
+        const leaveBtn = parentDiv.querySelector('.leave-btn');
+        leaveBtn.style.display = 'inline-block';
+    } else {
+        alert('Please enter both your name and role!');
+    }
+}
+function leaveClub(button, clubName) {
+    const parentDiv = button.parentElement.parentElement;
+    // Confirm leaving the club
+    const confirmLeave = confirm(`Are you sure you want to leave ${clubName}?`);
+    if (confirmLeave) {
+        // Clear the members list and reset UI
+        const membersList = parentDiv.querySelector('.members-list ul');
+        membersList.innerHTML = '';
+        const joinForm = parentDiv.querySelector('.join-form');
+        joinForm.style.display = 'none';
+        const joinBtn = parentDiv.querySelector('.join-btn');
+        joinBtn.style.display = 'inline-block';
+        button.style.display = 'none'; // Hide the "Leave Club" button
+        alert(`You have left the ${clubName}.`);
+    }
+}
+</script>
         </div>
         <!--<a href="{{site.baseurl}}/shared_interests/agk/agk-chatroom.html" class="chatroom-link">Join the currently available chatrooms!</a>-->
     </div>
@@ -180,7 +263,6 @@ menu: nav/home.html
         </div>
     </div>
 </body>
-
 <script type="module">
     // Import server URI and standard fetch options
     import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
