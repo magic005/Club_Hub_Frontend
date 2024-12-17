@@ -7,107 +7,125 @@ hide: true
 menu: nav/home.html
 ---
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #FDF5E6;
-        }
-        .header {
-            background: linear-gradient(to right,#001F3F, #073461); 
-            color: #ff4747;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .category {
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px solid #ff7a7a;
-            border-radius: 8px;
-            background: linear-gradient(to right,#001F3F, #073461);
-            color: white;
-            position: relative; 
-        }
-        .post {
-            margin: 10px 0;
-            padding: 15px;
-            border: 1px solid #ff7a7a;
-            border-radius: 5px;
-            background-color: #121212; 
-        }
-        .chatroom-link {
-            position: absolute;
-            top: 640px;
-            right: 460px;
-            padding: 10px;
-            background-color: #1A2A6C;
-            color: black;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .chatroom-link:hover {
-            background-color: #C5B358;
-            color: black;
-        }
-        .form-container {
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px solid #ff7a7a;
-            border-radius: 8px;
-            background: linear-gradient(to right,#001F3F, #073461);
-            color: white;
-        }
-        .form-container h2 {
-            margin-bottom: 15px;
-        }
-        .form-container label {
-            display: block;
-            margin-bottom: 8px;
-        }
-        .form-container input,
-        .form-container select,
-        .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ff7a7a;
-            border-radius: 5px;
-        }
-        .form-container button {
-            padding: 10px 20px;
-            background-color: #FFD700;
-            border: none;
-            color: black;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .form-container button:hover {
-            background-color: #C5B358;
-        }
-        .data {
-            display: flex;
-            margin: 20px 0;
-            padding: 15px;
-            border: 2px solid #ff7a7a;
-            border-radius: 8px;
-            background: linear-gradient(to right,#001F3F, #073461);
-            color: white;
-        }
-        .left-side {
-            width: 50%;
-            padding-right: 20px;
-        }
-        .details {
-            width: 50%;
-        }
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #0E0E10;
+        color: #F3F3F3;
+        line-height: 1.6;
+    }
+    .header {
+        background: linear-gradient(to right, #4A00E0, #8E2DE2);
+        text-align: center;
+        padding: 30px 20px;
+        color: #fff;
+        font-size: 1.5em;
+    }
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #1A1A1D;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .category {
+        margin: 20px 0;
+        padding: 15px;
+        border: 2px solid #FF4B2B; /* Red border */
+        border-radius: 8px;
+        background: #2A2A2D;
+        color: #F3F3F3;
+    }
+    .post {
+        margin: 10px 0;
+        padding: 15px;
+        background: #121212;
+        border: 2px solid #FF4B2B; /* Red border */
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+    .post:hover {
+        background-color: #292929;
+    }
+    .form-container {
+        margin: 20px 0;
+        padding: 20px;
+        border: 2px solid #FF4B2B; /* Red border */
+        border-radius: 8px;
+        background: #2A2A2D;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .form-container h2 {
+        margin-bottom: 15px;
+        color: #FF4D4D;
+        text-align: center;
+    }
+    .form-container label {
+        display: block;
+        margin-bottom: 8px;
+    }
+    .form-container input,
+    .form-container select,
+    .form-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #FF4B2B; /* Red border */
+        border-radius: 5px;
+        background: #121212;
+        color: #F3F3F3;
+    }
+    .form-container button {
+        padding: 15px;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .form-container button:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
+    .data {
+        display: flex;
+        margin: 20px 0;
+        padding: 20px;
+        background: #1A1A1D;
+        border: 2px solid #FF4B2B; /* Red border */
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .left-side {
+        width: 50%;
+        padding-right: 20px;
+    }
+    .details {
+        width: 50%;
+    }
+    .chatroom-link {
+        position: absolute;
+        top: 640px;
+        right: 460px;
+        padding: 10px 15px;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background 0.3s, transform 0.2s;
+    }
+    .chatroom-link:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
+</style>
+
     </style>
 </head>
 
