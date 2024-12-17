@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Club Hub Chatroom
+title: Club Hub Gemini Integration
 permalink: /chatroom2
 menu: nav/home.html
 show_reading_time: false
@@ -8,7 +8,6 @@ show_reading_time: false
 
 
 <button class="navigate-btn" onclick="window.location.href='navigation/shared_interests/agk/chatroom1.html'">Chatroom</button>
-
 
 <style>
     body {
@@ -22,7 +21,7 @@ show_reading_time: false
         padding: 20px;
         border: 2px solid #360000;
         border-radius: 8px;
-        background-color: #ff3333;
+        background-color: #A9A9A9;
     }
     .chatroom-header {
         text-align: center;
