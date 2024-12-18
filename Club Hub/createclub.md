@@ -1,94 +1,103 @@
 ---
 layout: post
-title: Create Club
+title: Club Creator
 permalink: /createclub
 menu: nav/home.html
 show_reading_time: false
 ---
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Creator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #FDF5E6;
-            text-align: center;
-            padding: 50px;
-        }
-        .form-container {
-            display: none; /* Hidden initially */
-            margin-top: 20px;
-            padding: 20px;
-            border: 2px solid #FF3B3B;
-            border-radius: 8px;
-            background-color: #001F3F;
-            width: 50%;
-            margin: 0 auto;
-        }
-        .form-group {
-            margin: 15px 0;
-        }
-        .form-group label {
-            display: block;
-            font-size: 18px;
-        }
-        .form-group input {
-            width: 90%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-        }
-        .submit-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
-        .show-form-btn {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: 2px solid #FF3B3B;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .show-form-btn:hover {
-            background-color: #218838;
-        }
-        .club-box {
-            margin-top: 20px;
-            padding: 20px;
-            border: 2px solid #FF3B3B;
-            border-radius: 8px;
-            background-color: #073461;
-            color: white;
-            width: 50%;
-            margin: 20px auto;
-        }
-        .club-box h3 {
-            margin: 0;
-            padding-bottom: 10px;
-            font-size: 24px;
-        }
-        .club-box p {
-            margin: 5px 0;
-        }
-    </style>
-</head>
+<br>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #FDF5E6;
+        text-align: center;
+        padding: 50px;
+    }
+    .form-container {
+        display: none; /* Hidden initially */
+        margin-top: 20px;
+        padding: 20px;
+        border: 2px solid #FF3B3B;
+        border-radius: 8px;
+        background-color: #001F3F;
+        width: 75%;
+        margin: 0 auto;
+    }
+    .form-group {
+        margin: 15px 0;
+    }
+    .form-group label {
+        display: block;
+        font-size: 18px;
+    }
+    .form-group input {
+        width: 90%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+    }
+    .submit-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
+    .show-form-btn {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: 2px solid #FF3B3B;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .show-form-btn:hover {
+        background-color: #218838;
+    }
+    .club-box {
+        margin-top: 20px;
+        padding: 20px;
+        border: 2px solid #FF3B3B;
+        border-radius: 8px;
+        background-color: #073461;
+        color: white;
+        width: 50%;
+        margin: 20px auto;
+    }
+    .club-box h3 {
+        margin: 0;
+        padding-bottom: 10px;
+        font-size: 24px;
+    }
+    .club-box p {
+        margin: 5px 0;
+    }
+    #clubTopics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+        gap: 10px 0; /* Add vertical spacing between rows */
+    }
+    #clubTopics label {
+        display: grid;
+        grid-template-columns: 20px auto; /* Fixed width for checkboxes */
+        align-items: center; /* Center checkbox and text vertically */
+        gap: 5px; /* Space between checkbox and text */
+    }
+
+</style>
+
 <body>
-    <h1>Create a Club</h1>
+    <br>
     <button class="show-form-btn" id="showFormBtn">Start a New Club</button>
+    <br>
     <div class="form-container" id="formContainer">
         <h2>Club Registration Form</h2>
         <form id="clubForm">
@@ -101,8 +110,43 @@ show_reading_time: false
                 <input type="text" id="clubDescription" placeholder="Describe your club" required>
             </div>
             <div class="form-group">
-                <label for="clubLeader">Club Leader Name</label>
-                <input type="text" id="clubLeader" placeholder="Enter leader's name" required>
+                <label for="clubTopics">Club Topics</label>
+                <br>
+                <div id="clubTopics">
+                    <label><input type="checkbox" name="topics" value="Cyber"> Cyber</label>
+                    <label><input type="checkbox" name="topics" value="Robots"> Robots</label>
+                    <label><input type="checkbox" name="topics" value="AI"> AI</label>
+                    <label><input type="checkbox" name="topics" value="Photos"> Photos</label>
+                    <label><input type="checkbox" name="topics" value="Space"> Space</label>
+                    <label><input type="checkbox" name="topics" value="Games"> Games</label>
+                    <label><input type="checkbox" name="topics" value="Code"> Code</label>
+                    <label><input type="checkbox" name="topics" value="ML"> ML</label>
+                    <label><input type="checkbox" name="topics" value="Chain"> Chain</label>
+                    <label><input type="checkbox" name="topics" value="Music"> Music</label>
+                    <label><input type="checkbox" name="topics" value="Arts"> Arts</label>
+                    <label><input type="checkbox" name="topics" value="Fitness"> Fitness</label>
+                    <label><input type="checkbox" name="topics" value="Cooking"> Cooking</label>
+                    <label><input type="checkbox" name="topics" value="Travel"> Travel</label>
+                    <label><input type="checkbox" name="topics" value="Language"> Language</label>
+                    <label><input type="checkbox" name="topics" value="Business"> Business</label>
+                    <label><input type="checkbox" name="topics" value="Finance"> Finance</label>
+                    <label><input type="checkbox" name="topics" value="Stars"> Stars</label>
+                    <label><input type="checkbox" name="topics" value="Cars"> Cars</label>
+                    <label><input type="checkbox" name="topics" value="Literature"> Literature</label>
+                    <label><input type="checkbox" name="topics" value="Psychology"> Psychology</label>
+                    <label><input type="checkbox" name="topics" value="History"> History</label>
+                    <label><input type="checkbox" name="topics" value="Math"> Math</label>
+                    <label><input type="checkbox" name="topics" value="Biology"> Biology</label>
+                    <label><input type="checkbox" name="topics" value="Chemistry"> Chemistry</label>
+                    <label><input type="checkbox" name="topics" value="Physics"> Physics</label>
+                    <label><input type="checkbox" name="topics" value="Teaching"> Teaching</label>
+                    <label><input type="checkbox" name="topics" value="Volunteering"> Volunteering</label>
+                    <label><input type="checkbox" name="topics" value="Fashion"> Fashion</label>
+                    <label><input type="checkbox" name="topics" value="Fundraising"> Fundraising</label>
+                </div>
+                <br>
+                <small>*Please select all relevant topics for your club.*</small>
+                <br>
             </div>
             <button type="submit" class="submit-btn">Create Club</button>
         </form>
@@ -111,40 +155,56 @@ show_reading_time: false
         <!-- New clubs will appear here -->
     </div>
     <script>
+        // Declare all DOM elements at the top
         const showFormBtn = document.getElementById('showFormBtn');
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
-        const clubListContainer = document.getElementById('clubListContainer');
+        const clubListContainer = document.getElementById('clubListContainer'); // Move this line here
+
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
             formContainer.style.display = 'block';
         });
+
         // Handle form submission
         clubForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
+
             // Get values from form inputs
             const clubName = document.getElementById('clubName').value.trim();
             const clubDescription = document.getElementById('clubDescription').value.trim();
-            const clubLeader = document.getElementById('clubLeader').value.trim();
-            if (clubName && clubDescription && clubLeader) {
+
+            // Collect selected checkboxes
+            const selectedTopics = [];
+            document.querySelectorAll('input[name="topics"]:checked').forEach((checkbox) => {
+                selectedTopics.push(checkbox.value);
+            });
+
+            // Convert the topics array into a single string
+            const clubTopics = selectedTopics.join(", ");
+
+            // Check if all required fields are filled
+            if (clubName && clubDescription && selectedTopics.length > 0) {
                 // Create a new club box
                 const clubBox = document.createElement('div');
                 clubBox.classList.add('club-box');
+
                 // Set club details
                 clubBox.innerHTML = `
                     <h3>${clubName}</h3>
                     <p><strong>Description:</strong> ${clubDescription}</p>
-                    <p><strong>Leader:</strong> ${clubLeader}</p>
+                    <p><strong>Topics:</strong> ${clubTopics}</p>
                 `;
+
                 // Append the new club box to the club list container
                 clubListContainer.appendChild(clubBox);
+
                 // Reset the form and hide it
                 clubForm.reset();
                 formContainer.style.display = 'none';
             } else {
-                alert("Please fill out all fields!");
+                alert("Please fill out all fields and select at least one topic!");
             }
         });
+
     </script>
-</body>
-</html>
