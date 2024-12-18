@@ -1,0 +1,108 @@
+---
+layout: base
+title: Posts
+search_exclude: true
+permalink: /posts/
+---
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+<script>
+  const socket = io.connect("http://127.0.0.1:8887");
+  socket.on("connect", () => {
+    console.log("Connected to the server");
+  });
+
+  socket.on("chat_message", (data) => {
+    displayMessage(`${data.user}: ${data.text}`);
+  });
+
+  function sendMessage() {
+    const username = document.getElementById("usernameInput").value;
+    const message = document.getElementById("messageInput").value;
+
+    if (username && message) {
+      socket.emit("chat_message", { user: username, text: message });
+      document.getElementById("messageInput").value = "";
+    }
+  }
+
+  function displayMessage(message) {
+    const messageList = document.getElementById("messages");
+    const newMessage = document.createElement("li");
+    newMessage.textContent = message;
+    messageList.appendChild(newMessage);
+  }
+</script>
+
+<div class="chatroom">
+  <h2>Chat</h2>
+  <input id="usernameInput" placeholder="Name" />
+  <input id="messageInput" placeholder="Message" />
+  <button onclick="sendMessage()">Send</button>
+  <div id="messages"></div>
+</div>
+
+<style>
+  .chatroom {
+    width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .chatroom h2 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+
+  #usernameInput,
+  #messageInput {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  #messages {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  #messages li {
+    list-style-type: none;
+    padding: 5px 0;
+    border-bottom: 1px solid #f1f1f1;
+    color: black;
+  }
+
+  #messages li:last-child {
+    border-bottom: none;
+  }
+</style>
