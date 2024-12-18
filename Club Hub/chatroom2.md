@@ -47,7 +47,7 @@ show_reading_time: false
         position: relative;
     }
     .message.sent {
-        background-color: #ffd700;
+        background-color: #FFFFFF;
         color: black;
         align-self: flex-end;
         position: relative;
