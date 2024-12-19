@@ -6,103 +6,195 @@ permalink: /posts/
 ---
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
-<script>
-  const socket = io.connect("http://127.0.0.1:8887");
-  socket.on("connect", () => {
-    console.log("Connected to the server");
-  });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Chat Room</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #000000; /* Black background outside of chatroom */
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-  socket.on("chat_message", (data) => {
-    displayMessage(`${data.user}: ${data.text}`);
-  });
+    .chatroom {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+      height: 650px;
+      background: #ffffff; /* White background inside the chatroom */
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
 
-  function sendMessage() {
-    const username = document.getElementById("usernameInput").value;
-    const message = document.getElementById("messageInput").value;
+    .chatroom-header {
+      background: #444444; /* Gray for header */
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
 
-    if (username && message) {
+    .chatroom-messages {
+      flex: 1;
+      padding: 20px;
+      background: #f9f9f9; /* Light background for messages */
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chatroom-messages .message {
+      max-width: 70%;
+      margin: 5px 0;
+      padding: 10px 15px;
+      border-radius: 15px;
+      word-wrap: break-word;
+      font-size: 14px;
+    }
+
+    .chatroom-messages .user-message {
+      background: #1e90ff; /* Blue for user messages */
+      color: white;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .chatroom-messages .other-message {
+      background: #444444; /* Gray for other messages */
+      color: white;
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    .chatroom-footer {
+      padding: 15px;
+      background: #333333; /* Dark gray for footer */
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chatroom-footer input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      background: #444444; /* Gray for input */
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatroom-footer input::placeholder {
+      color: #888888; /* Lighter gray for placeholder */
+    }
+
+    .chatroom-footer button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 20px;
+      background: #1e90ff; /* Blue for send button */
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .chatroom-footer button:hover {
+      background: #187bcd; /* Darker blue for hover state */
+    }
+  </style>
+</head>
+<body>
+  <div class="chatroom">
+    <div class="chatroom-header">
+      <span>Live Chat Room</span>
+    </div>
+    <div class="chatroom-messages" id="messages">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chatroom-footer">
+      <input id="usernameInput" placeholder="Enter your name" />
+      <input id="messageInput" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const socket = io.connect("http://127.0.0.1:8887");
+
+    // Display connection status
+    socket.on("connect", () => {
+      console.log("Connected to the server");
+    });
+
+    // Receive and display chat messages
+    socket.on("chat_message", (data) => {
+      const username = document.getElementById("usernameInput").value.trim();
+      const isUserMessage = data.user === username;
+      displayMessage(data.text, isUserMessage, data.user);
+    });
+
+    function sendMessage() {
+      const username = document.getElementById("usernameInput").value.trim();
+      const message = document.getElementById("messageInput").value.trim();
+
+      if (!username || !message) {
+        alert("Please enter both your name and a message.");
+        return;
+      }
+
+      // Display your own message immediately without duplication
+      displayMessage(message, true, username);
+
+      // Send chat message to the server
       socket.emit("chat_message", { user: username, text: message });
+
+      // Clear the message input
       document.getElementById("messageInput").value = "";
     }
-  }
 
-  function displayMessage(message) {
-    const messageList = document.getElementById("messages");
-    const newMessage = document.createElement("li");
-    newMessage.textContent = message;
-    messageList.appendChild(newMessage);
-  }
-</script>
+    function displayMessage(message, isUserMessage, username) {
+      const messageList = document.getElementById("messages");
 
-<div class="chatroom">
-  <h2>Chat</h2>
-  <input id="usernameInput" placeholder="Name" />
-  <input id="messageInput" placeholder="Message" />
-  <button onclick="sendMessage()">Send</button>
-  <div id="messages"></div>
-</div>
+      // Avoid displaying the message again if it's from the user who just sent it
+      if (isUserMessage && messageList.querySelector(".user-message")) {
+        return; // Do nothing if the message is already in the list
+      }
 
-<style>
-  .chatroom {
-    width: 400px;
-    margin: 20px auto;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+      const newMessage = document.createElement("div");
+      newMessage.textContent = message;
 
-  .chatroom h2 {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
+      newMessage.classList.add("message");
 
-  #usernameInput,
-  #messageInput {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
+      // Add class for user or others' messages
+      if (isUserMessage) {
+        newMessage.classList.add("user-message");
+        newMessage.textContent = `You: ${message}`; // Add 'You:' prefix
+      } else {
+        newMessage.classList.add("other-message");
+        newMessage.textContent = `${username}: ${message}`; // Show other user's name
+      }
 
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+      messageList.appendChild(newMessage);
 
-  button:hover {
-    background-color: #45a049;
-  }
-
-  #messages {
-    margin-top: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-
-  #messages li {
-    list-style-type: none;
-    padding: 5px 0;
-    border-bottom: 1px solid #f1f1f1;
-    color: black;
-  }
-
-  #messages li:last-child {
-    border-bottom: none;
-  }
-</style>
+      // Scroll to the bottom to show the latest message
+      messageList.scrollTop = messageList.scrollHeight;
+    }
+  </script>
+</body>
+</html>
