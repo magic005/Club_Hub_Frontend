@@ -89,8 +89,10 @@ show_reading_time: false
         display: grid;
         grid-template-columns: 20px auto; /* Fixed width for checkboxes */
         align-items: center; /* Center checkbox and text vertically */
-        gap: 5px; /* Space between checkbox and text */
+        justify-items: start; /* Align text to the left */
+        gap: 10px; /* Space between checkbox and text */
     }
+
 
 </style>
 
