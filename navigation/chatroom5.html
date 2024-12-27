@@ -352,6 +352,19 @@ permalink: /chatroom5/
           });
       };
 
+
+      function clearChat() {
+        // Emit the 'clear_chat' event to delete messages from the database
+        socket.emit("clear_chat");
+      
+        // Clear the messages from the UI
+        const messageList = document.getElementById("messages");
+        messageList.innerHTML = ""; // Clear the messages from the frontend
+      
+        // Reset message count
+        document.getElementById("messageCount").textContent = "Messages: 0";
+      }
+      
   </script>
 </body>
 </html>
