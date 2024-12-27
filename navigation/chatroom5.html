@@ -334,6 +334,25 @@ permalink: /chatroom5/
     function goToHomepage() {
       window.location.href = "http://127.0.0.1:4887/flocker_frontend/home.html/"; // Modify with your homepage URL
     }
+
+
+
+        // Fetch chat history from the server
+      window.onload = function () {
+        fetch("http://127.0.0.1:8887/get_chat_history")
+          .then((response) => response.json())
+          .then((data) => {
+            data.forEach((msg) => {
+              const isUserMessage = msg.username === document.getElementById("usernameInput").value.trim();
+              displayMessage(`${msg.username}: ${msg.message}`, isUserMessage, msg.username);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching chat history:", error);
+          });
+      };
+
   </script>
 </body>
 </html>
+
