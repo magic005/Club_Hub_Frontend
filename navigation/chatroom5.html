@@ -325,9 +325,15 @@ permalink: /chatroom5/
 
     // Clear all messages from the chat
     function clearChat() {
+      // Emit the 'clear_chat' event to delete messages from the database
+      socket.emit("clear_chat");
+    
+      // Clear the messages from the frontend
       const messageList = document.getElementById("messages");
-      messageList.innerHTML = ""; // Clear the messages
-      document.getElementById("messageCount").textContent = "Messages: 0"; // Reset message count
+      messageList.innerHTML = "";
+    
+      // Reset message count
+      document.getElementById("messageCount").textContent = "Messages: 0";
     }
 
     // Go to homepage function
@@ -335,37 +341,39 @@ permalink: /chatroom5/
       window.location.href = "http://127.0.0.1:4887/flocker_frontend/home.html/"; // Modify with your homepage URL
     }
 
-
-
-        // Fetch chat history from the server
-      window.onload = function () {
-        fetch("http://127.0.0.1:8887/get_chat_history")
-          .then((response) => response.json())
-          .then((data) => {
-            data.forEach((msg) => {
-              const isUserMessage = msg.username === document.getElementById("usernameInput").value.trim();
-              displayMessage(`${msg.username}: ${msg.message}`, isUserMessage, msg.username);
-            });
-          })
-          .catch((error) => {
-            console.error("Error fetching chat history:", error);
+    // Fetch chat history from the server
+    window.onload = function () {
+      fetch("http://127.0.0.1:8887/get_chat_history")
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((msg) => {
+            const isUserMessage = msg.username === document.getElementById("usernameInput").value.trim();
+            displayMessage(`${msg.username}: ${msg.message}`, isUserMessage, msg.username);
           });
-      };
+        })
+        .catch((error) => {
+          console.error("Error fetching chat history:", error);
+        });
+    };
 
-
-      function clearChat() {
-        // Emit the 'clear_chat' event to delete messages from the database
-        socket.emit("clear_chat");
-      
-        // Clear the messages from the UI
-        const messageList = document.getElementById("messages");
-        messageList.innerHTML = ""; // Clear the messages from the frontend
-      
-        // Reset message count
-        document.getElementById("messageCount").textContent = "Messages: 0";
+    function sendMessage() {
+      const username = document.getElementById("usernameInput").value.trim();
+      const club = document.getElementById("clubInput").value.trim();
+      const message = document.getElementById("messageInput").value.trim();
+    
+      if (!username || !message) {
+        alert("Please enter both your name and a message.");
+        return;
       }
-      
+    
+      // Send chat message to the server (do not display it immediately in frontend)
+      socket.emit("chat_message", { user: username, text: message, club: club });
+    
+      // Clear the message input
+      document.getElementById("messageInput").value = "";
+    }
   </script>
 </body>
 </html>
+
 
