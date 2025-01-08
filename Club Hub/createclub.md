@@ -161,7 +161,7 @@ show_reading_time: false
         const showFormBtn = document.getElementById('showFormBtn');
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
-        const clubListContainer = document.getElementById('clubListContainer'); // Move this line here
+        const clubListContainer = document.getElementById('clubListContainer'); 
 
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
@@ -169,7 +169,7 @@ show_reading_time: false
         });
 
         // Handle form submission
-        clubForm.addEventListener('submit', function (e) {
+        clubForm.addEventListener('submit', async function (e) {
             e.preventDefault(); // Prevent default form submission
 
             // Get values from form inputs
@@ -182,31 +182,52 @@ show_reading_time: false
                 selectedTopics.push(checkbox.value);
             });
 
-            // Convert the topics array into a single string
-            const clubTopics = selectedTopics.join(", ");
-
             // Check if all required fields are filled
             if (clubName && clubDescription && selectedTopics.length > 0) {
-                // Create a new club box
-                const clubBox = document.createElement('div');
-                clubBox.classList.add('club-box');
+                const payload = {
+                    name: clubName,
+                    description: clubDescription,
+                    topics: selectedTopics,
+                };
 
-                // Set club details
-                clubBox.innerHTML = `
-                    <h3>${clubName}</h3>
-                    <p><strong>Description:</strong> ${clubDescription}</p>
-                    <p><strong>Topics:</strong> ${clubTopics}</p>
-                `;
+                try {
+                    // Send a POST request to the backend
+                    const response = await fetch('http://127.0.0.1:8887/api/club', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}` // Include token if required
+                        },
+                        body: JSON.stringify(payload)
+                    });
 
-                // Append the new club box to the club list container
-                clubListContainer.appendChild(clubBox);
+                    if (response.ok) {
+                        const createdClub = await response.json();
 
-                // Reset the form and hide it
-                clubForm.reset();
-                formContainer.style.display = 'none';
+                        // Add the newly created club to the UI
+                        const clubBox = document.createElement('div');
+                        clubBox.classList.add('club-box');
+                        clubBox.innerHTML = `
+                            <h3>${createdClub.name}</h3>
+                            <p><strong>Description:</strong> ${createdClub.description}</p>
+                            <p><strong>Topics:</strong> ${createdClub.topics.join(', ')}</p>
+                        `;
+                        clubListContainer.appendChild(clubBox);
+
+                        // Reset the form and hide it
+                        clubForm.reset();
+                        formContainer.style.display = 'none';
+                    } else {
+                        const error = await response.json();
+                        alert(`Error: ${error.message}`);
+                    }
+                } catch (error) {
+                    alert('An error occurred while creating the club. Please try again.');
+                    console.error(error);
+                }
             } else {
                 alert("Please fill out all fields and select at least one topic!");
             }
         });
-
     </script>
+
