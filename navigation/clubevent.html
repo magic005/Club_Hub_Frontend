@@ -122,7 +122,7 @@ permalink: /event1/
 
   // Listen for new events
   socket.on("new_event", (data) => {
-    displayEvent(data.club, data.event_name, data.event_description);
+    displayEvent(data.club, data.event_name, data.event_description, data.id);
   });
 
   // Fetch existing events on load
@@ -131,7 +131,7 @@ permalink: /event1/
       .then((response) => response.json())
       .then((data) => {
         data.forEach((event) => {
-          displayEvent(event.club, event.event_name, event.event_description);
+          displayEvent(event.club, event.event_name, event.event_description, event.id);
         });
       })
       .catch((error) => {
@@ -139,23 +139,13 @@ permalink: /event1/
       });
   };
 
-  // Display an event
-  function displayEvent(club, eventName, eventDescription) {
-    const eventList = document.getElementById("eventList");
-
-    const eventDiv = document.createElement("div");
-    eventDiv.classList.add("event");
-    eventDiv.innerHTML = `<strong>${club}</strong>: <em>${eventName}</em><br>${eventDescription}`;
-
-    eventList.appendChild(eventDiv);
-  }
-
   // Display an event with a delete button
-function displayEvent(club, eventName, eventDescription, eventId) {
+  function displayEvent(club, eventName, eventDescription, eventId) {
     const eventList = document.getElementById("eventList");
   
     const eventDiv = document.createElement("div");
     eventDiv.classList.add("event");
+    eventDiv.setAttribute('data-id', eventId);
     eventDiv.innerHTML = `<strong>${club}</strong>: <em>${eventName}</em><br>${eventDescription}`;
   
     // Create a delete button
@@ -170,44 +160,25 @@ function displayEvent(club, eventName, eventDescription, eventId) {
   
   // Function to delete an event
   function deleteEvent(eventId) {
-    fetch(`/delete_event/${eventId}`, {
+    fetch(`http://127.0.0.1:8887/delete_event/${eventId}`, {
       method: "DELETE",
     })
     .then((response) => response.json())
     .then((data) => {
-      if (data.message) {
-        alert(data.message);
-        location.reload();  // Reload the page to update the event list
-      } else {
-        alert("Failed to delete event");
-      }
-    })
-    .catch((error) => {
-      console.error("Error deleting event:", error);
-    });
-  }
-  
-  // Function to handle event deletion
-function deleteEvent(eventId) {
-    fetch(`http://127.0.0.1:8887/delete_event/${eventId}`, {
-      method: 'DELETE',
-    })
-    .then(response => response.json())
-    .then(data => {
       if (data.success) {
-        alert('Event deleted successfully');
+        alert(data.success);
         // Remove the event from the UI
         const eventDiv = document.querySelector(`div[data-id='${eventId}']`);
         if (eventDiv) {
           eventDiv.remove();
         }
       } else {
-        alert('Error deleting event');
+        alert("Failed to delete event");
       }
     })
-    .catch(error => {
-      console.error('Error deleting event:', error);
-      alert('Error deleting event');
+    .catch((error) => {
+      console.error("Error deleting event:", error);
+      alert("Error deleting event");
     });
   }
   
@@ -215,4 +186,3 @@ function deleteEvent(eventId) {
 
 </body>
 </html>
-
