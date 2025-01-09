@@ -154,7 +154,7 @@ show_reading_time: false
         </form>
     </div>
     <div id="clubListContainer">
-        <!-- New clubs will appear here -->
+        <!-- all new created clubs will be listed in this "container" -->
     </div>
     <script>
         // Declare all DOM elements at the top
@@ -172,7 +172,7 @@ show_reading_time: false
         clubForm.addEventListener('submit', async function (e) {
             e.preventDefault(); // Prevent default form submission
 //
-            // Get values from form inputs
+            // Get values from form inputs 
             const clubName = document.getElementById('clubName').value.trim();
             const clubDescription = document.getElementById('clubDescription').value.trim();
 //
@@ -196,8 +196,9 @@ show_reading_time: false
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('token')}` // Include token if required
+                            'Authorization': `Bearer ${localStorage.getItem('token')}` // will modify later with JWT token reqs
                         },
+                        // making input data into JSON format; legible to backend
                         body: JSON.stringify(payload)
                     });
 //
