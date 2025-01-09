@@ -349,3 +349,128 @@ fetchGroups();
 
 
 <button class="navigate-btn" onclick="window.location.href='navigation/shared_interests/agk/chatroom1.html'">Go to Chatroom</button>
+<div class="profile-customization">
+    <h2>Customize Your Profile</h2>
+    <form id="profile-form" onsubmit="saveProfile(event)">
+        <div class="form-group">
+            <label for="profile-picture">Profile Picture:</label>
+            <input type="file" id="profile-picture" accept="image/*">
+        </div>
+        
+        <div class="form-group">
+            <label for="bio">Short Bio:</label>
+            <textarea id="bio" placeholder="Write a short bio about yourself" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Save Profile</button>
+    </form>
+</div>
+
+<style>
+    .profile-customization {
+        background-color: #2A2A2D;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        max-width: 500px;
+        margin: 0 auto;
+        color: #F3F3F3;
+    }
+
+    .profile-customization h2 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #FF4B2B;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+        color: #F3F3F3;
+    }
+
+    .form-group input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #121212;
+        border: 1px solid #FF4B2B;
+        border-radius: 8px;
+        color: #F3F3F3;
+        font-size: 14px;
+    }
+
+    .form-group input[type="file"]::file-selector-button {
+        background-color: #121212;
+        color: #F3F3F3;
+        border: 1px solid #FF4B2B;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        background-color: #121212;
+        border: 1px solid #FF4B2B;
+        border-radius: 8px;
+        color: #F3F3F3;
+        font-size: 14px;
+        resize: vertical;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
+
+    /* For smaller screens */
+    @media (max-width: 600px) {
+        .profile-customization {
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .btn-submit {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<script>
+    function saveProfile(event) {
+        // Prevent the form from submitting and reloading the page
+        event.preventDefault();
+        
+        // Get the profile picture and bio values
+        const profilePicture = document.getElementById('profile-picture').files[0];
+        const bio = document.getElementById('bio').value.trim();
+        
+        // You can handle the uploaded file (e.g., upload to a server) here
+        if (profilePicture) {
+            console.log('Profile Picture:', profilePicture.name); // Example logging the file name
+        }
+        
+        // Display the bio and any other profile details you want to log or store
+        console.log('Short Bio:', bio);
+
+        // Provide feedback to the user
+        alert('Your profile has been saved!');
+    }
+</script>
+
