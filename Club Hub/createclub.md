@@ -162,26 +162,24 @@ show_reading_time: false
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
         const clubListContainer = document.getElementById('clubListContainer'); 
-
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
             formContainer.style.display = 'block';
         });
-
         // Handle form submission
         clubForm.addEventListener('submit', async function (e) {
             e.preventDefault(); // Prevent default form submission
-
+//
             // Get values from form inputs
             const clubName = document.getElementById('clubName').value.trim();
             const clubDescription = document.getElementById('clubDescription').value.trim();
-
+//
             // Collect selected checkboxes
             const selectedTopics = [];
             document.querySelectorAll('input[name="topics"]:checked').forEach((checkbox) => {
                 selectedTopics.push(checkbox.value);
             });
-
+//
             // Check if all required fields are filled
             if (clubName && clubDescription && selectedTopics.length > 0) {
                 const payload = {
@@ -189,7 +187,7 @@ show_reading_time: false
                     description: clubDescription,
                     topics: selectedTopics,
                 };
-
+//
                 try {
                     // Send a POST request to the backend
                     const response = await fetch('http://127.0.0.1:8887/api/club', {
@@ -200,10 +198,10 @@ show_reading_time: false
                         },
                         body: JSON.stringify(payload)
                     });
-
+//
                     if (response.ok) {
                         const createdClub = await response.json();
-
+//
                         // Add the newly created club to the UI
                         const clubBox = document.createElement('div');
                         clubBox.classList.add('club-box');
@@ -213,7 +211,7 @@ show_reading_time: false
                             <p><strong>Topics:</strong> ${createdClub.topics.join(', ')}</p>
                         `;
                         clubListContainer.appendChild(clubBox);
-
+//
                         // Reset the form and hide it
                         clubForm.reset();
                         formContainer.style.display = 'none';
