@@ -7,7 +7,7 @@ show_reading_time: false
 ---
 
 
-<button class="navigate-btn" onclick="window.location.href='navigation/shared_interests/agk/chatroom1.html'">Chatroom</button>
+<button class="navigate-btn" onclick="window.location.href='navigation/shared_interests/agk/chatroom1.html'">Chatroom<button>
 
 <style>
     body {
@@ -105,9 +105,11 @@ show_reading_time: false
         <button type="submit">Send</button>
     </form>
     <a href="#" class="chatroom-link">Back to Home</a>
+    <div id="output"></div>
 </div>
 
-<script>
+<script type="module">
+    import { pythonURI, fetchOptions } from '/flocker_frontend/assets/js/api/config.js';
     const chatArea = document.getElementById('chatArea');
     const messageForm = document.getElementById('messageForm');
     const messageInput = document.getElementById('messageInput');
@@ -115,6 +117,7 @@ show_reading_time: false
         ? "http://127.0.0.1:8887"
         : "https://flocker.nighthawkcodingsociety.com";
 
+    let messages = [];
     messageForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -123,10 +126,12 @@ show_reading_time: false
 
         // Display user message
         displayMessage(userMessage, "sent");
+        //messages.push([userMessage, "sent"]);
 
         try {
             // Send message to the backend
             const response = await fetch(`${apiBaseURL}/api/ai/help`, {
+            //const response = await fetch(`https://flocker.nighthawkcodingsociety.com/api/ai/help`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -138,20 +143,61 @@ show_reading_time: false
 
             // Handle AI response
             const aiMessage = data.response || "Sorry, I couldn't understand that.";
+            //const aiMessage = data.response || JSON.stringify(data);
             displayMessage(aiMessage, "received");
+            //messages.push([aiMessage, "received"]);
         } catch (error) {
             console.error("Error communicating with the server:", error);
             displayMessage("Error: Unable to connect to the server.", "received");
         } finally {
             messageInput.value = "";
             chatArea.scrollTop = chatArea.scrollHeight; // Auto-scroll to the newest message
+            //displayMessages();
         }
     });
+/*
+    function displayMessages() {
+        //console.log(messages);
+        // loop over messages and czll displayMemssage
 
+
+  } */
     function displayMessage(text, type) {
+        makePost(text);
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', type);
         messageElement.textContent = text;
         chatArea.appendChild(messageElement);
     }
+
+    async function makePost(message) {
+            const postTitle = 'Post';
+            const postComment = message;
+            const postChannelId = 1;
+
+            const postData = {
+                title: postTitle,
+                comment: postComment,
+                channel_id: postChannelId
+            };
+
+            try {
+                const response = await fetch(`${pythonURI}/api/post`, {
+                    ...fetchOptions,
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add channel: ' + response.statusText);
+                }
+            } catch (error) {
+                console.error('Error adding channel:', error);
+                alert('Error adding channel: ' + error.message);
+            }    
+    }
 </script>
+
