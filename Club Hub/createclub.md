@@ -118,7 +118,33 @@ show_reading_time: false
                     <label><input type="checkbox" name="topics" value="Cyber"> Cyber</label>
                     <label><input type="checkbox" name="topics" value="Robots"> Robots</label>
                     <label><input type="checkbox" name="topics" value="AI"> AI</label>
-                    <!-- More topics here -->
+                    <label><input type="checkbox" name="topics" value="Photos"> Photos</label>
+                    <label><input type="checkbox" name="topics" value="Space"> Space</label>
+                    <label><input type="checkbox" name="topics" value="Games"> Games</label>
+                    <label><input type="checkbox" name="topics" value="Code"> Code</label>
+                    <label><input type="checkbox" name="topics" value="ML"> ML</label>
+                    <label><input type="checkbox" name="topics" value="Chain"> Chain</label>
+                    <label><input type="checkbox" name="topics" value="Music"> Music</label>
+                    <label><input type="checkbox" name="topics" value="Arts"> Arts</label>
+                    <label><input type="checkbox" name="topics" value="Fitness"> Fitness</label>
+                    <label><input type="checkbox" name="topics" value="Cooking"> Cooking</label>
+                    <label><input type="checkbox" name="topics" value="Travel"> Travel</label>
+                    <label><input type="checkbox" name="topics" value="Language"> Language</label>
+                    <label><input type="checkbox" name="topics" value="Business"> Business</label>
+                    <label><input type="checkbox" name="topics" value="Finance"> Finance</label>
+                    <label><input type="checkbox" name="topics" value="Stars"> Stars</label>
+                    <label><input type="checkbox" name="topics" value="Cars"> Cars</label>
+                    <label><input type="checkbox" name="topics" value="Literature"> Literature</label>
+                    <label><input type="checkbox" name="topics" value="Psychology"> Psychology</label>
+                    <label><input type="checkbox" name="topics" value="History"> History</label>
+                    <label><input type="checkbox" name="topics" value="Math"> Math</label>
+                    <label><input type="checkbox" name="topics" value="Biology"> Biology</label>
+                    <label><input type="checkbox" name="topics" value="Chemistry"> Chemistry</label>
+                    <label><input type="checkbox" name="topics" value="Physics"> Physics</label>
+                    <label><input type="checkbox" name="topics" value="Teaching"> Teaching</label>
+                    <label><input type="checkbox" name="topics" value="Volunteering"> Volunteering</label>
+                    <label><input type="checkbox" name="topics" value="Fashion"> Fashion</label>
+                    <label><input type="checkbox" name="topics" value="Fundraising"> Fundraising</label>
                 </div>
                 <br>
                 <small>*Please select all relevant topics for your club.*</small>
