@@ -156,32 +156,33 @@ show_reading_time: false
     <div id="clubListContainer">
         <!-- all new created clubs will be listed in this "container" -->
     </div>
+
     <script>
         // Declare all DOM elements at the top
         const showFormBtn = document.getElementById('showFormBtn');
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
         const clubListContainer = document.getElementById('clubListContainer');
-//
+
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
             formContainer.style.display = 'block';
         });
-//
+
         // Handle form submission
         clubForm.addEventListener('submit', async function (e) {
             e.preventDefault(); // Prevent default form submission
-//
-            // Get values from form inputs 
+
+            // Get values from form inputs
             const clubName = document.getElementById('clubName').value.trim();
             const clubDescription = document.getElementById('clubDescription').value.trim();
-//
+
             // Collect selected checkboxes
             const selectedTopics = [];
             document.querySelectorAll('input[name="topics"]:checked').forEach((checkbox) => {
                 selectedTopics.push(checkbox.value);
             });
-//
+
             // Check if all required fields are filled
             if (clubName && clubDescription && selectedTopics.length > 0) {
                 const payload = {
@@ -189,7 +190,7 @@ show_reading_time: false
                     description: clubDescription,
                     topics: selectedTopics,
                 };
-//
+
                 try {
                     // Send a POST request to the backend
                     const response = await fetch('http://127.0.0.1:8887/api/club', {
@@ -198,13 +199,12 @@ show_reading_time: false
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${localStorage.getItem('token')}` // will modify later with JWT token reqs
                         },
-                        // making input data into JSON format; legible to backend
                         body: JSON.stringify(payload)
                     });
-//
+
                     if (response.ok) {
                         const createdClub = await response.json();
-//
+
                         // Add the newly created club to the UI
                         const clubBox = document.createElement('div');
                         clubBox.classList.add('club-box');
@@ -212,9 +212,17 @@ show_reading_time: false
                             <h3>${createdClub.name}</h3>
                             <p><strong>Description:</strong> ${createdClub.description}</p>
                             <p><strong>Topics:</strong> ${createdClub.topics.join(', ')}</p>
+                            <button class="delete-btn" data-id="${createdClub.id}">Delete Club</button>
                         `;
                         clubListContainer.appendChild(clubBox);
-//
+
+                        // Add event listener for the delete button
+                        const deleteBtn = clubBox.querySelector('.delete-btn');
+                        deleteBtn.addEventListener('click', async function () {
+                            const clubId = deleteBtn.getAttribute('data-id');
+                            await deleteClub(clubId, clubBox);
+                        });
+
                         // Reset the form and hide it
                         clubForm.reset();
                         formContainer.style.display = 'none';
@@ -230,26 +238,22 @@ show_reading_time: false
                 alert("Please fill out all fields and select at least one topic!");
             }
         });
-//
+
         // Function to fetch and display all clubs
         async function fetchAndDisplayClubs() {
             try {
-                // Send a GET request to the backend to fetch all clubs
                 const response = await fetch('http://127.0.0.1:8887/api/club', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Include token if required
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 });
-//
+
                 if (response.ok) {
                     const clubs = await response.json();
-//
-                    // Clear the existing club list
-                    clubListContainer.innerHTML = '';
-//
-                    // Add each club to the UI
+                    clubListContainer.innerHTML = ''; // Clear existing clubs
+
                     clubs.forEach(club => {
                         const clubBox = document.createElement('div');
                         clubBox.classList.add('club-box');
@@ -257,8 +261,16 @@ show_reading_time: false
                             <h3>${club.name}</h3>
                             <p><strong>Description:</strong> ${club.description}</p>
                             <p><strong>Topics:</strong> ${club.topics.join(', ')}</p>
+                            <button class="delete-btn" data-id="${club.id}">Delete Club</button>
                         `;
                         clubListContainer.appendChild(clubBox);
+
+                        // Add event listener for the delete button
+                        const deleteBtn = clubBox.querySelector('.delete-btn');
+                        deleteBtn.addEventListener('click', async function () {
+                            const clubId = deleteBtn.getAttribute('data-id');
+                            await deleteClub(clubId, clubBox);
+                        });
                     });
                 } else {
                     const error = await response.json();
@@ -269,9 +281,33 @@ show_reading_time: false
                 console.error(error);
             }
         }
-//
+
+        // Function to delete a club
+        async function deleteClub(clubId, clubBox) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8887/api/club`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ id: clubId })
+                });
+
+                if (response.ok) {
+                    // Remove the club from the page if deletion is successful
+                    clubBox.remove();
+                } else {
+                    const error = await response.json();
+                    alert(`Error: ${error.message}`);
+                }
+            } catch (error) {
+                alert('An error occurred while deleting the club. Please try again.');
+                console.error(error);
+            }
+        }
+
         // Call fetchAndDisplayClubs on page load
         document.addEventListener('DOMContentLoaded', fetchAndDisplayClubs);
-//
     </script>
 
