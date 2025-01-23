@@ -271,6 +271,7 @@ show_reading_time: false
 </div>
 
 
+
 <!--<script>
     function showResults() {
         const form = document.forms['quiz-form'];
@@ -286,12 +287,12 @@ show_reading_time: false
 
 
 <script type="module">
-import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
+    import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
 
-// simulate getting a token from the storage thingy
-function getToken() {
-    return localStorage.getItem('token') || 'Bearer MOCK_TOKEN';
-}
+    // simulate getting a token from the storage thingy
+    function getToken() {
+        return localStorage.getItem('token') || 'Bearer MOCK_TOKEN';
+    }
 
 // submit interests
     async function submitInterests() {
@@ -310,7 +311,7 @@ function getToken() {
         }
 
         try {
-            const URL = `${pythonURI}/api/interests`;
+            const URL = ${pythonURI}/api/interests;
             const response = await fetch(URL, {
                 method: 'POST',
                 headers: {
@@ -332,7 +333,7 @@ function getToken() {
     // fetch and display Interests
     async function fetchAndDisplayInterests() {
         try {
-            const URL = `${pythonURI}/api/interests`;
+            const URL = ${pythonURI}/api/interests;
             const response = await fetch(URL, {
                 method: 'GET',
                 headers: { 'Authorization': getToken() },
@@ -343,7 +344,7 @@ function getToken() {
 
             const interestsElement = document.getElementById('selectedInterests');
             if (data.interests.length > 0) {
-                interestsElement.innerText = `Saved Interests: ${data.interests.join(', ')}`;
+                interestsElement.innerText = Saved Interests: ${data.interests.join(', ')};
             } else {
                 interestsElement.innerText = 'No interests saved yet.';
             }
@@ -370,5 +371,3 @@ function getToken() {
 
     window.showResults = showResults;
 </script>
-
-
