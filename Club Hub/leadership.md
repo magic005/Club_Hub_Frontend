@@ -47,6 +47,7 @@ show_reading_time: false
            display: block;
        }
        input,
+       select,
        textarea {
            width: 100%;
            padding: 10px;
@@ -55,6 +56,7 @@ show_reading_time: false
            font-size: 14px;
        }
        input:focus,
+       select:focus,
        textarea:focus {
            border-color: #007bff;
            outline: none;
@@ -121,7 +123,10 @@ show_reading_time: false
            </div>
            <div class="form-group">
                <label for="club">Club</label>
-               <input type="text" id="club" placeholder="Enter the club name" required>
+               <select id="club" required>
+                   <option value="">Select a Club</option>
+                   <!-- Club options will be dynamically populated -->
+               </select>
            </div>
            <div class="form-group">
                <label for="experience">Leadership Experience</label>
@@ -133,12 +138,13 @@ show_reading_time: false
    <div id="applicationListContainer">
        <!-- Submitted leadership applications will be listed here -->
    </div>
-   
+
    <script>
     const showFormBtn = document.getElementById('showFormBtn');
     const formContainer = document.getElementById('formContainer');
     const leadershipForm = document.getElementById('leadershipForm');
     const applicationListContainer = document.getElementById('applicationListContainer');
+    const clubSelect = document.getElementById('club');
     let currentApplicationId = null; // Variable to track which application is being updated
 
     // Show the form when the button is clicked
@@ -147,6 +153,27 @@ show_reading_time: false
         leadershipForm.reset(); // Reset form when showing it
         currentApplicationId = null; // Clear current application id
     });
+
+    // Fetch clubs from the server and populate the dropdown
+    async function fetchClubs() {
+        try {
+            const response = await fetch('http://127.0.0.1:8887/api/clubs', { method: 'GET' });
+
+            if (response.ok) {
+                const clubs = await response.json();
+                clubs.forEach(club => {
+                    const option = document.createElement('option');
+                    option.value = club.name;
+                    option.textContent = club.name;
+                    clubSelect.appendChild(option);
+                });
+            } else {
+                console.error('Failed to fetch clubs.');
+            }
+        } catch (error) {
+            console.error('Error fetching clubs:', error);
+        }
+    }
 
     // Handle form submission to create a new leadership application
     leadershipForm.addEventListener('submit', async function (e) {
@@ -280,6 +307,9 @@ show_reading_time: false
     }
 
     // Fetch and display applications when the page loads
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayApplications);
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchAndDisplayApplications();
+        fetchClubs(); // Fetch clubs when the page loads
+    });
    </script>
 </body>
