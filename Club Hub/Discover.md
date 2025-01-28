@@ -287,31 +287,26 @@ show_reading_time: false
 
 
 <script type="module">
-    import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
-
-    // simulate getting a token from the storage thingy
-    function getToken() {
-        return localStorage.getItem('token') || 'Bearer MOCK_TOKEN';
-    }
-
+import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
+// simulate getting a token from the storage thingy
+function getToken() {
+    return localStorage.getItem('token') || 'Bearer MOCK_TOKEN';
+}
 // submit interests
     async function submitInterests() {
         const form = document.forms['quiz-form'];
         const selected = [];
         const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
-
         // collect selected interests
         checkboxes.forEach(checkbox => {
             selected.push(checkbox.value);
         });
-
         if (selected.length === 0) {
             alert('Please select at least one interest!');
             return;
         }
-
         try {
-            const URL = ${pythonURI}/api/interests;
+            const URL = `${pythonURI}/api/interests`;
             const response = await fetch(URL, {
                 method: 'POST',
                 headers: {
@@ -320,7 +315,6 @@ show_reading_time: false
                 },
                 body: JSON.stringify({ interests: selected })
             });
-
             if (!response.ok) throw new Error('Failed to submit interests');
             alert('Interests saved successfully!');
             fetchAndDisplayInterests(); // refresh
@@ -329,26 +323,22 @@ show_reading_time: false
             alert('Error submitting interests.');
         }
     }
-
     // fetch and display Interests
     async function fetchAndDisplayInterests() {
         try {
-            const URL = ${pythonURI}/api/interests;
+            const URL = `${pythonURI}/api/interests`;
             const response = await fetch(URL, {
                 method: 'GET',
                 headers: { 'Authorization': getToken() },
             });
-
             if (!response.ok) throw new Error('Failed to fetch interests');
             const data = await response.json();
-
             const interestsElement = document.getElementById('selectedInterests');
             if (data.interests.length > 0) {
-                interestsElement.innerText = Saved Interests: ${data.interests.join(', ')};
+                interestsElement.innerText = `Saved Interests: ${data.interests.join(', ')}`;
             } else {
                 interestsElement.innerText = 'No interests saved yet.';
             }
-
             // show the results div
             document.getElementById('results').style.display = 'block';
         } catch (error) {
@@ -356,18 +346,28 @@ show_reading_time: false
             alert('Error fetching interests.');
         }
     }
-
     function showResults() {
         submitInterests(); // submitInterests when showResults
     }
-
     // attach to submit
     const submitButton = document.getElementById('submitInterestsButton');
     if (submitButton) {
         submitButton.addEventListener('click', submitInterests);
     }
-
     window.onload = fetchAndDisplayInterests;
-
     window.showResults = showResults;
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
