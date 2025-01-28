@@ -90,7 +90,7 @@ show_reading_time: false
            margin: 5px 0;
            line-height: 1.5;
        }
-       .delete-btn {
+       .delete-btn, .update-btn {
            background-color: #dc3545;
            color: white;
            padding: 5px 10px;
@@ -100,7 +100,7 @@ show_reading_time: false
            font-size: 14px;
            margin-top: 10px;
        }
-       .delete-btn:hover {
+       .delete-btn:hover, .update-btn:hover {
            background-color: #bd2130;
        }
    </style>
@@ -139,10 +139,13 @@ show_reading_time: false
     const formContainer = document.getElementById('formContainer');
     const leadershipForm = document.getElementById('leadershipForm');
     const applicationListContainer = document.getElementById('applicationListContainer');
+    let currentApplicationId = null; // Variable to track which application is being updated
 
     // Show the form when the button is clicked
     showFormBtn.addEventListener('click', function () {
         formContainer.style.display = 'block';
+        leadershipForm.reset(); // Reset form when showing it
+        currentApplicationId = null; // Clear current application id
     });
 
     // Handle form submission to create a new leadership application
@@ -154,30 +157,41 @@ show_reading_time: false
         const club = document.getElementById('club').value.trim();
         const experience = document.getElementById('experience').value.trim();
 
-        // Validate the form inputs
-        if (applicantName && role && club && experience) {
-            const payload = { name: applicantName, role, club, experience };
 
-            try {
-                const response = await fetch('http://127.0.0.1:8887/api/leadership', {
+        const payload = { name: applicantName, role, club, experience };
+
+        try {
+            let response;
+            if (currentApplicationId) {
+                // Update the application if an ID exists
+                response = await fetch(`http://127.0.0.1:8887/api/leadership/${currentApplicationId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+            } else {
+                // Create a new application if no ID exists
+                response = await fetch('http://127.0.0.1:8887/api/leadership', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
-
-                if (response.ok) {
-                    const createdApplication = await response.json();
-                    addApplicationToUI(createdApplication); // Add the new application to the UI
-                    leadershipForm.reset(); // Reset the form
-                    formContainer.style.display = 'none'; // Hide the form
-                } else {
-                    alert('Error: Unable to submit your application.');
-                }
-            } catch {
-                alert('An error occurred while submitting your application.');
             }
-        } else {
-            alert('Please fill out all fields.');
+
+            if (response.ok) {
+                const updatedApplication = await response.json();
+                if (currentApplicationId) {
+                    updateApplicationInUI(updatedApplication); // Update the application in UI
+                } else {
+                    addApplicationToUI(updatedApplication); // Add the new application to UI
+                }
+                leadershipForm.reset();
+                formContainer.style.display = 'none';
+            } else {
+                alert('Error: Unable to submit your application.');
+            }
+        } catch {
+            alert('An error occurred while submitting your application.');
         }
     });
 
@@ -208,6 +222,7 @@ show_reading_time: false
             <p><strong>Club:</strong> ${application.club}</p>
             <p><strong>Experience:</strong> ${application.experience}</p>
             <button class="delete-btn" data-id="${application.id}">Delete</button>
+            <button class="update-btn" data-id="${application.id}">Update</button>
         `;
 
         // Add delete functionality to the delete button
@@ -234,8 +249,34 @@ show_reading_time: false
             }
         });
 
+        // Add update functionality to the update button
+        const updateBtn = applicationBox.querySelector('.update-btn');
+        updateBtn.addEventListener('click', function () {
+            const applicationId = this.getAttribute('data-id');
+            currentApplicationId = applicationId; // Set the current application ID to update
+
+            // Pre-fill the form with the current application data
+            document.getElementById('applicantName').value = application.name;
+            document.getElementById('role').value = application.role;
+            document.getElementById('club').value = application.club;
+            document.getElementById('experience').value = application.experience;
+
+            formContainer.style.display = 'block'; // Show the form to update the details
+        });
+
         // Append the application box to the list container
         applicationListContainer.appendChild(applicationBox);
+    }
+
+    // Update application UI without re-fetching
+    function updateApplicationInUI(updatedApplication) {
+        const applicationBox = document.querySelector(`.application-box[data-id="${updatedApplication.id}"]`);
+        if (applicationBox) {
+            applicationBox.querySelector('h3').textContent = updatedApplication.name;
+            applicationBox.querySelector('p:nth-of-type(1)').textContent = `Role: ${updatedApplication.role}`;
+            applicationBox.querySelector('p:nth-of-type(2)').textContent = `Club: ${updatedApplication.club}`;
+            applicationBox.querySelector('p:nth-of-type(3)').textContent = `Experience: ${updatedApplication.experience}`;
+        }
     }
 
     // Fetch and display applications when the page loads
