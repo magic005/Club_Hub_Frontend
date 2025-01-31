@@ -355,8 +355,8 @@ show_reading_time: false
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
         try {
             // Send a GET request to the backend to fetch all events
-            const response = await fetch('http://127.0.0.1:8887/api/event', {
-                method: 'GET',
+            const response = await fetch('http://127.0.0.1:8887/api/event', { 
+                method: 'GET', // get method
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}` // Add the token to the request headers
