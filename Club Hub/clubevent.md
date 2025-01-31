@@ -204,7 +204,9 @@ show_reading_time: false
                 <div id="eventsOnDate"></div>
             </div>
         </div>
- <script>
+
+<script type="module">
+    import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
     let events = []; //  store all the event data fetched from the server
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth();
@@ -238,7 +240,7 @@ show_reading_time: false
     async function fetchClubNames() {
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
         try {
-            const response = await fetch('http://127.0.0.1:8887/api/clubs', {
+            const response = await fetch(`${pythonURI}/api/club`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -278,7 +280,7 @@ show_reading_time: false
             };
             const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
             try {
-                const response = await fetch('http://127.0.0.1:8887/api/event', {
+                const response = await fetch(`${pythonURI}/api/event`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -326,7 +328,7 @@ show_reading_time: false
             const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
             try {
                 // Send a PUT request to update the event
-                const response = await fetch(`http://127.0.0.1:8887/api/event`, {
+                const response = await fetch(`${pythonURI}/api/event`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -355,7 +357,7 @@ show_reading_time: false
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
         try {
             // Send a GET request to the backend to fetch all events
-            const response = await fetch('http://127.0.0.1:8887/api/event', { 
+            const response = await fetch(`${pythonURI}/api/event`, { 
                 method: 'GET', // get method
                 headers: {
                     'Content-Type': 'application/json',
@@ -375,10 +377,18 @@ show_reading_time: false
                         <h3>${event.title}</h3>
                         <p><strong>Description:</strong> ${event.description}</p>
                         <p><strong>Date:</strong> ${event.date}</p>
-                        <button class="edit-btn" onclick="editEvent(${event.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteEvent(${event.id})">Delete</button>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
                     `;
                     eventListContainer.appendChild(eventBox);
+
+                    const editBtn = eventBox.querySelector('.edit-btn');
+                    const deleteBtn = eventBox.querySelector('.delete-btn');
+
+                    // Add click listener for edit
+                    editBtn.addEventListener('click', () => editEvent(event.id));
+                    // Add click listener for delete
+                    deleteBtn.addEventListener('click', () => deleteEvent(event.id));
                 });
                 // Initialize the calendar
                 initializeCalendar(currentYear, currentMonth);
@@ -411,7 +421,7 @@ show_reading_time: false
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
         try {
             // Send a DELETE request to the backend to delete the event
-            const response = await fetch(`http://127.0.0.1:8887/api/event`, {
+            const response = await fetch(`${pythonURI}/api/event`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
