@@ -157,7 +157,8 @@ show_reading_time: false
         <!-- all new created clubs will be listed in this "container" -->
     </div>
 
-    <script>
+    <script type="module">
+        import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
         // Declare all DOM elements at the top
         const showFormBtn = document.getElementById('showFormBtn');
         const formContainer = document.getElementById('formContainer');
@@ -193,7 +194,7 @@ show_reading_time: false
 
                 try {
                     // Send a POST request to the backend
-                    const response = await fetch('http://127.0.0.1:8887/api/club', {
+                    const response = await fetch(`${pythonURI}/api/club`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -242,7 +243,7 @@ show_reading_time: false
         // Function to fetch and display all clubs
         async function fetchAndDisplayClubs() {
             try {
-                const response = await fetch('http://127.0.0.1:8887/api/club', {
+                const response = await fetch(`${pythonURI}/api/club`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -285,7 +286,7 @@ show_reading_time: false
         // Function to delete a club
         async function deleteClub(clubId, clubBox) {
             try {
-                const response = await fetch(`http://127.0.0.1:8887/api/club`, {
+                const response = await fetch(`${pythonURI}/api/club`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
