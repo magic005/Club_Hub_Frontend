@@ -139,7 +139,8 @@ show_reading_time: false
        <!-- Submitted leadership applications will be listed here -->
    </div>
 
-   <script>
+   <script type="module">
+    import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
     const showFormBtn = document.getElementById('showFormBtn');
     const formContainer = document.getElementById('formContainer');
     const leadershipForm = document.getElementById('leadershipForm');
@@ -223,20 +224,27 @@ show_reading_time: false
     });
 
     // Fetch and display all leadership applications on page load
-    async function fetchAndDisplayApplications() {
-        try {
-            const response = await fetch('http://127.0.0.1:8887/api/leadership', { method: 'GET' });
+async function fetchAndDisplayApplications() {
+    try {
+        const URL = `${pythonURI}/api/leadership`;
+        const response = await fetch(URL, { method: 'GET' });
+        
+        if (!response.ok) throw new Error('Failed to fetch applications');
+        
+        const applications = await response.json();
+        applicationListContainer.innerHTML = ''; // Clear the list container
 
-            if (response.ok) {
-                const applications = await response.json();
-                applicationListContainer.innerHTML = ''; // Clear the list container
-
-                applications.forEach(app => addApplicationToUI(app)); // Add each application to the UI
-            }
-        } catch {
-            alert('An error occurred while fetching applications.');
+        if (applications.length > 0) {
+            applications.forEach(app => addApplicationToUI(app)); // Add each application to the UI
+        } else {
+            applicationListContainer.innerText = 'No applications available.';
         }
+    } catch (error) {
+        console.error('Error fetching applications:', error);
+        alert('An error occurred while fetching applications.');
     }
+}
+
 
     // Add a single leadership application to the UI
     function addApplicationToUI(application) {
