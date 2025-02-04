@@ -146,6 +146,8 @@ show_reading_time: false
     const leadershipForm = document.getElementById('leadershipForm');
     const applicationListContainer = document.getElementById('applicationListContainer');
     const clubSelect = document.getElementById('club');
+    const clubNameSelect = document.getElementById('clubName');
+
     let currentApplicationId = null; // Variable to track which application is being updated
 
     // Show the form when the button is clicked
@@ -156,25 +158,50 @@ show_reading_time: false
     });
 
     // Fetch clubs from the server and populate the dropdown
-    async function fetchClubs() {
-        try {
-            const response = await fetch('http://127.0.0.1:8887/api/clubs', { method: 'GET' });
+async function fetchClubNames() {
+    try {
+        console.log("Fetching club names...");
 
-            if (response.ok) {
-                const clubs = await response.json();
-                clubs.forEach(club => {
-                    const option = document.createElement('option');
-                    option.value = club.name;
-                    option.textContent = club.name;
-                    clubSelect.appendChild(option);
-                });
-            } else {
-                console.error('Failed to fetch clubs.');
+        const response = await fetch(`${pythonURI}/api/clubs`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // Ensure token is defined, otherwise remove this line
+                ...(typeof token !== "undefined" ? { 'Authorization': `Bearer ${token}` } : {})
             }
-        } catch (error) {
-            console.error('Error fetching clubs:', error);
+        });
+
+        console.log("Response received:", response);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch clubs: ${response.status} ${response.statusText}`);
         }
+
+        const clubs = await response.json();
+        console.log("Clubs received:", clubs);
+
+        // Clear existing options
+        const clubSelect = document.getElementById('club');
+        clubSelect.innerHTML = '<option value="">Select a Club</option>';
+
+        // Populate dropdown
+        clubs.forEach(club => {
+            const option = document.createElement('option');
+            option.value = club.name;
+            option.textContent = club.name;
+            clubSelect.appendChild(option);
+        });
+
+        console.log("Club dropdown updated successfully.");
+    } catch (error) {
+        console.error("Error fetching club names:", error);
+        alert("An error occurred while fetching club names. Check the console for details.");
     }
+}
+
+// Ensure this function is called when the page loads
+document.addEventListener('DOMContentLoaded', fetchClubNames);
+
 
     // Handle form submission to create a new leadership application
     leadershipForm.addEventListener('submit', async function (e) {
@@ -192,14 +219,14 @@ show_reading_time: false
             let response;
             if (currentApplicationId) {
                 // Update the application if an ID exists
-                response = await fetch(`http://127.0.0.1:8887/api/leadership/${currentApplicationId}`, {
+                response = await fetch(`${pythonURI}/api/leadership/${currentApplicationId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
             } else {
                 // Create a new application if no ID exists
-                response = await fetch('http://127.0.0.1:8887/api/leadership', {
+                response = await fetch(`${pythonURI}/api/leadership`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
@@ -267,7 +294,7 @@ async function fetchAndDisplayApplications() {
 
             if (confirm('Are you sure you want to delete this application?')) {
                 try {
-                    const response = await fetch(`http://127.0.0.1:8887/api/leadership/${applicationId}`, {
+                    const response = await fetch(`${pythonURI}/api/leadership/${applicationId}`, {
                         method: 'DELETE',
                     });
 
