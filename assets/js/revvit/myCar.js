@@ -7,7 +7,7 @@ import {
   deleteData,
   logoutUser,
 } from "../../js/api/profile.js";
-const redirectLoginLink = `${window.location.origin}/flocker_frontend/login`;
+const redirectLoginLink = `${window.location.origin}/Club_Hub_Frontend/login`;
 
 async function fetchUserProfilePicture() {
   const URL = pythonURI + "/api/id/pfp"; // Endpoint to fetch user profile data

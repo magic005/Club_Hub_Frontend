@@ -10,7 +10,7 @@ show_reading_time: false
 
 
 <script type="module">
-    import { pythonURI, fetchOptions } from '/flocker_frontend/assets/js/api/config.js';
+    import { pythonURI, fetchOptions } from '/Club_Hub_Frontend/assets/js/api/config.js';
     async function fetchStudentData() {
             try {
                 // Make the GET request to the '/student/clubs' endpoint

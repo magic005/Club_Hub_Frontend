@@ -109,7 +109,7 @@ show_reading_time: false
 </div>
 
 <script type="module">
-    import { pythonURI, fetchOptions } from '/flocker_frontend/assets/js/api/config.js';
+    import { pythonURI, fetchOptions } from '/Club_Hub_Frontend/assets/js/api/config.js';
     const chatArea = document.getElementById('chatArea');
     const messageForm = document.getElementById('messageForm');
     const messageInput = document.getElementById('messageInput');

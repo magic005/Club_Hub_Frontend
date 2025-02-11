@@ -2,8 +2,8 @@ title: Club Hub
 description: "Social Media for Del Norte High School"
 owner_name: John Mortensen
 github_username: nighthawkcoders
-github_repo: "flocker_frontend" 
-baseurl: "/flocker_frontend"
+github_repo: Club_Hub_Frontend" 
+baseurl: "/Club_Hub_Frontend"
 future: true
 remote_theme: jekyll/minima
 minima:
