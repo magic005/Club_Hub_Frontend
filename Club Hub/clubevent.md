@@ -239,14 +239,14 @@ show_reading_time: false
     // Fetch club names from the backend API
     async function fetchClubNames() {
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
-        try {
-            const response = await fetch(`${pythonURI}/api/club`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Add the token to the request headers
-                }
-            });
+            try {
+                const response = await fetch(`${pythonURI}/api/club`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
             if (response.ok) {
                 const clubs = await response.json();
                 clubs.forEach(club => {
@@ -284,8 +284,8 @@ show_reading_time: false
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // Add the token to the request headers
                     },
+                    credentials: 'include',
                     body: JSON.stringify(payload)
                 });
                 if (response.ok) {
@@ -332,8 +332,8 @@ show_reading_time: false
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, // Add the token to the request headers
                     },
+                    credentials: 'include',
                     body: JSON.stringify(payload),
                 });
                 if (response.ok) {
@@ -355,15 +355,14 @@ show_reading_time: false
     // Function to fetch and display all events
     async function fetchAndDisplayEvents() {
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
-        try {
-            // Send a GET request to the backend to fetch all events
-            const response = await fetch(`${pythonURI}/api/event`, { 
-                method: 'GET', // get method
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Add the token to the request headers
-                }
-            });
+            try {
+                const response = await fetch(`${pythonURI}/api/event`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
             if (response.ok) {
                 const fetchedEvents = await response.json();
                 events = fetchedEvents;
@@ -419,16 +418,15 @@ show_reading_time: false
     // Function to delete an event
     async function deleteEvent(eventId) {
         const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
-        try {
-            // Send a DELETE request to the backend to delete the event
-            const response = await fetch(`${pythonURI}/api/event`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Add the token to the request headers
-                },
-                body: JSON.stringify({ id: eventId }) // Pass the event ID in the request body
-            });
+            try {
+                const response = await fetch(`${pythonURI}/api/event`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ id: eventId })
+                });
             if (response.ok) {
                 alert('Event deleted successfully!');
                 fetchAndDisplayEvents(); // Refresh the event list
