@@ -14,8 +14,10 @@ show_reading_time: false
         text-align: center;
         padding: 50px;
     }
+
     .form-container {
-        display: none; /* Hidden initially */
+        display: none;
+        /* Hidden initially */
         margin-top: 20px;
         padding: 20px;
         border: 2px solid #FF3B3B;
@@ -24,13 +26,16 @@ show_reading_time: false
         width: 75%;
         margin: 0 auto;
     }
+
     .form-group {
         margin: 15px 0;
     }
+
     .form-group label {
         display: block;
         font-size: 18px;
     }
+
     .form-group input {
         width: 90%;
         padding: 10px;
@@ -38,6 +43,7 @@ show_reading_time: false
         border: 1px solid #007bff;
         border-radius: 5px;
     }
+
     .submit-btn {
         background-color: #007bff;
         color: white;
@@ -47,9 +53,11 @@ show_reading_time: false
         border-radius: 5px;
         cursor: pointer;
     }
+
     .submit-btn:hover {
         background-color: #0056b3;
     }
+
     .show-form-btn {
         background-color: #28a745;
         color: white;
@@ -59,9 +67,11 @@ show_reading_time: false
         border-radius: 5px;
         cursor: pointer;
     }
+
     .show-form-btn:hover {
         background-color: #218838;
     }
+
     .club-box {
         margin-top: 20px;
         padding: 20px;
@@ -72,28 +82,36 @@ show_reading_time: false
         width: 50%;
         margin: 20px auto;
     }
+
     .club-box h3 {
         margin: 0;
         padding-bottom: 10px;
         font-size: 24px;
     }
+
     .club-box p {
         margin: 5px 0;
     }
+
     #clubTopics {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
-        gap: 10px 0; /* Add vertical spacing between rows */
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 equal-width columns */
+        gap: 10px 0;
+        /* Add vertical spacing between rows */
     }
+
     #clubTopics label {
         display: grid;
-        grid-template-columns: 20px auto; /* Fixed width for checkboxes */
-        align-items: center; /* Center checkbox and text vertically */
-        justify-items: start; /* Align text to the left */
-        gap: 10px; /* Space between checkbox and text */
+        grid-template-columns: 20px auto;
+        /* Fixed width for checkboxes */
+        align-items: center;
+        /* Center checkbox and text vertically */
+        justify-items: start;
+        /* Align text to the left */
+        gap: 10px;
+        /* Space between checkbox and text */
     }
-
-
 </style>
 
 <body>
@@ -198,8 +216,8 @@ show_reading_time: false
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('token')}` // will modify later with JWT token reqs
                         },
+                        credentials: 'include',
                         body: JSON.stringify(payload)
                     });
 
@@ -247,8 +265,8 @@ show_reading_time: false
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+                    },
+                    credentials: 'include',
                 });
 
                 if (response.ok) {
@@ -290,8 +308,8 @@ show_reading_time: false
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
+                    credentials: 'include',
                     body: JSON.stringify({ id: clubId })
                 });
 
@@ -311,4 +329,3 @@ show_reading_time: false
         // Call fetchAndDisplayClubs on page load
         document.addEventListener('DOMContentLoaded', fetchAndDisplayClubs);
     </script>
-
