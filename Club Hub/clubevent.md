@@ -207,12 +207,14 @@ show_reading_time: false
 
 <script type="module">
     import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
-    let events = []; //  store all the event data fetched from the server
+    let events = []; // store all the event data fetched from the server
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth();
     let editingEventId = null; // Store the ID of the event being edited
+    let currentPage = 1; // Default starting page for pagination
+
     // Declare all DOM elements at the top
-    const showFormBtn = document.getElementById('showFormBtn'); 
+    const showFormBtn = document.getElementById('showFormBtn');
     const formContainer = document.getElementById('formContainer');
     const eventForm = document.getElementById('eventForm');
     const eventListContainer = document.getElementById('eventListContainer');
@@ -226,6 +228,7 @@ show_reading_time: false
     const submitBtn = document.getElementById('submitBtn'); // Get the submit button
     const updateBtn = document.getElementById('updateBtn'); // Get the update button
     const clubNameSelect = document.getElementById('clubName'); // Get the club name dropdown
+
     // Show the form when the "Create a New Event" button is clicked
     showFormBtn.addEventListener('click', function () {
         formContainer.style.display = 'block';
@@ -234,19 +237,21 @@ show_reading_time: false
         updateBtn.style.display = 'none'; // Hide update button
         eventForm.reset(); // Reset the form
     });
+
     // Fetch club names on page load
     document.addEventListener('DOMContentLoaded', fetchClubNames);
+
     // Fetch club names from the backend API
     async function fetchClubNames() {
-        const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
-            try {
-                const response = await fetch(`${pythonURI}/api/club`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
+        const token = localStorage.getItem('authToken');
+        try {
+            const response = await fetch(`${pythonURI}/api/club`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
             if (response.ok) {
                 const clubs = await response.json();
                 clubs.forEach(club => {
@@ -264,13 +269,14 @@ show_reading_time: false
             console.error(error);
         }
     }
+
     // Handles the form submission for creating an event. If the form is valid, a POST request is sent to the backend API to create a new event.
     eventForm.addEventListener('submit', async function (e) {
         e.preventDefault(); // Prevent default form submission
-        // Get values from form inputs
         const clubName = clubNameSelect.value.trim();
         const eventDescription = document.getElementById('eventDescription').value.trim();
         const eventDate = document.getElementById('eventDate').value;
+
         // Check if all required fields are filled
         if (clubName && eventDescription && eventDate) {
             const payload = {
@@ -278,7 +284,7 @@ show_reading_time: false
                 description: eventDescription,
                 date: eventDate,
             };
-            const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
+            const token = localStorage.getItem('authToken');
             try {
                 const response = await fetch(`${pythonURI}/api/event`, {
                     method: 'POST',
@@ -286,10 +292,10 @@ show_reading_time: false
                         'Content-Type': 'application/json',
                     },
                     credentials: 'include',
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(payload),
                 });
                 if (response.ok) {
-                    fetchAndDisplayEvents(); // Refresh the event list
+                    fetchAndDisplayEvents(currentPage); // Refresh the event list
                     formContainer.style.display = 'none'; // Hide the form
                 } else {
                     const error = await response.json();
@@ -303,31 +309,31 @@ show_reading_time: false
             alert("Please fill out all fields!");
         }
     });
+
     // Handle form submission for updating events
     updateBtn.addEventListener('click', async function () {
-        // Get values from form inputs
         const clubName = clubNameSelect.value.trim();
         const eventDescription = document.getElementById('eventDescription').value.trim();
         const eventDate = document.getElementById('eventDate').value;
-        const eventId = editingEventId; // Use the editingEventId variable
-        console.log('Updating event with ID:', eventId); // Log the event ID
+        const eventId = editingEventId;
+        console.log('Updating event with ID:', eventId);
         console.log('Payload:', {
             id: eventId,
             title: clubName,
             description: eventDescription,
             date: eventDate,
         });
+
         // Check if all required fields are filled
         if (clubName && eventDescription && eventDate && eventId) {
             const payload = {
-                id: eventId, // Include the event ID
+                id: eventId,
                 title: clubName,
                 description: eventDescription,
                 date: eventDate,
             };
-            const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
+            const token = localStorage.getItem('authToken');
             try {
-                // Send a PUT request to update the event
                 const response = await fetch(`${pythonURI}/api/event`, {
                     method: 'PUT',
                     headers: {
@@ -337,7 +343,7 @@ show_reading_time: false
                     body: JSON.stringify(payload),
                 });
                 if (response.ok) {
-                    fetchAndDisplayEvents(); // Refresh the event list
+                    fetchAndDisplayEvents(currentPage); // Refresh the event list
                     formContainer.style.display = 'none'; // Hide the form
                     alert('Event updated successfully!');
                 } else {
@@ -352,24 +358,32 @@ show_reading_time: false
             alert('Please fill out all fields!');
         }
     });
+
     // Function to fetch and display all events
-    async function fetchAndDisplayEvents() {
-        const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
-            try {
-                const response = await fetch(`${pythonURI}/api/event`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                });
+    async function fetchAndDisplayEvents(page = 1) {
+        const token = localStorage.getItem('authToken');
+        try {
+            const response = await fetch(`${pythonURI}/api/event`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
             if (response.ok) {
                 const fetchedEvents = await response.json();
-                events = fetchedEvents;
+                events = fetchedEvents.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort events by date descending
+                const eventsPerPage = 10;
+                const totalEvents = events.length;
+                const totalPages = Math.ceil(totalEvents / eventsPerPage);
+                const startIndex = (page - 1) * eventsPerPage;
+                const paginatedEvents = events.slice(startIndex, startIndex + eventsPerPage);
+
                 // Clear the existing event list
                 eventListContainer.innerHTML = '';
+
                 // Add each event to the UI
-                events.forEach(event => {
+                paginatedEvents.forEach(event => {
                     const eventBox = document.createElement('div');
                     eventBox.classList.add('event-box');
                     eventBox.innerHTML = `
@@ -389,7 +403,28 @@ show_reading_time: false
                     // Add click listener for delete
                     deleteBtn.addEventListener('click', () => deleteEvent(event.id));
                 });
-                // Initialize the calendar
+
+                // Pagination controls
+                const pagination = document.createElement('div');
+                pagination.classList.add('pagination');
+
+                if (page > 1) {
+                    const prevPageBtn = document.createElement('button');
+                    prevPageBtn.textContent = 'Previous';
+                    prevPageBtn.addEventListener('click', () => fetchAndDisplayEvents(page - 1));
+                    pagination.appendChild(prevPageBtn);
+                }
+
+                if (page < totalPages) {
+                    const nextPageBtn = document.createElement('button');
+                    nextPageBtn.textContent = 'Next';
+                    nextPageBtn.addEventListener('click', () => fetchAndDisplayEvents(page + 1));
+                    pagination.appendChild(nextPageBtn);
+                }
+
+                eventListContainer.appendChild(pagination);
+
+                // Initialize the calendar with events
                 initializeCalendar(currentYear, currentMonth);
             } else {
                 const error = await response.json();
@@ -400,6 +435,7 @@ show_reading_time: false
             console.error(error);
         }
     }
+
     // Function to edit an event
     function editEvent(eventId) {
         const event = events.find(e => e.id === eventId);
@@ -415,21 +451,22 @@ show_reading_time: false
             editingEventId = eventId; // Store the ID of the event being edited
         }
     }
+
     // Function to delete an event
     async function deleteEvent(eventId) {
-        const token = localStorage.getItem('authToken'); // Replace 'authToken' with the key where you store your token
-            try {
-                const response = await fetch(`${pythonURI}/api/event`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({ id: eventId })
-                });
+        const token = localStorage.getItem('authToken');
+        try {
+            const response = await fetch(`${pythonURI}/api/event`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: eventId })
+            });
             if (response.ok) {
                 alert('Event deleted successfully!');
-                fetchAndDisplayEvents(); // Refresh the event list
+                fetchAndDisplayEvents(currentPage); // Refresh the event list
             } else {
                 const error = await response.json();
                 alert(`Error: ${error.message}`);
@@ -439,12 +476,14 @@ show_reading_time: false
             console.error(error);
         }
     }
+
     // Function to initialize the calendar
     function initializeCalendar(year, month) {
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const firstDayOfMonth = new Date(year, month, 1).getDay();
         // Clear existing calendar
         calendar.innerHTML = '';
+
         // Generate calendar headers
         const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         headers.forEach(header => {
@@ -453,60 +492,85 @@ show_reading_time: false
             headerDiv.textContent = header;
             calendar.appendChild(headerDiv);
         });
+
         // Generate empty days before the first day of the month
         for (let i = 0; i < firstDayOfMonth; i++) {
             const emptyDiv = document.createElement('div');
             emptyDiv.textContent = '';
             calendar.appendChild(emptyDiv);
         }
+
         // Generate calendar days
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement('div');
             dayDiv.textContent = day;
+
+        // Add event dot if events are available for this day
+        const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        if (events.some(event => event.date === formattedDate)) {
+            const dot = document.createElement('div');
+            dot.classList.add('event-dot'); // Add the event-dot class for styling
+            dot.style.backgroundColor = 'white'; // Directly make the dot white
+            dayDiv.appendChild(dot);
+        }
+
+
             dayDiv.addEventListener('click', function () {
                 const selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 selectedDateText.textContent = selectedDate;
                 showEventsOnDate(selectedDate);
             });
+
             calendar.appendChild(dayDiv);
         }
+
         // Update current month text
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         currentMonthText.textContent = `${monthNames[month]} ${year}`;
     }
-    // Show events on the selected date
+
+    // Show events on a specific date
     function showEventsOnDate(date) {
-        eventsOnDate.innerHTML = '';
-        const filteredEvents = events.filter(event => event.date === date);
-        if (filteredEvents.length > 0) {
-            eventDetails.style.display = 'block';
-            filteredEvents.forEach(event => {
-                const eventItem = document.createElement('div');
-                eventItem.classList.add('event-item');
-                eventItem.innerHTML = `<strong>${event.title}</strong><p>${event.description}</p>`;
-                eventsOnDate.appendChild(eventItem);
-            });
+        eventsOnDate.innerHTML = ''; // Clear existing events on the selected date
+        const eventsOnSelectedDate = events.filter(event => event.date === date);
+        if (eventsOnSelectedDate.length === 0) {
+            eventsOnDate.innerHTML = '<p>No events for this date.</p>';
         } else {
-            eventsOnDate.innerHTML = '<p>No events on this date.</p>';
+            eventsOnSelectedDate.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event-box');
+                eventDiv.innerHTML = `
+                    <h3>${event.title}</h3>
+                    <p><strong>Description:</strong> ${event.description}</p>
+                    <p><strong>Date:</strong> ${event.date}</p>
+                `;
+                eventsOnDate.appendChild(eventDiv);
+            });
         }
     }
-    // Event listeners for month navigation buttons
-    prevMonthBtn.addEventListener('click', function () {
+
+    // Handle next and previous month buttons
+    prevMonthBtn.addEventListener('click', () => {
         currentMonth--;
         if (currentMonth < 0) {
             currentMonth = 11;
             currentYear--;
         }
         initializeCalendar(currentYear, currentMonth);
+        fetchAndDisplayEvents(currentPage); // Refresh event list after month change
     });
-    nextMonthBtn.addEventListener('click', function () {
+
+    nextMonthBtn.addEventListener('click', () => {
         currentMonth++;
         if (currentMonth > 11) {
             currentMonth = 0;
             currentYear++;
         }
         initializeCalendar(currentYear, currentMonth);
+        fetchAndDisplayEvents(currentPage); // Refresh event list after month change
     });
-    // Call fetchAndDisplayEvents on page load
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayEvents);
+
+    // Initial load
+    initializeCalendar(currentYear, currentMonth);
+    fetchAndDisplayEvents(currentPage);
 </script>
