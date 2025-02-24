@@ -237,25 +237,31 @@ show_reading_time: false
                 <p><strong>Description:</strong> ${createdClub.description}</p>
                 <p><strong>Topics:</strong> ${createdClub.topics.join(", ")}</p>
                 <p><strong>Created by:</strong> ${createdClub.user_id}</p>
-                <button class="edit-btn" data-id="${createdClub.id}">Edit</button> <!-- New Edit Button -->
-                <button class="delete-btn" data-id="${createdClub.id}">Delete Club</button>
             `;
 
+            // Only show "Edit" and "Delete" buttons if the logged-in user is the creator
+            if (currentUserId && currentUserId === createdClub.user_id) {
+                const editBtn = document.createElement("button");
+                editBtn.classList.add("edit-btn");
+                editBtn.textContent = "Edit";
+                editBtn.addEventListener("click", function () {
+                    openEditForm(createdClub);
+                });
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.classList.add("delete-btn");
+                deleteBtn.textContent = "Delete Club";
+                deleteBtn.addEventListener("click", async function () {
+                    await deleteClub(createdClub.id, clubBox);
+                });
+
+                clubBox.appendChild(editBtn);
+                clubBox.appendChild(deleteBtn);
+            }
+
             clubListContainer.appendChild(clubBox);
-
-            // Edit button event listener
-            const editBtn = clubBox.querySelector(".edit-btn");
-            editBtn.addEventListener("click", function () {
-                openEditForm(createdClub);
-            });
-
-            // Delete button event listener
-            const deleteBtn = clubBox.querySelector(".delete-btn");
-            deleteBtn.addEventListener("click", async function () {
-                const clubId = deleteBtn.getAttribute("data-id");
-                await deleteClub(clubId, clubBox);
-            });
         }
+
 
         function openEditForm(club) {
             document.getElementById("editClubId").value = club.id;
@@ -360,14 +366,27 @@ show_reading_time: false
         });
 
 
-        // Function to fetch and display all clubs
+        let currentUserId = null; // Store logged-in user's ID
+
         async function fetchAndDisplayClubs() {
             try {
+                // Fetch the logged-in user's ID
+                const userResponse = await fetch(`${pythonURI}/api/id`, {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    currentUserId = userData.uid; // Store logged-in user's ID
+                } else {
+                    console.warn("Failed to fetch logged-in user ID.");
+                }
+
+                // Fetch all clubs
                 const response = await fetch(`${pythonURI}/api/club`, {
                     method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                     credentials: "include",
                 });
 
@@ -376,17 +395,17 @@ show_reading_time: false
                     clubListContainer.innerHTML = ""; // Clear existing clubs
 
                     clubs.forEach(club => {
-                        displayNewClub(club); // Ensure `user_id` is displayed in the club box
+                        displayNewClub(club);
                     });
                 } else {
                     const error = await response.json();
                     alert(`Error: ${error.message}`);
                 }
             } catch (error) {
-                alert("An error occurred while fetching clubs. Please try again.");
-                console.error(error);
+                console.error("Error fetching clubs:", error);
             }
         }
+
 
         document.getElementById("editClubForm").addEventListener("submit", async function (e) {
             e.preventDefault();
