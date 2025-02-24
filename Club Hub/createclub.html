@@ -216,6 +216,12 @@ show_reading_time: false
         <!-- all new created clubs will be listed in this "container" -->
     </div>
 
+    <div id="paginationControls">
+        <button id="prevPage" class="pagination-btn">◀ Previous</button>
+        <span id="pageIndicator"></span>
+        <button id="nextPage" class="pagination-btn">Next ▶</button>
+    </div>
+    
     <script type="module">
         import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
         // Declare all DOM elements at the top
@@ -223,6 +229,8 @@ show_reading_time: false
         const formContainer = document.getElementById('formContainer');
         const clubForm = document.getElementById('clubForm');
         const clubListContainer = document.getElementById('clubListContainer');
+
+        let currentUserId = null; // Store logged-in user's ID
 
         // Show the form when the "Start a New Club" button is clicked
         showFormBtn.addEventListener('click', function () {
@@ -365,12 +373,13 @@ show_reading_time: false
             }
         });
 
-
-        let currentUserId = null; // Store logged-in user's ID
+        let clubsData = []; // Store all fetched clubs
+        let currentPage = 0; // Track the current page
+        const clubsPerPage = 3; // Display 3 clubs per page
 
         async function fetchAndDisplayClubs() {
             try {
-                // Fetch the logged-in user's ID
+                // Fetch logged-in user's ID
                 const userResponse = await fetch(`${pythonURI}/api/id`, {
                     method: "GET",
                     credentials: "include",
@@ -378,7 +387,7 @@ show_reading_time: false
 
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
-                    currentUserId = userData.uid; // Store logged-in user's ID
+                    currentUserId = userData.uid; // ✅ Store logged-in user's ID
                 } else {
                     console.warn("Failed to fetch logged-in user ID.");
                 }
@@ -391,12 +400,8 @@ show_reading_time: false
                 });
 
                 if (response.ok) {
-                    const clubs = await response.json();
-                    clubListContainer.innerHTML = ""; // Clear existing clubs
-
-                    clubs.forEach(club => {
-                        displayNewClub(club);
-                    });
+                    clubsData = await response.json(); // ✅ Store clubs in an array
+                    displayPaginatedClubs(); // ✅ Show the first page
                 } else {
                     const error = await response.json();
                     alert(`Error: ${error.message}`);
@@ -406,6 +411,38 @@ show_reading_time: false
             }
         }
 
+        function displayPaginatedClubs() {
+            clubListContainer.innerHTML = ""; // Clear previous clubs
+
+            const startIndex = currentPage * clubsPerPage;
+            const endIndex = startIndex + clubsPerPage;
+            const clubsToShow = clubsData.slice(startIndex, endIndex); // Get 3 clubs for this page
+
+            clubsToShow.forEach(club => displayNewClub(club)); // ✅ Show only 3 clubs
+
+            updatePaginationButtons();
+        }
+
+        function updatePaginationButtons() {
+            document.getElementById("pageIndicator").textContent = `Page ${currentPage + 1} of ${Math.ceil(clubsData.length / clubsPerPage)}`;
+
+            document.getElementById("prevPage").disabled = currentPage === 0; // Disable on first page
+            document.getElementById("nextPage").disabled = (currentPage + 1) * clubsPerPage >= clubsData.length; // Disable on last page
+        }
+
+        document.getElementById("prevPage").addEventListener("click", function () {
+            if (currentPage > 0) {
+                currentPage--;
+                displayPaginatedClubs();
+            }
+        });
+
+        document.getElementById("nextPage").addEventListener("click", function () {
+            if ((currentPage + 1) * clubsPerPage < clubsData.length) {
+                currentPage++;
+                displayPaginatedClubs();
+            }
+        });
 
         document.getElementById("editClubForm").addEventListener("submit", async function (e) {
             e.preventDefault();
