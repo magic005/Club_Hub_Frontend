@@ -188,7 +188,6 @@ show_reading_time: false
             formContainer.style.display = 'block';
         });
 
-        // ✅ Add displayNewClub function HERE (before submit event)
         function displayNewClub(createdClub) {
             const clubBox = document.createElement("div");
             clubBox.classList.add("club-box");
@@ -196,6 +195,7 @@ show_reading_time: false
                 <h3>${createdClub.name}</h3>
                 <p><strong>Description:</strong> ${createdClub.description}</p>
                 <p><strong>Topics:</strong> ${createdClub.topics.join(", ")}</p>
+                <p><strong>Created by:</strong> ${createdClub.user_id}</p> <!-- ✅ Show creator's user ID -->
                 <button class="delete-btn" data-id="${createdClub.id}">Delete Club</button>
             `;
 
@@ -208,6 +208,7 @@ show_reading_time: false
                 await deleteClub(clubId, clubBox);
             });
         }
+
 
         async function getCurrentUserId() {
             try {
@@ -282,44 +283,30 @@ show_reading_time: false
         async function fetchAndDisplayClubs() {
             try {
                 const response = await fetch(`${pythonURI}/api/club`, {
-                    method: 'GET',
+                    method: "GET",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
-                    credentials: 'include',
+                    credentials: "include",
                 });
 
                 if (response.ok) {
                     const clubs = await response.json();
-                    clubListContainer.innerHTML = ''; // Clear existing clubs
+                    clubListContainer.innerHTML = ""; // Clear existing clubs
 
                     clubs.forEach(club => {
-                        const clubBox = document.createElement('div');
-                        clubBox.classList.add('club-box');
-                        clubBox.innerHTML = `
-                            <h3>${club.name}</h3>
-                            <p><strong>Description:</strong> ${club.description}</p>
-                            <p><strong>Topics:</strong> ${club.topics.join(', ')}</p>
-                            <button class="delete-btn" data-id="${club.id}">Delete Club</button>
-                        `;
-                        clubListContainer.appendChild(clubBox);
-
-                        // Add event listener for the delete button
-                        const deleteBtn = clubBox.querySelector('.delete-btn');
-                        deleteBtn.addEventListener('click', async function () {
-                            const clubId = deleteBtn.getAttribute('data-id');
-                            await deleteClub(clubId, clubBox);
-                        });
+                        displayNewClub(club); // ✅ Ensure `user_id` is displayed in the club box
                     });
                 } else {
                     const error = await response.json();
                     alert(`Error: ${error.message}`);
                 }
             } catch (error) {
-                alert('An error occurred while fetching clubs. Please try again.');
+                alert("An error occurred while fetching clubs. Please try again.");
                 console.error(error);
             }
         }
+
 
         // Function to delete a club
         async function deleteClub(clubId, clubBox) {
