@@ -33,7 +33,11 @@ show_reading_time: false
      <p id="profile-message" style="color: red;"></p>
      <br>
      <!-- Submit Button -->
-     <button type="submit" id="submitProfile">Submit</button>
+     <button type="submit" id="submitProfile" 
+        style="width: 100%; padding: 15px; background: linear-gradient(to right, #FF4B2B, #FF416C);
+        color: white; font-size: 1.2em; font-weight: bold; border: none; border-radius: 8px; 
+        cursor: pointer; transition: background 0.3s ease, transform 0.2s ease;"> Submit
+    </button>
    </form>
  </div>
 </div>
@@ -107,4 +111,3 @@ async function convertToBase64(file) {
     });
 }
 </script>
-// testing

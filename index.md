@@ -8,6 +8,30 @@ menu: nav/home.html
 ---
 
 <style>
+    /* Apply Gradient Border to Body */
+    body {
+        margin: 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #0E0E10;
+        color: #F3F3F3;
+        line-height: 1.6;
+        position: relative;
+    }
+
+    /* Gradient Border Effect */
+    body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 10px; /* Thickness of the border */
+        background: linear-gradient(to right, #FF4B2B, #FF416C); /* Same gradient as event cards */
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        pointer-events: none;
+        z-index: -1; /* Keeps it behind everything */
+    }
+
     /* Event Section - Bigger and More Central */
     .event-container {
         max-width: 1100px;

@@ -2,80 +2,97 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
+}
 
-  .card {
-    width: 100%;
-    max-width: 800px;
-    background-color: #2c3e50; // Dark blue background
-    border: 1px solid #34495e; // Darker border
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    color: #ffffff; // White text
+/* Card Styling */
+.card {
+  width: 100%;
+  max-width: 800px;
+  background-color: #1A1A1D; /* Dark background */
+  padding: 25px;
+  border-radius: 12px;
+  color: #ffffff;
+  position: relative;
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+/* Gradient Border Effect */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 5px; /* Border thickness */
+  background: linear-gradient(to right, #FF4B2B, #FF416C);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  border-radius: 12px;
+  pointer-events: none;
+}
 
-    input[type="text"],
-    input[type="file"],
-    select {
-      width: calc(100% - 12px);
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+/* Form Styling */
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 
-    .icon-container {
-        display: flex;
-        align-items: center;
-    }
-    .icon-container select {
-        flex-grow: 1;
-        margin-right: 15px; /* Space between dropdown and icon */
-    }
+input[type="text"],
+input[type="file"],
+select {
+  width: calc(100% - 12px);
+  padding: 10px;
+  border: 1px solid #444; /* Darker border */
+  border-radius: 6px;
+  font-size: 16px;
+  background: #121212;
+  color: #ffffff;
+}
 
-  /* Hide the default file input */
-    #profilePicture {
-        display: none;
-    }
-    /* Style the custom file icon */
-    .file-icon {
-        font-size: 24px;
-        color: white; /* Light grey color */
-        cursor: pointer; /* Indicate that it is clickable */
-    }
-    .file-icon:hover {
-        color: #ffffff; /* Change icon color on hover */
-    }
+/* Icon and File Upload */
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+.icon-container select {
+  flex-grow: 1;
+  margin-right: 15px;
+}
+#profilePicture {
+  display: none;
+}
+.file-icon {
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+.file-icon:hover {
+  color: #ffffff;
+}
 
-    table {
-      width: 100%;
-      margin-top: 10px;
-      border-collapse: collapse;
+/* Table Styling */
+table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: left;
+  background: #1F1F23;
+  color: white;
+}
 
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
-      }
-    }
-
-    .image-container {
-      text-align: center;
-      margin-top: 20px;
-
-      img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 50%;
-        border: 2px solid #34495e;
-      }
-
-    }
-  }
+/* Profile Image */
+.image-container {
+  text-align: center;
+  margin-top: 20px;
+}
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+  border: 3px solid #FF4B2B; /* Matches the gradient */
 }
