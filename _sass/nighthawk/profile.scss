@@ -22,7 +22,7 @@
   position: absolute;
   inset: 0;
   padding: 5px; /* Border thickness */
-  background: linear-gradient(to right, #FF4B2B, #FF416C);
+  background: linear-gradient(to left, #FF4B2B, #FF416C);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
