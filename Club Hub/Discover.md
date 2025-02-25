@@ -99,6 +99,52 @@ show_reading_time: false
     text-align: center; /* Ensures text inside is centered */
     }
 
+    .club-results {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #2A2A2D;
+    border-radius: 8px;
+    text-align: center;
+    }
+
+    .clubs-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .club-card {
+        background-color: #1A1A1D;
+        color: #F3F3F3;
+        border-radius: 10px;
+        padding: 15px;
+        width: 300px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .club-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .club-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #FF4D4D;
+        margin-bottom: 5px;
+    }
+
+    .club-description {
+        font-size: 1em;
+        color: #CFCFCF;
+        margin-bottom: 10px;
+    }
+
+    .club-founder {
+        font-size: 0.9em;
+        color: #AFAFAF;
+    }
 </style>
 
 
@@ -270,6 +316,11 @@ show_reading_time: false
     <p id="selectedInterests">None selected yet.</p>
 </div>
 
+<div id="club-results" class="club-results" style="display: none;">
+    <h3>Recommended Clubs Based on Your Interests:</h3>
+    <div id="clubs-container" class="clubs-container"></div>
+</div>
+
 
 
 <!--<script>
@@ -347,27 +398,66 @@ function getToken() {
         }
     }
     function showResults() {
-        submitInterests(); // submitInterests when showResults
+        submitInterests(); // Submit interests first
+
+        // Get selected interests after submission
+        const form = document.forms['quiz-form'];
+        const selectedInterests = Array.from(form.querySelectorAll('input[type="checkbox"]:checked'))
+            .map(checkbox => checkbox.value);
+
+        if (selectedInterests.length > 0) {
+            fetchAndDisplayClubs(selectedInterests);
+        }
     }
     // attach to submit
     const submitButton = document.getElementById('submitInterestsButton');
     if (submitButton) {
         submitButton.addEventListener('click', submitInterests);
     }
+
+    // Function to fetch clubs and filter them based on selected interests
+    async function fetchAndDisplayClubs(userInterests) {
+        try {
+            const URL = `${pythonURI}/api/club`; // Adjust the endpoint if necessary
+            const response = await fetch(URL, {
+                method: 'GET',
+                headers: { 'Authorization': getToken() },
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch clubs');
+
+            const clubs = await response.json();
+
+            // Filter clubs based on user interests
+            const matchedClubs = clubs.filter(club =>
+                club.topics.some(topic => userInterests.includes(topic))
+            );
+
+            const clubsContainer = document.getElementById('clubs-container');
+            clubsContainer.innerHTML = ''; // Clear previous results
+
+            if (matchedClubs.length > 0) {
+                matchedClubs.forEach(club => {
+                    const clubCard = document.createElement('div');
+                    clubCard.classList.add('club-card');
+                    clubCard.innerHTML = `
+                        <div class="club-title">${club.name}</div>
+                        <div class="club-description">${club.description}</div>
+                        <div class="club-founder">Founded by: ${club.user_id}</div>
+                    `;
+                    clubsContainer.appendChild(clubCard);
+                });
+                document.getElementById('club-results').style.display = 'block';
+            } else {
+                document.getElementById('clubs-container').innerHTML = "<p>No clubs match your interests.</p>";
+                document.getElementById('club-results').style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error fetching clubs:', error);
+            alert('Error fetching clubs.');
+        }
+    }
+
     window.onload = fetchAndDisplayInterests;
     window.showResults = showResults;
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
