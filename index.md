@@ -121,356 +121,244 @@ menu: nav/home.html
     .club-box p {
         margin: 5px 0;
     }
+
+    .right-container {
+        flex: 1;
+        max-width: 100%;
+        padding: 20px;
+        background: #1A1A1D;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+    h1, h2 {
+        color: #FF4D4D;
+        text-align: center;
+        font-weight: 700;
+    }
+    .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        background: #2A2A2D;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .calendar div {
+        text-align: center;
+        padding: 15px;
+        background: #4a4a6a;
+        border-radius: 8px;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .calendar div:hover {
+        background: #FF4D4D;
+        color: #0E0E10;
+        transform: scale(1.1);
+    }
+    .event-details {
+        margin-top: 20px;
+        padding: 20px;
+        background: #2A2A2D;
+        border-radius: 16px;
+        color: #F3F3F3;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+    .event-details h2 {
+        color: #FF4D4D;
+    }
+    .month-navigation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .month-navigation button {
+        background-color: #4a4a6a;
+        border: none;
+        color: #ffffff;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0 10px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .month-navigation button:hover {
+        background-color: #FF4D4D;
+        color: #0E0E10;
+        transform: scale(1.1);
+    }
+    #currentMonth {
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+    }
 </style>
 
 <body>
-    <div class="header">
-        Welcome to Club Hub
-        <p>Your platform for exploring extracurricular activities!</p>
-    </div>
-
-<div class="container">
-    <h2>Cyber Club</h2>
-    <div class="category">
-        <div class="post">
-            <h3>Weekly Meeting Update</h3>
-            <p>Join us every Monday at 4 PM in Room A101 to discuss upcoming events.</p>
+    <div class="right-container">
+        <h1>Event Calendar</h1>
+        <div class="month-navigation">
+            <button id="prevMonthBtn">&lt;</button>
+            <span id="currentMonth"></span>
+            <button id="nextMonthBtn">&gt;</button>
         </div>
-        <div class="post">
-            <h3>New Competition Announced!</h3>
-            <p>We're excited to announce that the next CyberPatriot competition will be held on January 25th. Prepare your teams!</p>
+        <div class="calendar" id="calendar"></div>
+        <div class="event-details" id="eventDetails">
+            <h2>Events on <span id="selectedDate"></span></h2>
+            <div id="eventsOnDate"></div>
         </div>
     </div>
-    <h2>Robotics Club</h2>
-    <div class="category">
-        <div class="post">
-            <h3>Weekly Meeting Update</h3>
-            <p>Join us every Tuesday immediately after school in Room A107 to work on the robot.</p>
-        </div>
-        <div class="post">
-            <h3>New Competition Announced!</h3>
-            <p>We're excited to announce that the next FRC competition will be held on December 12th. Prepare your robots!</p>
-        </div>
-    </div>
-</div>
-
-<div class="container form-container">
-    <h2>Add New Post</h2>
-    <form id="postForm">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
-        <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment" rows="4" required></textarea>
-        <button type="submit">Add Post</button>
-    </form>
-</div>
-
-<div class="container form-container">
-    <h2>Select Group and Channel</h2>
-    <form id="selectionForm">
-        <label for="group_id">Group:</label>
-        <select id="group_id" name="group_id" required>
-            <option value="">Select a group</option>
-        </select>
-        <label for="channel_id">Channel:</label>
-        <select id="channel_id" name="channel_id" required>
-            <option value="">Select a channel</option>
-        </select>
-        <button type="submit">Select</button>
-    </form>
-</div>
-
-<h1>Create a Club</h1>
-<button class="show-form-btn" id="showFormBtn">Start a New Club</button>
-<div class="form-container" id="formContainer" style="display:none;">
-    <h2>Club Registration Form</h2>
-    <form id="clubForm">
-        <label for="clubName">Club Name</label>
-        <input type="text" id="clubName" placeholder="Enter club name" required>
-        <label for="clubDescription">Club Description</label>
-        <input type="text" id="clubDescription" placeholder="Describe your club" required>
-        <label for="clubLeader">Club Leader Name</label>
-        <input type="text" id="clubLeader" placeholder="Enter leader's name" required>
-        <button type="submit" class="submit-btn">Create Club</button>
-    </form>
-</div>
-<div id="clubListContainer"></div>
-</body>
-
-
-
 
 <script type="module">
-    // Import server URI and standard fetch options
-    import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
-async function fetchGroups() {
-    try {
-        const response = await fetch(`${pythonURI}/api/groups/filter`, {
-            ...fetchOptions,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ section_name: "Shared Interest" }) // Adjust the section name as needed
-        });
-        if (!response.ok) {
-            throw new Error('Failed to fetch groups: ' + response.statusText);
+    import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
+    let events = []; // store all the event data fetched from the server
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth();
+    let currentPage = 1; // Default starting page for pagination
+
+    // Declare all DOM elements at the top
+    const calendar = document.getElementById('calendar');
+    const eventDetails = document.getElementById('eventDetails');
+    const selectedDateText = document.getElementById('selectedDate');
+    const eventsOnDate = document.getElementById('eventsOnDate');
+    const prevMonthBtn = document.getElementById('prevMonthBtn');
+    const nextMonthBtn = document.getElementById('nextMonthBtn');
+    const currentMonthText = document.getElementById('currentMonth');
+
+    // Fetch events on page load
+    document.addEventListener('DOMContentLoaded', async function () {
+        await fetchAndDisplayEvents(currentPage);
+    });
+
+    // Function to fetch and display all events
+    async function fetchAndDisplayEvents(page = 1) {
+        try {
+            const response = await fetch(`${pythonURI}/api/event`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            if (response.ok) {
+                const fetchedEvents = await response.json();
+                events = fetchedEvents.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort events by date descending
+
+                // Initialize the calendar with events
+                initializeCalendar(currentYear, currentMonth);
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (error) {
+            alert('An error occurred while fetching events. Please try again.');
+            console.error(error);
         }
-        const groups = await response.json();
-        const groupSelect = document.getElementById('group_id');
-        groups.forEach(group => {
-            const option = document.createElement('option');
-            option.value = group.name; // Use group name for payload
-            option.textContent = group.name;
-            groupSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error fetching groups:', error);
     }
-}
-async function fetchChannels(groupName) {
-    try {
-        const response = await fetch(`${pythonURI}/api/channels/filter`, {
-            ...fetchOptions,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ group_name: groupName })
+
+    // Function to initialize the calendar
+    function initializeCalendar(year, month) {
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        // Clear existing calendar
+        calendar.innerHTML = '';
+
+        // Generate calendar headers
+        const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        headers.forEach(header => {
+            const headerDiv = document.createElement('div');
+            headerDiv.classList.add('header');
+            headerDiv.textContent = header;
+            calendar.appendChild(headerDiv);
         });
-        if (!response.ok) {
-            throw new Error('Failed to fetch channels: ' + response.statusText);
+
+        // Generate empty days before the first day of the month
+        for (let i = 0; i < firstDayOfMonth; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.textContent = '';
+            calendar.appendChild(emptyDiv);
         }
-        const channels = await response.json();
-        const channelSelect = document.getElementById('channel_id');
-        channelSelect.innerHTML = '<option value="">Select a channel</option>'; // Reset channels
-        channels.forEach(channel => {
-            const option = document.createElement('option');
-            option.value = channel.id;
-            option.textContent = channel.name;
-            channelSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error fetching channels:', error);
-    }
-}
-document.getElementById('group_id').addEventListener('change', function() {
-    const groupName = this.value;
-    if (groupName) {
-        fetchChannels(groupName);
-    } else {
-        document.getElementById('channel_id').innerHTML = '<option value="">Select a channel</option>'; // Reset channels
-    }
-});
-document.getElementById('selectionForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const groupId = document.getElementById('group_id').value;
-    const channelId = document.getElementById('channel_id').value;
-    if (groupId && channelId) {
-        fetchData(channelId);
-    } else {
-        alert('Please select both group and channel.');
-    }
-});
-document.getElementById('postForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const title = document.getElementById('title').value;
-    const comment = document.getElementById('comment').value;
-    const channelId = document.getElementById('channel_id').value;
-    const postData = {
-        title: title,
-        comment: comment,
-        channel_id: channelId
-    };
-    try {
-        // Send POST request to backend, purpose is to write to database
-        const response = await fetch(`${pythonURI}/api/post`, {
-            ...fetchOptions,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postData)
-        });
-        if (!response.ok) {
-            throw new Error('Failed to add post: ' + response.statusText);
+
+        // Generate calendar days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.textContent = day;
+
+            // Add event dot if events are available for this day
+            const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            if (events.some(event => event.date === formattedDate)) {
+                const dot = document.createElement('div');
+                dot.classList.add('event-dot'); // Add the event-dot class for styling
+                dot.style.backgroundColor = 'white'; // Directly make the dot white
+                dayDiv.appendChild(dot);
+            }
+
+            dayDiv.addEventListener('click', function () {
+                const selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                selectedDateText.textContent = selectedDate;
+                showEventsOnDate(selectedDate);
+            });
+
+            calendar.appendChild(dayDiv);
         }
-        // Successful post
-        const result = await response.json();
-        alert('Post added successfully!');
-        document.getElementById('postForm').reset();
-        fetchData(channelId);
-    } catch (error) {
-        // Present alert on error from backend
-        console.error('Error adding post:', error);
-        alert('Error adding post: ' + error.message);
+
+        // Update current month text
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        currentMonthText.textContent = `${monthNames[month]} ${year}`;
     }
-});
-async function fetchData(channelId) {
-    try {
-        const response = await fetch(`${pythonURI}/api/posts/filter`, {
-            ...fetchOptions,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ channel_id: channelId })
-        });
-        if (!response.ok) {
-            throw new Error('Failed to fetch posts: ' + response.statusText);
+
+    // Show events on a specific date
+    function showEventsOnDate(date) {
+        eventsOnDate.innerHTML = ''; // Clear existing events on the selected date
+        const eventsOnSelectedDate = events.filter(event => event.date === date);
+        if (eventsOnSelectedDate.length === 0) {
+            eventsOnDate.innerHTML = '<p>No events for this date.</p>';
+        } else {
+            eventsOnSelectedDate.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event-box');
+                eventDiv.innerHTML = `
+                    <h3>${event.title}</h3>
+                    <p><strong>Description:</strong> ${event.description}</p>
+                    <p><strong>Date:</strong> ${event.date}</p>
+                `;
+                eventsOnDate.appendChild(eventDiv);
+            });
         }
-        // Parse the JSON data
-        const postData = await response.json();
-        // Extract posts count
-        const postCount = postData.length || 0;
-        // Update the HTML elements with the data
-        document.getElementById('count').innerHTML = `<h2>Count ${postCount}</h2>`;
-        // Get the details div
-        const detailsDiv = document.getElementById('details');
-        detailsDiv.innerHTML = ''; // Clear previous posts
-        // Iterate over the postData and create HTML elements for each item
-        postData.forEach(postItem => {
-            const postElement = document.createElement('div');
-            postElement.className = 'post-item';
-            postElement.innerHTML = `
-                <h3>${postItem.title}</h3>
-                <p><strong>Channel:</strong> ${postItem.channel_name}</p>
-                <p><strong>User:</strong> ${postItem.user_name}</p>
-                <p>${postItem.comment}</p>
-            `;
-            detailsDiv.appendChild(postElement);
-        });
-    } catch (error) {
-        console.error('Error fetching data:', error);
     }
-}
-fetchGroups();
+
+    // Handle next and previous month buttons
+    prevMonthBtn.addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        initializeCalendar(currentYear, currentMonth);
+        fetchAndDisplayEvents(currentPage); // Refresh event list after month change
+    });
+
+    nextMonthBtn.addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        initializeCalendar(currentYear, currentMonth);
+        fetchAndDisplayEvents(currentPage); // Refresh event list after month change
+    });
+
+    // Initial load
+    initializeCalendar(currentYear, currentMonth);
+    fetchAndDisplayEvents(currentPage);
 </script>
 
-
-<button class="navigate-btn" onclick="window.location.href='navigation/shared_interests/agk/chatroom1.html'">Go to Chatroom</button>
-<div class="profile-customization">
-    <h2>Customize Your Profile</h2>
-    <form id="profile-form" onsubmit="saveProfile(event)">
-        <div class="form-group">
-            <label for="profile-picture">Profile Picture:</label>
-            <input type="file" id="profile-picture" accept="image/*">
-        </div>
-        
-        <div class="form-group">
-            <label for="bio">Short Bio:</label>
-            <textarea id="bio" placeholder="Write a short bio about yourself" rows="4"></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit">Save Profile</button>
-    </form>
-</div>
-
-<style>
-    .profile-customization {
-        background-color: #2A2A2D;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        max-width: 500px;
-        margin: 0 auto;
-        color: #F3F3F3;
-    }
-
-    .profile-customization h2 {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #FF4B2B;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 16px;
-        color: #F3F3F3;
-    }
-
-    .form-group input[type="file"] {
-        width: 100%;
-        padding: 12px;
-        background-color: #121212;
-        border: 1px solid #FF4B2B;
-        border-radius: 8px;
-        color: #F3F3F3;
-        font-size: 14px;
-    }
-
-    .form-group input[type="file"]::file-selector-button {
-        background-color: #121212;
-        color: #F3F3F3;
-        border: 1px solid #FF4B2B;
-    }
-
-    .form-group textarea {
-        width: 100%;
-        padding: 12px;
-        background-color: #121212;
-        border: 1px solid #FF4B2B;
-        border-radius: 8px;
-        color: #F3F3F3;
-        font-size: 14px;
-        resize: vertical;
-    }
-
-    .btn-submit {
-        width: 100%;
-        padding: 15px;
-        background: linear-gradient(to right, #FF416C, #FF4B2B);
-        border: none;
-        border-radius: 8px;
-        color: #fff;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .btn-submit:hover {
-        background: linear-gradient(to right, #FF4B2B, #FF416C);
-        transform: translateY(-2px);
-    }
-
-    /* For smaller screens */
-    @media (max-width: 600px) {
-        .profile-customization {
-            padding: 20px;
-            margin: 20px;
-        }
-
-        .btn-submit {
-            font-size: 14px;
-        }
-    }
-</style>
-
-<script>
-    function saveProfile(event) {
-        // Prevent the form from submitting and reloading the page
-        event.preventDefault();
-        
-        // Get the profile picture and bio values
-        const profilePicture = document.getElementById('profile-picture').files[0];
-        const bio = document.getElementById('bio').value.trim();
-        
-        // You can handle the uploaded file (e.g., upload to a server) here
-        if (profilePicture) {
-            console.log('Profile Picture:', profilePicture.name); // Example logging the file name
-        }
-        
-        // Display the bio and any other profile details you want to log or store
-        console.log('Short Bio:', bio);
-
-        // Provide feedback to the user
-        alert('Your profile has been saved!');
-    }
-</script>
-
+</body>
