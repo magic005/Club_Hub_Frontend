@@ -9,130 +9,195 @@ show_reading_time: false
 <br>
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #FDF5E6;
+        margin: 0;
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #0E0E10;
+        color: #F3F3F3;
+        line-height: 1.6;
+    }
+
+    .header {
+        background: linear-gradient(to right, #4A00E0, #8E2DE2);
         text-align: center;
-        padding: 50px;
+        padding: 30px 20px;
+        color: #fff;
+        font-size: 1.5em;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #1A1A1D;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    h1, h2 {
+        text-align: center;
+        font-weight: 700;
+        color: #FF4D4D;
+    }
+
+    .show-form-btn {
+        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Bright orange/red */
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .show-form-btn:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
     }
 
     .form-container {
         display: none;
-        /* Hidden initially */
         margin-top: 20px;
         padding: 20px;
-        border: 2px solid #FF3B3B;
+        background: #2A2A2D;
         border-radius: 8px;
-        background-color: #001F3F;
-        width: 75%;
-        margin: 0 auto;
     }
 
     .form-group {
-        margin: 15px 0;
+        margin-bottom: 15px;
     }
 
     .form-group label {
         display: block;
-        font-size: 18px;
+        font-size: 1.1em;
     }
 
     .form-group input {
-        width: 90%;
+        width: 100%;
         padding: 10px;
-        font-size: 16px;
+        font-size: 1em;
         border: 1px solid #007bff;
         border-radius: 5px;
+        background-color: #0E0E10;
+        color: #F3F3F3;
     }
 
-    .submit-btn {
-        background-color: #007bff;
+    .button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        margin-top: 10px;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
         color: white;
-        padding: 10px 20px;
-        font-size: 16px;
+        font-size: 1.1em;
+        font-weight: bold;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        transition: all 0.3s ease;
     }
 
-    .submit-btn:hover {
-        background-color: #0056b3;
-    }
-
-    .show-form-btn {
-        background-color: #28a745;
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border: 2px solid #FF3B3B;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .show-form-btn:hover {
-        background-color: #218838;
+    .button:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
     }
 
     .club-box {
-        margin-top: 20px;
-        padding: 20px;
-        border: 2px solid #FF3B3B;
+        padding: 15px;
         border-radius: 8px;
-        background-color: #073461;
-        color: white;
-        width: 50%;
-        margin: 20px auto;
+        background-color: #2A2A2D;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        text-align: left;
     }
 
     .club-box h3 {
         margin: 0;
-        padding-bottom: 10px;
-        font-size: 24px;
+        color: #FF4D4D;
+        font-size: 1.4em;
     }
 
     .club-box p {
         margin: 5px 0;
     }
 
-    #clubTopics {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        /* 3 equal-width columns */
-        gap: 10px 0;
-        /* Add vertical spacing between rows */
+    .club-actions {
+        display: flex;
+        justify-content: space-between;
     }
 
-    #clubTopics label {
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination button {
+        margin: 0 5px;
+        padding: 10px 15px;
+        border: none;
+        background: #FF4B2B;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .pagination button:hover {
+        background: #FF416C;
+    }
+
+    .pagination button:disabled {
+        background: #444;
+        cursor: not-allowed;
+    }
+
+    .edit-btn, .delete-btn {
+        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Keep existing bright color */
+        color: white;
+        font-size: 12px; /* Smaller font */
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .edit-btn:hover, .delete-btn:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
+
+    #clubTopics, #editClubTopics {
         display: grid;
-        grid-template-columns: 20px auto;
-        /* Fixed width for checkboxes */
+        grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+        gap: 10px 0; /* Space between rows */
+        width: 100%;
+    }
+
+    #clubTopics label, #editClubTopics label {
+        display: flex;
         align-items: center;
-        /* Center checkbox and text vertically */
-        justify-items: start;
-        /* Align text to the left */
-        gap: 10px;
-        /* Space between checkbox and text */
-    }
-
-    #editClubTopics {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
-        gap: 10px 0; /* Add vertical spacing between rows */
-    }
-
-    #editClubTopics label {
-        display: grid;
-        grid-template-columns: 20px auto; /* Fixed width for checkboxes */
-        align-items: center; /* Center checkbox and text vertically */
-        justify-items: start; /* Align text to the left */
         gap: 10px; /* Space between checkbox and text */
+        text-align: left;
+        padding-left: 10px; /* Ensure consistent left alignment */
+        white-space: nowrap;
+    }
+
+    #clubTopics input[type="checkbox"], #editClubTopics input[type="checkbox"] {
+        width: 20px;  /* Ensure all checkboxes have the same width */
+        height: 20px; /* Ensure all checkboxes have the same height */
+        margin: 0; /* Remove default spacing */
+        flex-shrink: 0; /* Prevent checkboxes from shrinking */
     }
 
 </style>
 
+
 <body>
     <br>
     <button class="show-form-btn" id="showFormBtn">Start a New Club</button>
-    <br>
     <div class="form-container" id="formContainer">
         <h2>Club Registration Form</h2>
         <form id="clubForm">
@@ -184,7 +249,14 @@ show_reading_time: false
                 <br>
             </div>
             <button type="submit" class="submit-btn">Create Club</button>
+            <button type="button" id="closeCreateForm" class="cancel-btn">Cancel</button>
         </form>
+    </div>  
+    <br>
+    <hr>
+    <br>
+    <div id="clubListContainer">
+        <!-- all new created clubs will be listed in this "container" -->
     </div>
 
     <div id="editClubModal" class="form-container" style="display: none;">
@@ -210,16 +282,11 @@ show_reading_time: false
             <button type="button" id="closeEditForm" class="submit-btn">Cancel</button>
         </form>
     </div>
-    
 
-    <div id="clubListContainer">
-        <!-- all new created clubs will be listed in this "container" -->
-    </div>
-
-    <div id="paginationControls">
-        <button id="prevPage" class="pagination-btn">◀ Previous</button>
+    <div class="pagination">
+        <button id="prevPage" disabled>◀ Previous</button>
         <span id="pageIndicator"></span>
-        <button id="nextPage" class="pagination-btn">Next ▶</button>
+        <button id="nextPage">Next ▶</button>
     </div>
     
     <script type="module">
@@ -249,27 +316,30 @@ show_reading_time: false
 
             // Only show "Edit" and "Delete" buttons if the logged-in user is the creator
             if (currentUserId && currentUserId === createdClub.user_id) {
+                const clubActions = document.createElement("div");
+                clubActions.classList.add("club-actions");
+
                 const editBtn = document.createElement("button");
-                editBtn.classList.add("edit-btn");
+                editBtn.classList.add("button");
                 editBtn.textContent = "Edit";
                 editBtn.addEventListener("click", function () {
                     openEditForm(createdClub);
                 });
 
                 const deleteBtn = document.createElement("button");
-                deleteBtn.classList.add("delete-btn");
+                deleteBtn.classList.add("button");
                 deleteBtn.textContent = "Delete Club";
                 deleteBtn.addEventListener("click", async function () {
                     await deleteClub(createdClub.id, clubBox);
                 });
 
-                clubBox.appendChild(editBtn);
-                clubBox.appendChild(deleteBtn);
+                clubActions.appendChild(editBtn);
+                clubActions.appendChild(deleteBtn);
+                clubBox.appendChild(clubActions);
             }
 
             clubListContainer.appendChild(clubBox);
         }
-
 
         function openEditForm(club) {
             document.getElementById("editClubId").value = club.id;
@@ -357,9 +427,20 @@ show_reading_time: false
 
                     if (response.ok) {
                         const createdClub = await response.json();
-                        displayNewClub(createdClub);
+
+                        // Add the new club to the data array
+                        clubsData.push(createdClub);
+
+                        // Move to the last page where the new club should be
+                        currentPage = Math.floor((clubsData.length - 1) / clubsPerPage);
+
+                        // Re-render the pagination to show the new club in the correct spot
+                        displayPaginatedClubs();
+
+                        // Reset the form and hide it
                         clubForm.reset();
                         formContainer.style.display = "none";
+
                     } else {
                         const error = await response.json();
                         alert(`Error: ${error.message}`);
@@ -372,6 +453,12 @@ show_reading_time: false
                 alert("Please fill out all fields and select at least one topic!");
             }
         });
+
+
+        document.getElementById("closeCreateForm").addEventListener("click", function () {
+            document.getElementById("formContainer").style.display = "none"; // Hide the form
+        });
+
 
         let clubsData = []; // Store all fetched clubs
         let currentPage = 0; // Track the current page
@@ -387,7 +474,7 @@ show_reading_time: false
 
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
-                    currentUserId = userData.uid; // ✅ Store logged-in user's ID
+                    currentUserId = userData.uid; // Store logged-in user's ID
                 } else {
                     console.warn("Failed to fetch logged-in user ID.");
                 }
@@ -400,8 +487,8 @@ show_reading_time: false
                 });
 
                 if (response.ok) {
-                    clubsData = await response.json(); // ✅ Store clubs in an array
-                    displayPaginatedClubs(); // ✅ Show the first page
+                    clubsData = await response.json(); // Store clubs in an array
+                    displayPaginatedClubs(); // Show the first page
                 } else {
                     const error = await response.json();
                     alert(`Error: ${error.message}`);
@@ -416,18 +503,22 @@ show_reading_time: false
 
             const startIndex = currentPage * clubsPerPage;
             const endIndex = startIndex + clubsPerPage;
-            const clubsToShow = clubsData.slice(startIndex, endIndex); // Get 3 clubs for this page
+            const clubsToShow = clubsData.slice(startIndex, endIndex);
 
-            clubsToShow.forEach(club => displayNewClub(club)); // ✅ Show only 3 clubs
+            clubsToShow.forEach(club => displayNewClub(club));
 
             updatePaginationButtons();
         }
 
         function updatePaginationButtons() {
-            document.getElementById("pageIndicator").textContent = `Page ${currentPage + 1} of ${Math.ceil(clubsData.length / clubsPerPage)}`;
+            document.getElementById("pageIndicator").textContent = `Page ${currentPage + 1}`;
 
-            document.getElementById("prevPage").disabled = currentPage === 0; // Disable on first page
-            document.getElementById("nextPage").disabled = (currentPage + 1) * clubsPerPage >= clubsData.length; // Disable on last page
+            document.getElementById("prevPage").disabled = currentPage === 0;
+            document.getElementById("nextPage").disabled = (currentPage + 1) * clubsPerPage >= clubsData.length;
+
+            // Hide pagination buttons if there are less than 3 clubs
+            const pagination = document.querySelector(".pagination");
+            pagination.style.display = clubsData.length > clubsPerPage ? "flex" : "none";
         }
 
         document.getElementById("prevPage").addEventListener("click", function () {
@@ -503,23 +594,32 @@ show_reading_time: false
         async function deleteClub(clubId, clubBox) {
             try {
                 const response = await fetch(`${pythonURI}/api/club`, {
-                    method: 'DELETE',
+                    method: "DELETE",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
-                    credentials: 'include',
-                    body: JSON.stringify({ id: clubId })
+                    credentials: "include",
+                    body: JSON.stringify({ id: clubId }),
                 });
 
                 if (response.ok) {
-                    // Remove the club from the page if deletion is successful
-                    clubBox.remove();
+                    // Remove from local clubsData array
+                    clubsData = clubsData.filter(club => club.id !== clubId);
+
+                    // Recalculate the page index in case last page is empty
+                    if (currentPage * clubsPerPage >= clubsData.length && currentPage > 0) {
+                        currentPage--;
+                    }
+
+                    // Re-render the paginated club list
+                    displayPaginatedClubs();
+
                 } else {
                     const error = await response.json();
                     alert(`Error: ${error.message}`);
                 }
             } catch (error) {
-                alert('An error occurred while deleting the club. Please try again.');
+                alert("An error occurred while deleting the club. Please try again.");
                 console.error(error);
             }
         }
