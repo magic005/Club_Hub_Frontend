@@ -44,6 +44,9 @@ show_reading_time: false
         color: #FF4D4D;
         text-align: center;
         font-weight: 700;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .form-container {
         margin-top: 20px;
@@ -60,8 +63,11 @@ show_reading_time: false
         margin-bottom: 5px;
         color: #FF4D4D;
         font-weight: bold;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
-    .form-group input {
+    .form-group input, .form-group select {
         width: 100%;
         padding: 10px;
         border: none;
@@ -71,7 +77,7 @@ show_reading_time: false
         font-size: 16px;
         box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
     }
-    .submit-btn, .show-form-btn, .delete-btn {
+    .submit-btn, .show-form-btn, .delete-btn, .update-btn {
         display: inline-block;
         padding: 12px 20px;
         margin-top: 10px;
@@ -108,6 +114,14 @@ show_reading_time: false
         background: linear-gradient(to right, #cc2f2f, #ff3b3b);
         transform: translateY(-2px);
     }
+    .update-btn {
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        color: #fff;
+    }
+    .update-btn:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
     .event-box {
         margin-top: 20px;
         padding: 20px;
@@ -118,6 +132,9 @@ show_reading_time: false
     }
     .event-box h3 {
         color: #FF4D4D;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .calendar {
         display: grid;
@@ -154,6 +171,9 @@ show_reading_time: false
     }
     .event-details h2 {
         color: #FF4D4D;
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 </style>
 
