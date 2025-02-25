@@ -193,47 +193,47 @@ show_reading_time: false
 <!-- Interest items -->
 <div class="interest-item">
     <input type="checkbox" id="interest1" name="interests" value="Cybersecurity">
-    <label for="interest1">Cyber</label>
+    <label for="interest1">Cybersecurity</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest2" name="interests" value="Robotics">
-    <label for="interest2">Robots</label>
+    <label for="interest2">Robotics</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest3" name="interests" value="Artificial Intelligence">
-    <label for="interest3">AI</label>
+    <label for="interest3">Artificial Intelligence</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest4" name="interests" value="Photography">
-    <label for="interest4">Photos</label>
+    <label for="interest4">Photography</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest5" name="interests" value="Space Exploration">
-    <label for="interest5">Space</label>
+    <label for="interest5">Space Exploration</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest6" name="interests" value="Gaming">
-    <label for="interest6">Games</label>
+    <label for="interest6">Gaming</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest7" name="interests" value="Programming">
-    <label for="interest7">Code</label>
+    <label for="interest7">Programming</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest8" name="interests" value="Machine Learning">
-    <label for="interest8">ML</label>
+    <label for="interest8">Machine Learning</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest9" name="interests" value="Blockchain">
-    <label for="interest9">Chain</label>
+    <label for="interest9">Blockchain</label>
 </div>
 
 <div class="interest-item">
@@ -243,7 +243,7 @@ show_reading_time: false
 
 <div class="interest-item">
     <input type="checkbox" id="interest11" name="interests" value="Art">
-    <label for="interest11">Arts</label>
+    <label for="interest11">Art</label>
 </div>
 
 <div class="interest-item">
@@ -263,12 +263,12 @@ show_reading_time: false
 
 <div class="interest-item">
     <input type="checkbox" id="interest15" name="interests" value="Languages">
-    <label for="interest15">Language</label>
+    <label for="interest15">Languages</label>
 </div>
 
 <div class="interest-item">
     <input type="checkbox" id="interest16" name="interests" value="Entrepreneurship">
-    <label for="interest16">Business</label>
+    <label for="interest16">Entrepreneurship</label>
 </div>
 
 <div class="interest-item">
@@ -278,7 +278,7 @@ show_reading_time: false
 
 <div class="interest-item">
     <input type="checkbox" id="interest18" name="interests" value="Astronomy">
-    <label for="interest18">Stars</label>
+    <label for="interest18">Astronomy</label>
 </div>
 
 <div class="interest-item">
@@ -303,7 +303,7 @@ show_reading_time: false
 
 <div class="interest-item">
     <input type="checkbox" id="interest23" name="interests" value="Mathematics">
-    <label for="interest23">Math</label>
+    <label for="interest23">Mathematics</label>
 </div>
 
 <div class="interest-item">
