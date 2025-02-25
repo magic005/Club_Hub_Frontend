@@ -1,6 +1,5 @@
 ---
 layout: post
-title: Club Creator
 permalink: /createclub
 menu: nav/home.html
 show_reading_time: false
@@ -49,6 +48,8 @@ show_reading_time: false
         border-radius: 5px;
         cursor: pointer;
         transition: all 0.3s ease;
+        display: block;
+        margin: auto;
     }
 
     .show-form-btn:hover {
@@ -152,25 +153,42 @@ show_reading_time: false
         margin-top: 20px;
     }
 
-    .pagination button {
+    .pagination-btn {
         margin: 0 5px;
         padding: 10px 15px;
+        font-size: 13px;
+        width: auto;
+        height: auto;
         border: none;
-        background: #FF4B2B;
+        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Keep bright color */
         color: white;
         border-radius: 5px;
         cursor: pointer;
-        transition: 0.3s;
+        transition: all 0.3s ease;
+        align-items: center;
+        font-weight: bold;
     }
 
-    .pagination button:hover {
-        background: #FF416C;
+    .pagination-btn:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
     }
 
-    .pagination button:disabled {
-        background: #444;
+    .pagination-btn:disabled {
+        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Keep bright color */
         cursor: not-allowed;
     }  
+
+    .pageIndicator {
+        margin: 0 5px;
+        padding: 10px 15px;
+        width: auto;
+        height: auto;
+        border: none;
+        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Keep bright color */
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
 
     #clubTopics, #editClubTopics {
         display: grid;
@@ -199,7 +217,6 @@ show_reading_time: false
 
 
 <body>
-    <br>
     <button class="show-form-btn" id="showFormBtn">Start a New Club</button>
     <div class="form-container" id="formContainer">
         <h2>Club Registration Form</h2>
@@ -287,9 +304,9 @@ show_reading_time: false
     </div>
 
     <div class="pagination">
-        <button id="prevPage" disabled>◀ Previous</button>
-        <span id="pageIndicator"></span>
-        <button id="nextPage">Next ▶</button>
+        <button id="prevPage" class="pagination-btn" disabled> Previous</button>
+        <span id="pageIndicator" class="pageIndicator"></span>
+        <button id="nextPage" class="pagination-btn">Next</button>
     </div>
     
     <script type="module">
