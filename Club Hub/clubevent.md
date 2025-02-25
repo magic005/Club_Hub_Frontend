@@ -211,6 +211,7 @@ show_reading_time: false
     let currentPage = 1; // Default starting page for pagination
     let currentUserId = null; // Store the logged-in user's ID
     let userClubs = []; // Store the clubs created by the current user
+    let clubs = []; // Store all clubs
 
     // Declare all DOM elements at the top
     const showFormBtn = document.getElementById('showFormBtn');
@@ -240,7 +241,9 @@ show_reading_time: false
     // Fetch club names on page load
     document.addEventListener('DOMContentLoaded', async function () {
         await fetchAndDisplayUser();
+        await fetchAllClubs();
         await fetchClubNames();
+        await fetchAndDisplayEvents(currentPage);
     });
 
     // Fetch the logged-in user's ID
@@ -259,6 +262,26 @@ show_reading_time: false
             }
         } catch (error) {
             console.error('Error fetching user ID:', error);
+        }
+    }
+
+    // Fetch all clubs
+    async function fetchAllClubs() {
+        try {
+            const response = await fetch(`${pythonURI}/api/club`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            if (response.ok) {
+                clubs = await response.json();
+            } else {
+                console.warn('Failed to fetch clubs.');
+            }
+        } catch (error) {
+            console.error('Error fetching clubs:', error);
         }
     }
 
@@ -309,7 +332,6 @@ show_reading_time: false
         }
     }
 
-
     // Handles the form submission for creating an event. If the form is valid, a POST request is sent to the backend API to create a new event.
     eventForm.addEventListener('submit', async function (e) {
         e.preventDefault(); // Prevent default form submission
@@ -323,6 +345,7 @@ show_reading_time: false
                 title: clubName,
                 description: eventDescription,
                 date: eventDate,
+                user_id: currentUserId // Add user_id to the payload
             };
             try {
                 const response = await fetch(`${pythonURI}/api/event`, {
@@ -370,6 +393,7 @@ show_reading_time: false
                 title: clubName,
                 description: eventDescription,
                 date: eventDate,
+                user_id: currentUserId // Add user_id to the payload
             };
             try {
                 const response = await fetch(`${pythonURI}/api/event`, {
@@ -427,18 +451,36 @@ show_reading_time: false
                         <h3>${event.title}</h3>
                         <p><strong>Description:</strong> ${event.description}</p>
                         <p><strong>Date:</strong> ${event.date}</p>
-                        <button class="edit-btn">Edit</button>
-                        <button class="delete-btn">Delete</button>
                     `;
+
+                    // Find the club associated with the event
+                    const club = clubs.find(club => club.name === event.title);
+
+                    // Only show "Edit" and "Delete" buttons if the logged-in user is the creator of the club
+                    if (club && currentUserId && currentUserId === club.user_id) {
+                        const eventActions = document.createElement("div");
+                        eventActions.classList.add("event-actions");
+
+                        const editBtn = document.createElement("button");
+                        editBtn.classList.add("small-btn");
+                        editBtn.textContent = "Edit";
+                        editBtn.addEventListener("click", function () {
+                            editEvent(event.id);
+                        });
+
+                        const deleteBtn = document.createElement("button");
+                        deleteBtn.classList.add("small-btn");
+                        deleteBtn.textContent = "Delete";
+                        deleteBtn.addEventListener("click", async function () {
+                            await deleteEvent(event.id, club.user_id);
+                        });
+
+                        eventActions.appendChild(editBtn);
+                        eventActions.appendChild(deleteBtn);
+                        eventBox.appendChild(eventActions);
+                    }
+
                     eventListContainer.appendChild(eventBox);
-
-                    const editBtn = eventBox.querySelector('.edit-btn');
-                    const deleteBtn = eventBox.querySelector('.delete-btn');
-
-                    // Add click listener for edit
-                    editBtn.addEventListener('click', () => editEvent(event.id));
-                    // Add click listener for delete
-                    deleteBtn.addEventListener('click', () => deleteEvent(event.id));
                 });
 
                 // Pagination controls
@@ -490,28 +532,35 @@ show_reading_time: false
     }
 
     // Function to delete an event
-    async function deleteEvent(eventId) {
-        try {
-            const response = await fetch(`${pythonURI}/api/event`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({ id: eventId })
-            });
-            if (response.ok) {
-                alert('Event deleted successfully!');
-                fetchAndDisplayEvents(currentPage); // Refresh the event list
-            } else {
-                const error = await response.json();
-                alert(`Error: ${error.message}`);
+    async function deleteEvent(eventId, clubUserId) {
+        // Only proceed if the logged-in user is the creator of the club
+        if (currentUserId && currentUserId === clubUserId) {
+            try {
+                const response = await fetch(`${pythonURI}/api/event`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ id: eventId })
+                });
+                if (response.ok) {
+                    alert('Event deleted successfully!');
+                    fetchAndDisplayEvents(currentPage); // Refresh the event list
+                } else {
+                    const error = await response.json();
+                    alert(`Error: ${error.message}`);
+                }
+            } catch (error) {
+                alert('An error occurred while deleting the event. Please try again.');
+                console.error(error);
             }
-        } catch (error) {
-            alert('An error occurred while deleting the event. Please try again.');
-            console.error(error);
+        } else {
+            alert('You do not have permission to delete this event.');
         }
     }
+
+
 
     // Function to initialize the calendar
     function initializeCalendar(year, month) {
