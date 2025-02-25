@@ -349,7 +349,7 @@ show_reading_time: false
 </div>
 
 <div id="club-results" class="club-results" style="display: none;">
-    <h3>Recommended Clubs Based on Your Interests:</h3>
+    <h3>Clubs For You:</h3>
     <div id="clubs-container" class="clubs-container"></div>
 </div>
 
