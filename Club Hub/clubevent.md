@@ -13,153 +13,150 @@ show_reading_time: false
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Management</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1e1e2f;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
-            box-sizing: border-box;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            width: 95%;
-            max-width: 1600px;
-        }
-        .left-container {
-            flex: 1;
-            max-width: 60%;
-            padding: 20px;
-            background-color: #252540;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        .right-container {
-            flex: 1;
-            max-width: 58%; /* Increased the width of the right container */
-            padding: 20px;
-            background-color: #252540;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-        }
-        h1, h2 {
-            color: #00ffd5;
-            margin-bottom: 20px;
-        }
-        .form-container {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #2d2d44;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #00ffd5;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background-color: #1e1e2f;
-            color: #e0e0e0;
-            font-size: 16px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        .submit-btn, .show-form-btn, .delete-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-        .submit-btn {
-            background-color: #0077ff;
-            color: #ffffff;
-        }
-        .submit-btn:hover {
-            background-color: #005bcc;
-        }
-        .show-form-btn {
-            background-color: #00ffd5;
-            color: #1e1e2f;
-        }
-        .show-form-btn:hover {
-            background-color: #00cca6;
-        }
-        .delete-btn {
-            background-color: #ff3b3b;
-            color: white;
-        }
-        .delete-btn:hover {
-            background-color: #cc2f2f;
-        }
-        .event-box {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #333356;
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        .event-box h3 {
-            color: #00ffd5;
-        }
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            background-color: #2d2d44;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        .calendar div {
-            text-align: center;
-            padding: 15px;
-            background-color: #4a4a6a;
-            border-radius: 8px;
-            color: #ffffff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .calendar div:hover {
-            background-color: #00ffd5;
-            color: #1e1e2f;
-        }
-        .calendar .header {
-            background-color: #0077ff;
-            color: white;
-        }
-        .event-details {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #2d2d44;
-            border-radius: 16px;
-            color: #e0e0e0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        .event-details h2 {
-            color: #00ffd5;
-        }
-    </style>
+<style>
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #0E0E10;
+        color: #F3F3F3;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        gap: 20px;
+        box-sizing: border-box;
+        line-height: 1.6;
+    }
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        width: 95%;
+        max-width: 1600px;
+    }
+    .left-container, .right-container {
+        flex: 1;
+        max-width: 60%;
+        padding: 20px;
+        background: #1A1A1D;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    h1, h2 {
+        color: #FF4D4D;
+        text-align: center;
+        font-weight: 700;
+    }
+    .form-container {
+        margin-top: 20px;
+        padding: 20px;
+        background: #2A2A2D;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #FF4D4D;
+        font-weight: bold;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: #1E1E2F;
+        color: #F3F3F3;
+        font-size: 16px;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    .submit-btn, .show-form-btn, .delete-btn {
+        display: inline-block;
+        padding: 12px 20px;
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+    .submit-btn {
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        color: #fff;
+    }
+    .submit-btn:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
+    .show-form-btn {
+        background: linear-gradient(to right, #ff3b3b, #cc2f2f);
+        color: #fff;
+    }
+    .show-form-btn:hover {
+        background: linear-gradient(to right, #cc2f2f, #ff3b3b);
+        transform: translateY(-2px);
+    }
+    .delete-btn {
+        background: linear-gradient(to right, #ff3b3b, #cc2f2f);
+        color: white;
+    }
+    .delete-btn:hover {
+        background: linear-gradient(to right, #cc2f2f, #ff3b3b);
+        transform: translateY(-2px);
+    }
+    .event-box {
+        margin-top: 20px;
+        padding: 20px;
+        background: #333356;
+        color: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .event-box h3 {
+        color: #FF4D4D;
+    }
+    .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        background: #2A2A2D;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .calendar div {
+        text-align: center;
+        padding: 15px;
+        background: #4a4a6a;
+        border-radius: 8px;
+        color: #ffffff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .calendar div:hover {
+        background: #FF4D4D;
+        color: #0E0E10;
+        transform: scale(1.1);
+    }
+    .event-details {
+        margin-top: 20px;
+        padding: 20px;
+        background: #2A2A2D;
+        border-radius: 16px;
+        color: #F3F3F3;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+    .event-details h2 {
+        color: #FF4D4D;
+    }
+</style>
+
 </head>
 <body>
     <div class="container">
@@ -373,7 +370,7 @@ show_reading_time: false
             if (response.ok) {
                 const fetchedEvents = await response.json();
                 events = fetchedEvents.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort events by date descending
-                const eventsPerPage = 10;
+                const eventsPerPage = 5;
                 const totalEvents = events.length;
                 const totalPages = Math.ceil(totalEvents / eventsPerPage);
                 const startIndex = (page - 1) * eventsPerPage;
