@@ -75,7 +75,7 @@ menu: nav/home.html
     .event-title {
         font-size: 2em;
         font-weight: bold;
-        background: linear-gradient(to right, #ffffff, #000000);
+        background: linear-gradient(to left, #ff802b, #FF5577);
         -webkit-text-fill-color: transparent; 
         -webkit-background-clip: text;
         margin-bottom: 20px;
