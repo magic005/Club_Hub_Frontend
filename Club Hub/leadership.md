@@ -84,10 +84,12 @@ show_reading_time: false
            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
            margin-bottom: 20px;
        }
-       .application-box h3 {
-           margin-top: 0;
-           color: #007bff;
-       }
+    .application-box h3 {
+        margin-top: 0;
+        background: linear-gradient(#FF416C, #FF4B2B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
        .application-box p {
            margin: 5px 0;
            line-height: 1.5;
