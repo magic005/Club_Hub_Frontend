@@ -139,7 +139,7 @@ menu: nav/home.html
 
     <!-- Event Section -->
 <div class="event-container">
-    <h2>Upcoming Club Events</h2>
+    <h2>🔥 Upcoming Club Events 🔥</h2>
     <div id="event-list"></div> <!-- All club events will be inserted here -->
 </div>
 </body>
