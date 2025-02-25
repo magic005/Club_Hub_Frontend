@@ -209,6 +209,8 @@ show_reading_time: false
     let currentMonth = new Date().getMonth();
     let editingEventId = null; // Store the ID of the event being edited
     let currentPage = 1; // Default starting page for pagination
+    let currentUserId = null; // Store the logged-in user's ID
+    let userClubs = []; // Store the clubs created by the current user
 
     // Declare all DOM elements at the top
     const showFormBtn = document.getElementById('showFormBtn');
@@ -236,11 +238,49 @@ show_reading_time: false
     });
 
     // Fetch club names on page load
-    document.addEventListener('DOMContentLoaded', fetchClubNames);
+    document.addEventListener('DOMContentLoaded', async function () {
+        await fetchAndDisplayUser();
+        await fetchClubNames();
+    });
+
+    // Fetch the logged-in user's ID
+    async function fetchAndDisplayUser() {
+        try {
+            const response = await fetch(`${pythonURI}/api/id`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            if (response.ok) {
+                const userData = await response.json();
+                currentUserId = userData.uid; // Store the logged-in user's ID
+                await fetchUserClubs(); // Fetch clubs created by the user
+            } else {
+                console.warn('Failed to fetch logged-in user ID.');
+            }
+        } catch (error) {
+            console.error('Error fetching user ID:', error);
+        }
+    }
+
+    // Fetch clubs created by the current user
+    async function fetchUserClubs() {
+        try {
+            const response = await fetch(`${pythonURI}/api/club/user`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            if (response.ok) {
+                userClubs = await response.json();
+            } else {
+                console.warn('Failed to fetch user clubs.');
+            }
+        } catch (error) {
+            console.error('Error fetching user clubs:', error);
+        }
+    }
 
     // Fetch club names from the backend API
     async function fetchClubNames() {
-        const token = localStorage.getItem('authToken');
         try {
             const response = await fetch(`${pythonURI}/api/club`, {
                 method: 'GET',
@@ -252,10 +292,12 @@ show_reading_time: false
             if (response.ok) {
                 const clubs = await response.json();
                 clubs.forEach(club => {
-                    const option = document.createElement('option');
-                    option.value = club.name;
-                    option.textContent = club.name;
-                    clubNameSelect.appendChild(option);
+                    if (club.user_id === currentUserId) {
+                        const option = document.createElement('option');
+                        option.value = club.name;
+                        option.textContent = club.name;
+                        clubNameSelect.appendChild(option);
+                    }
                 });
             } else {
                 const error = await response.json();
@@ -266,6 +308,7 @@ show_reading_time: false
             console.error(error);
         }
     }
+
 
     // Handles the form submission for creating an event. If the form is valid, a POST request is sent to the backend API to create a new event.
     eventForm.addEventListener('submit', async function (e) {
@@ -281,7 +324,6 @@ show_reading_time: false
                 description: eventDescription,
                 date: eventDate,
             };
-            const token = localStorage.getItem('authToken');
             try {
                 const response = await fetch(`${pythonURI}/api/event`, {
                     method: 'POST',
@@ -329,7 +371,6 @@ show_reading_time: false
                 description: eventDescription,
                 date: eventDate,
             };
-            const token = localStorage.getItem('authToken');
             try {
                 const response = await fetch(`${pythonURI}/api/event`, {
                     method: 'PUT',
@@ -358,7 +399,6 @@ show_reading_time: false
 
     // Function to fetch and display all events
     async function fetchAndDisplayEvents(page = 1) {
-        const token = localStorage.getItem('authToken');
         try {
             const response = await fetch(`${pythonURI}/api/event`, {
                 method: 'GET',
@@ -451,7 +491,6 @@ show_reading_time: false
 
     // Function to delete an event
     async function deleteEvent(eventId) {
-        const token = localStorage.getItem('authToken');
         try {
             const response = await fetch(`${pythonURI}/api/event`, {
                 method: 'DELETE',
