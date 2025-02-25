@@ -16,19 +16,23 @@ show_reading_time: false
            color: #333;
        }
        .show-form-btn {
-           background-color: #007bff;
-           color: white;
-           padding: 10px 20px;
-           border: none;
-           border-radius: 5px;
-           cursor: pointer;
-           font-size: 16px;
-           margin-bottom: 20px;
-           box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-       }
-       .show-form-btn:hover {
-           background-color: #0056b3;
-       }
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+        .show-form-btn:hover {
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            transform: translateY(-2px);
+            }
        .form-container {
            background: black;
            padding: 20px;
@@ -62,18 +66,20 @@ show_reading_time: false
            outline: none;
            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
        }
-       .submit-btn {
-           background-color: #28a745;
-           color: white;
-           padding: 10px 20px;
-           border: none;
-           border-radius: 5px;
-           cursor: pointer;
-           font-size: 16px;
-       }
-       .submit-btn:hover {
-           background-color: #218838;
-       }
+        .submit-btn {
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+}
+        .submit-btn:hover {
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            transform: translateY(-2px);
+            }
        #applicationListContainer {
            margin-top: 30px;
        }
@@ -95,18 +101,20 @@ show_reading_time: false
            line-height: 1.5;
        }
        .delete-btn, .update-btn {
-           background-color: #dc3545;
-           color: white;
-           padding: 5px 10px;
-           border: none;
-           border-radius: 5px;
-           cursor: pointer;
-           font-size: 14px;
-           margin-top: 10px;
-       }
-       .delete-btn:hover, .update-btn:hover {
-           background-color: #bd2130;
-       }
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .delete-btn:hover, .update-btn:hover {
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+            transform: translateY(-2px);
+        }
    </style>
 
    <br>
