@@ -127,6 +127,25 @@ show_reading_time: false
         justify-content: space-between;
     }
 
+    .small-btn {
+        padding: 5px 8px; /* Smaller padding */
+        font-size: 12px; /* Smaller text */
+        width: auto;
+        height: auto;
+        border-radius: 3px;
+        margin: 3px;
+        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Keep bright color */
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .small-btn:hover {
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        transform: translateY(-2px);
+    }
+
     .pagination {
         display: flex;
         justify-content: center;
@@ -151,23 +170,7 @@ show_reading_time: false
     .pagination button:disabled {
         background: #444;
         cursor: not-allowed;
-    }
-
-    .edit-btn, .delete-btn {
-        background: linear-gradient(to right, #FF416C, #FF4B2B); /* Keep existing bright color */
-        color: white;
-        font-size: 12px; /* Smaller font */
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        margin: 5px;
-        transition: all 0.3s ease;
-    }
-
-    .edit-btn:hover, .delete-btn:hover {
-        background: linear-gradient(to right, #FF4B2B, #FF416C);
-        transform: translateY(-2px);
-    }
+    }  
 
     #clubTopics, #editClubTopics {
         display: grid;
@@ -248,8 +251,8 @@ show_reading_time: false
                 <small>*Please select all relevant topics for your club.*</small>
                 <br>
             </div>
-            <button type="submit" class="submit-btn">Create Club</button>
-            <button type="button" id="closeCreateForm" class="cancel-btn">Cancel</button>
+            <button type="submit" class="small-btn">Create Club</button>
+            <button type="button" id="closeCreateForm" class="small-btn">Cancel</button>
         </form>
     </div>  
     <br>
@@ -278,8 +281,8 @@ show_reading_time: false
                     </div>
                     <small>*Please select all relevant topics for your club.*</small>
             </div>
-            <button type="submit" class="submit-btn">Update Club</button>
-            <button type="button" id="closeEditForm" class="submit-btn">Cancel</button>
+            <button type="submit" class="small-btn">Update Club</button>
+            <button type="button" id="closeEditForm" class="small-btn">Cancel</button>
         </form>
     </div>
 
@@ -320,14 +323,14 @@ show_reading_time: false
                 clubActions.classList.add("club-actions");
 
                 const editBtn = document.createElement("button");
-                editBtn.classList.add("button");
+                editBtn.classList.add("small-btn");
                 editBtn.textContent = "Edit";
                 editBtn.addEventListener("click", function () {
                     openEditForm(createdClub);
                 });
 
                 const deleteBtn = document.createElement("button");
-                deleteBtn.classList.add("button");
+                deleteBtn.classList.add("small-btn");
                 deleteBtn.textContent = "Delete Club";
                 deleteBtn.addEventListener("click", async function () {
                     await deleteClub(createdClub.id, clubBox);
