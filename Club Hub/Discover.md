@@ -107,43 +107,75 @@ show_reading_time: false
     text-align: center;
     }
 
+    /* Centering and separating the club results container */
+    .club-results {
+        margin-top: 30px;
+        padding: 25px;
+        background-color: #1A1A1D; /* Ensures it matches the main container */
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Ensure club cards are properly aligned */
     .clubs-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
+        justify-content: center; /* Centers the cards */
+        gap: 20px;
     }
 
+    /* Club card styling */
     .club-card {
-        background-color: #1A1A1D;
+        background: linear-gradient(135deg, #1E1E22, #25252B); /* Subtle gradient background */
         color: #F3F3F3;
-        border-radius: 10px;
-        padding: 15px;
-        width: 300px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease;
+        border-radius: 15px; /* Softer, more modern corners */
+        padding: 30px;
+        width: 500px; /* Adjusted width to make better use of space */
+        min-height: 250px; /* Increased height for balance */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow for depth */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
+    /* Hover effect for interactivity */
     .club-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-7px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
     }
 
+    /* Title styling with gradient text */
     .club-title {
-        font-size: 1.2em;
+        font-size: 1.8em; /* Bigger title */
         font-weight: bold;
-        color: #FF4D4D;
-        margin-bottom: 5px;
-    }
-
-    .club-description {
-        font-size: 1em;
-        color: #CFCFCF;
         margin-bottom: 10px;
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
+    /* Description styling */
+    .club-description {
+        font-size: 1.2em; /* Slightly larger text for readability */
+        color: #D1D1D1; /* Softer white for less contrast strain */
+        margin-bottom: 15px;
+        text-align: center;
+        line-height: 1.5;
+        max-width: 90%;
+    }
+
+    /* Founder text with slight emphasis */
     .club-founder {
-        font-size: 0.9em;
-        color: #AFAFAF;
+        font-size: 1em;
+        color: #AAAAAA; /* Muted color to keep focus on title and description */
+        font-style: italic;
     }
 </style>
 
@@ -458,6 +490,27 @@ function getToken() {
         }
     }
 
-    window.onload = fetchAndDisplayInterests;
+    window.onload = async function () {
+        await fetchAndDisplayInterests();
+        
+        // Fetch the saved interests first, then pass them into fetchAndDisplayClubs
+        try {
+            const URL = `${pythonURI}/api/interests`;
+            const response = await fetch(URL, {
+                method: 'GET',
+                headers: { 'Authorization': getToken() },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                fetchAndDisplayClubs(data.interests || []); // Use saved interests
+            } else {
+                console.error('Failed to fetch saved interests');
+            }
+        } catch (error) {
+            console.error('Error fetching saved interests:', error);
+        }
+    };
+
     window.showResults = showResults;
 </script>
