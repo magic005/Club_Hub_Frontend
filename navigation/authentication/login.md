@@ -7,42 +7,100 @@ show_reading_time: false
 ---
 
 <style>
+
+/* Container for Login & Signup */
 .login-container {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap; /* allows the cards to wrap onto the next line if the screen is too small */
+    justify-content: center;
+    align-items: stretch; /* Ensures same height */
+    flex-wrap: wrap;
+    gap: 40px;
 }
 
-.login-card {
-    margin-top: 0; /* remove the top margin */
-    width: 45%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+/* Apply consistent styles to both login and signup cards */
+.login-card, .signup-card {
+    flex: 1;
+    max-width: 500px;
+    min-width: 400px;
+    background-color: #1A1A1D;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    border: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures consistent spacing */
+    min-height: 420px; /* Explicit min-height to make them equal */
+}
+
+/* Titles */
+.login-card h1, .signup-card h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    background: linear-gradient(to right, #FF4B2B, #FF416C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
-.login-card h1 {
-    margin-bottom: 20px;
+/* Input Container: Maintains structure */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
 }
 
-.signup-card {
-    margin-top: 0; /* remove the top margin */
-    width: 45%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    margin-bottom: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling */
+/* Invisible Placeholder for Spacing */
+.placeholder {
+    visibility: hidden; /* Keeps space occupied but not visible */
+    height: 45px; /* Matches input field height */
 }
 
-.signup-card h1 {
-    margin-bottom: 20px;
+/* Form Inputs */
+input[type="text"], input[type="password"] {
+    width: 90%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #121212;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 15px;
 }
 
+/* Buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #FF4B2B, #FF416C);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: linear-gradient(to right, #FF416C, #FF4B2B);
+    transform: translateY(-3px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .login-card, .signup-card {
+        width: 90%;
+    }
+}
 </style>
 
 <div class="login-container">
@@ -62,6 +120,7 @@ show_reading_time: false
                     <input type="password" name="password" id="password" required>
                 </label>
             </p>
+            <div class="placeholder"></div>
             <p>
                 <button type="submit">Login</button>
             </p>
