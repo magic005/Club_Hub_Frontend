@@ -28,11 +28,11 @@ show_reading_time: false
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-        .show-form-btn:hover {
+       }
+       .show-form-btn:hover {
             background: linear-gradient(to right, #FF4B2B, #FF416C);
             transform: translateY(-2px);
-            }
+       }
        .form-container {
            background: black;
            padding: 20px;
@@ -66,7 +66,7 @@ show_reading_time: false
            outline: none;
            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
        }
-        .submit-btn {
+       .submit-btn {
             background: linear-gradient(to right, #FF416C, #FF4B2B);
             color: white;
             padding: 10px 20px;
@@ -75,11 +75,11 @@ show_reading_time: false
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
-}
-        .submit-btn:hover {
+       }
+       .submit-btn:hover {
             background: linear-gradient(to right, #FF4B2B, #FF416C);
             transform: translateY(-2px);
-            }
+       }
        #applicationListContainer {
            margin-top: 30px;
        }
@@ -90,15 +90,15 @@ show_reading_time: false
            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
            margin-bottom: 20px;
        }
-    .application-box h3 {
-        margin-top: 0;
-        background: linear-gradient(#FF416C, #FF4B2B);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+       .application-box h3 {
+            margin-top: 0;
+            background: linear-gradient(#FF416C, #FF4B2B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+       }
        .application-box p {
-           margin: 5px 0;
-           line-height: 1.5;
+            margin: 5px 0;
+            line-height: 1.5;
        }
        .delete-btn, .update-btn {
             background: linear-gradient(to right, #FF416C, #FF4B2B);
@@ -110,11 +110,11 @@ show_reading_time: false
             font-size: 14px;
             margin-top: 10px;
             transition: all 0.3s ease;
-        }
-        .delete-btn:hover, .update-btn:hover {
+       }
+       .delete-btn:hover, .update-btn:hover {
             background: linear-gradient(to right, #FF4B2B, #FF416C);
             transform: translateY(-2px);
-        }
+       }
    </style>
 
    <br>
@@ -168,50 +168,46 @@ show_reading_time: false
     });
 
     // Fetch clubs from the server and populate the dropdown
-async function fetchClubNames() {
-    try {
-        console.log("Fetching club names...");
+    async function fetchClubNames() {
+        try {
+            console.log("Fetching club names...");
 
-        const response = await fetch(`${pythonURI}/api/clubs`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                // Ensure token is defined, otherwise remove this line
-                ...(typeof token !== "undefined" ? { 'Authorization': `Bearer ${token}` } : {})
+            const response = await fetch(`${pythonURI}/api/clubs`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            console.log("Response received:", response);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch clubs: ${response.status} ${response.statusText}`);
             }
-        });
 
-        console.log("Response received:", response);
+            const clubs = await response.json();
+            console.log("Clubs received:", clubs);
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch clubs: ${response.status} ${response.statusText}`);
+            // Clear existing options
+            clubSelect.innerHTML = '<option value="">Select a Club</option>';
+
+            // Populate dropdown
+            clubs.forEach(club => {
+                const option = document.createElement('option');
+                option.value = club.name;
+                option.textContent = club.name;
+                clubSelect.appendChild(option);
+            });
+
+            console.log("Club dropdown updated successfully.");
+        } catch (error) {
+            console.error("Error fetching club names:", error);
+            alert("An error occurred while fetching club names. Check the console for details.");
         }
-
-        const clubs = await response.json();
-        console.log("Clubs received:", clubs);
-
-        // Clear existing options
-        const clubSelect = document.getElementById('club');
-        clubSelect.innerHTML = '<option value="">Select a Club</option>';
-
-        // Populate dropdown
-        clubs.forEach(club => {
-            const option = document.createElement('option');
-            option.value = club.name;
-            option.textContent = club.name;
-            clubSelect.appendChild(option);
-        });
-
-        console.log("Club dropdown updated successfully.");
-    } catch (error) {
-        console.error("Error fetching club names:", error);
-        alert("An error occurred while fetching club names. Check the console for details.");
     }
-}
 
-// Ensure this function is called when the page loads
-document.addEventListener('DOMContentLoaded', fetchClubNames);
-
+    // Ensure this function is called when the page loads
+    document.addEventListener('DOMContentLoaded', fetchClubNames);
 
     // Handle form submission to create a new leadership application
     leadershipForm.addEventListener('submit', async function (e) {
@@ -261,27 +257,26 @@ document.addEventListener('DOMContentLoaded', fetchClubNames);
     });
 
     // Fetch and display all leadership applications on page load
-async function fetchAndDisplayApplications() {
-    try {
-        const URL = `${pythonURI}/api/leadership`;
-        const response = await fetch(URL, { method: 'GET' });
-        
-        if (!response.ok) throw new Error('Failed to fetch applications');
-        
-        const applications = await response.json();
-        applicationListContainer.innerHTML = ''; // Clear the list container
+    async function fetchAndDisplayApplications() {
+        try {
+            const URL = `${pythonURI}/api/leadership`;
+            const response = await fetch(URL, { method: 'GET' });
+            
+            if (!response.ok) throw new Error('Failed to fetch applications');
+            
+            const applications = await response.json();
+            applicationListContainer.innerHTML = ''; // Clear the list container
 
-        if (applications.length > 0) {
-            applications.forEach(app => addApplicationToUI(app)); // Add each application to the UI
-        } else {
-            applicationListContainer.innerText = 'No applications available.';
+            if (applications.length > 0) {
+                applications.forEach(app => addApplicationToUI(app)); // Add each application to the UI
+            } else {
+                applicationListContainer.innerText = 'No applications available.';
+            }
+        } catch (error) {
+            console.error('Error fetching applications:', error);
+            alert('An error occurred while fetching applications.');
         }
-    } catch (error) {
-        console.error('Error fetching applications:', error);
-        alert('An error occurred while fetching applications.');
     }
-}
-
 
     // Add a single leadership application to the UI
     function addApplicationToUI(application) {
@@ -354,7 +349,7 @@ async function fetchAndDisplayApplications() {
     // Fetch and display applications when the page loads
     document.addEventListener('DOMContentLoaded', function() {
         fetchAndDisplayApplications();
-        fetchClubs(); // Fetch clubs when the page loads
+        fetchClubNames(); // Fetch clubs when the page loads
     });
    </script>
 </body>
