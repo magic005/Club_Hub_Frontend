@@ -28,11 +28,11 @@ show_reading_time: false
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-        .show-form-btn:hover {
+       }
+       .show-form-btn:hover {
             background: linear-gradient(to right, #FF4B2B, #FF416C);
             transform: translateY(-2px);
-            }
+       }
        .form-container {
            background: black;
            padding: 20px;
@@ -66,7 +66,7 @@ show_reading_time: false
            outline: none;
            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
        }
-        .submit-btn {
+       .submit-btn {
             background: linear-gradient(to right, #FF416C, #FF4B2B);
             color: white;
             padding: 10px 20px;
@@ -75,11 +75,11 @@ show_reading_time: false
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
-}
-        .submit-btn:hover {
+       }
+       .submit-btn:hover {
             background: linear-gradient(to right, #FF4B2B, #FF416C);
             transform: translateY(-2px);
-            }
+       }
        #applicationListContainer {
            margin-top: 30px;
        }
@@ -90,15 +90,15 @@ show_reading_time: false
            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
            margin-bottom: 20px;
        }
-    .application-box h3 {
-        margin-top: 0;
-        background: linear-gradient(#FF416C, #FF4B2B);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+       .application-box h3 {
+            margin-top: 0;
+            background: linear-gradient(#FF416C, #FF4B2B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+       }
        .application-box p {
-           margin: 5px 0;
-           line-height: 1.5;
+            margin: 5px 0;
+            line-height: 1.5;
        }
        .delete-btn, .update-btn {
             background: linear-gradient(to right, #FF416C, #FF4B2B);
@@ -110,11 +110,30 @@ show_reading_time: false
             font-size: 14px;
             margin-top: 10px;
             transition: all 0.3s ease;
-        }
-        .delete-btn:hover, .update-btn:hover {
+       }
+       .delete-btn:hover, .update-btn:hover {
             background: linear-gradient(to right, #FF4B2B, #FF416C);
             transform: translateY(-2px);
-        }
+       }
+       .pagination {
+           display: flex;
+           justify-content: center;
+           margin-top: 20px;
+       }
+       .pagination button {
+           background: linear-gradient(to right, #FF416C, #FF4B2B);
+           color: white;
+           padding: 10px;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           font-size: 14px;
+           margin: 0 5px;
+           transition: all 0.3s ease;
+       }
+       .pagination button:hover {
+           background: linear-gradient(to right, #FF4B2B, #FF416C);
+       }
    </style>
 
    <br>
@@ -148,6 +167,10 @@ show_reading_time: false
    <div id="applicationListContainer">
        <!-- Submitted leadership applications will be listed here -->
    </div>
+   <div class="pagination" id="paginationContainer">
+       <button id="prevPageBtn" disabled>Previous</button>
+       <button id="nextPageBtn" disabled>Next</button>
+   </div>
 
    <script type="module">
     import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
@@ -156,9 +179,12 @@ show_reading_time: false
     const leadershipForm = document.getElementById('leadershipForm');
     const applicationListContainer = document.getElementById('applicationListContainer');
     const clubSelect = document.getElementById('club');
-    const clubNameSelect = document.getElementById('clubName');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
 
     let currentApplicationId = null; // Variable to track which application is being updated
+    let currentPage = 1; // Current page for pagination
+    const applicationsPerPage = 5; // Number of applications per page
 
     // Show the form when the button is clicked
     showFormBtn.addEventListener('click', function () {
@@ -168,50 +194,79 @@ show_reading_time: false
     });
 
     // Fetch clubs from the server and populate the dropdown
-async function fetchClubNames() {
-    try {
-        console.log("Fetching club names...");
+    async function fetchClubNames() {
+        try {
+            console.log("Fetching club names...");
 
-        const response = await fetch(`${pythonURI}/api/clubs`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                // Ensure token is defined, otherwise remove this line
-                ...(typeof token !== "undefined" ? { 'Authorization': `Bearer ${token}` } : {})
+            const response = await fetch(`${pythonURI}/api/clubs`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch clubs: ${response.status} ${response.statusText}`);
             }
-        });
 
-        console.log("Response received:", response);
+            const clubs = await response.json();
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch clubs: ${response.status} ${response.statusText}`);
+            // Clear existing options
+            clubSelect.innerHTML = '<option value="">Select a Club</option>';
+
+            // Populate dropdown
+            clubs.forEach(club => {
+                const option = document.createElement('option');
+                option.value = club.name;
+                option.textContent = club.name;
+                clubSelect.appendChild(option);
+            });
+
+            console.log("Club dropdown updated successfully.");
+        } catch (error) {
+            console.error("Error fetching club names:", error);
+            alert("An error occurred while fetching club names. Check the console for details.");
+        }
+    }
+
+    // Fetch and display all leadership applications on page load
+async function fetchAndDisplayApplications() {
+    try {
+        const URL = `${pythonURI}/api/leadership?page=${currentPage}&limit=${applicationsPerPage}`;
+        const response = await fetch(URL, { method: 'GET' });
+
+        if (!response.ok) throw new Error('Failed to fetch applications');
+
+        const data = await response.json();
+        console.log('API Response:', data); // Log the full response
+
+        // Check if applications is defined and is an array
+        if (!data.applications || !Array.isArray(data.applications)) {
+            console.error('Received data:', data); // Log the received data for debugging
+            throw new Error('Applications not found in the response');
         }
 
-        const clubs = await response.json();
-        console.log("Clubs received:", clubs);
+        applicationListContainer.innerHTML = ''; // Clear the list container
 
-        // Clear existing options
-        const clubSelect = document.getElementById('club');
-        clubSelect.innerHTML = '<option value="">Select a Club</option>';
-
-        // Populate dropdown
-        clubs.forEach(club => {
-            const option = document.createElement('option');
-            option.value = club.name;
-            option.textContent = club.name;
-            clubSelect.appendChild(option);
-        });
-
-        console.log("Club dropdown updated successfully.");
+        if (data.applications.length > 0) {
+            data.applications.forEach(app => addApplicationToUI(app)); // Add each application to the UI
+            updatePaginationButtons(data.totalCount); // Update pagination buttons based on total count
+        } else {
+            applicationListContainer.innerText = 'No applications available.';
+        }
     } catch (error) {
-        console.error("Error fetching club names:", error);
-        alert("An error occurred while fetching club names. Check the console for details.");
+        console.error('Error fetching applications:', error);
+        alert('An error occurred while fetching applications: ' + error.message);
     }
 }
 
-// Ensure this function is called when the page loads
-document.addEventListener('DOMContentLoaded', fetchClubNames);
 
+    // Update pagination buttons based on current page
+    function updatePaginationButtons(totalCount) {
+        const totalPages = Math.ceil(totalCount / applicationsPerPage);
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages;
+    }
 
     // Handle form submission to create a new leadership application
     leadershipForm.addEventListener('submit', async function (e) {
@@ -221,7 +276,6 @@ document.addEventListener('DOMContentLoaded', fetchClubNames);
         const role = document.getElementById('role').value.trim();
         const club = document.getElementById('club').value.trim();
         const experience = document.getElementById('experience').value.trim();
-
 
         const payload = { name: applicantName, role, club, experience };
 
@@ -252,6 +306,7 @@ document.addEventListener('DOMContentLoaded', fetchClubNames);
                 }
                 leadershipForm.reset();
                 formContainer.style.display = 'none';
+                fetchAndDisplayApplications(); // Refresh the applications list
             } else {
                 alert('Error: Unable to submit your application.');
             }
@@ -260,33 +315,11 @@ document.addEventListener('DOMContentLoaded', fetchClubNames);
         }
     });
 
-    // Fetch and display all leadership applications on page load
-async function fetchAndDisplayApplications() {
-    try {
-        const URL = `${pythonURI}/api/leadership`;
-        const response = await fetch(URL, { method: 'GET' });
-        
-        if (!response.ok) throw new Error('Failed to fetch applications');
-        
-        const applications = await response.json();
-        applicationListContainer.innerHTML = ''; // Clear the list container
-
-        if (applications.length > 0) {
-            applications.forEach(app => addApplicationToUI(app)); // Add each application to the UI
-        } else {
-            applicationListContainer.innerText = 'No applications available.';
-        }
-    } catch (error) {
-        console.error('Error fetching applications:', error);
-        alert('An error occurred while fetching applications.');
-    }
-}
-
-
     // Add a single leadership application to the UI
     function addApplicationToUI(application) {
         const applicationBox = document.createElement('div');
         applicationBox.classList.add('application-box');
+        applicationBox.setAttribute('data-id', application.id);
 
         applicationBox.innerHTML = `
             <h3>${application.name}</h3>
@@ -311,6 +344,7 @@ async function fetchAndDisplayApplications() {
                     if (response.ok) {
                         applicationBox.remove(); // Remove the deleted application from the UI
                         alert('Application deleted successfully.');
+                        fetchAndDisplayApplications(); // Refresh the applications list
                     } else {
                         const errorData = await response.json();
                         alert(`Error deleting the application: ${errorData.error}`);
@@ -324,37 +358,47 @@ async function fetchAndDisplayApplications() {
         // Add update functionality to the update button
         const updateBtn = applicationBox.querySelector('.update-btn');
         updateBtn.addEventListener('click', function () {
-            const applicationId = this.getAttribute('data-id');
-            currentApplicationId = applicationId; // Set the current application ID to update
-
-            // Pre-fill the form with the current application data
+            currentApplicationId = application.id; // Set the current application ID for updating
             document.getElementById('applicantName').value = application.name;
             document.getElementById('role').value = application.role;
             document.getElementById('club').value = application.club;
             document.getElementById('experience').value = application.experience;
-
-            formContainer.style.display = 'block'; // Show the form to update the details
+            formContainer.style.display = 'block'; // Show the form to update
         });
 
-        // Append the application box to the list container
         applicationListContainer.appendChild(applicationBox);
     }
 
-    // Update application UI without re-fetching
-    function updateApplicationInUI(updatedApplication) {
-        const applicationBox = document.querySelector(`.application-box[data-id="${updatedApplication.id}"]`);
+    // Update the application in the UI (for updates)
+    function updateApplicationInUI(application) {
+        const applicationBox = applicationListContainer.querySelector(`[data-id='${application.id}']`);
         if (applicationBox) {
-            applicationBox.querySelector('h3').textContent = updatedApplication.name;
-            applicationBox.querySelector('p:nth-of-type(1)').textContent = `Role: ${updatedApplication.role}`;
-            applicationBox.querySelector('p:nth-of-type(2)').textContent = `Club: ${updatedApplication.club}`;
-            applicationBox.querySelector('p:nth-of-type(3)').textContent = `Experience: ${updatedApplication.experience}`;
+            applicationBox.innerHTML = `
+                <h3>${application.name}</h3>
+                <p><strong>Role:</strong> ${application.role}</p>
+                <p><strong>Club:</strong> ${application.club}</p>
+                <p><strong>Experience:</strong> ${application.experience}</p>
+                <button class="delete-btn" data-id="${application.id}">Delete</button>
+                <button class="update-btn" data-id="${application.id}">Update</button>
+            `;
         }
     }
 
-    // Fetch and display applications when the page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        fetchAndDisplayApplications();
-        fetchClubs(); // Fetch clubs when the page loads
+    // Handle pagination button clicks
+    prevPageBtn.addEventListener('click', function () {
+        if (currentPage > 1) {
+            currentPage--;
+            fetchAndDisplayApplications();
+        }
     });
+
+    nextPageBtn.addEventListener('click', function () {
+        currentPage++;
+        fetchAndDisplayApplications();
+    });
+
+    // Fetch club names and applications on page load
+    fetchClubNames();
+    fetchAndDisplayApplications();
    </script>
 </body>
