@@ -205,11 +205,11 @@ menu: nav/home.html
     <div class="welcome-card">
         <div class="welcome-title">🎉 Welcome to Club Hub! 🎉</div>
         <div class="welcome-description">
-            Looking to find your community? Club Hub is your go-to platform for exploring, joining, and managing clubs at **Del Norte High School**.
-            <br>✅ Discover & Join Clubs** that match your interests.  
-            <br>✅ Create New Clubs** and build your own community.  
-            <br>✅ Apply for Leadership** to shape your club’s future.  
-            <br>✅ Stay Updated** with club events and announcements.  
+            Looking to find your community? Club Hub is your go-to platform for exploring, joining, and managing clubs at Del Norte High School.
+            <br>✅ Discover & Join Clubs that match your interests.  
+            <br>✅ Create New Clubs and build your own community.  
+            <br>✅ Apply for Leadership to shape your club’s future.  
+            <br>✅ Stay Updated with club events and announcements.  
         </div>
         <a href="/explore-clubs" class="get-started-btn">Explore Clubs 🚀</a>
     </div>
