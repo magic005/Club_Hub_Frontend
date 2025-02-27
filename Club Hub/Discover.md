@@ -177,6 +177,46 @@ show_reading_time: false
         color: #AAAAAA; /* Muted color to keep focus on title and description */
         font-style: italic;
     }
+
+    /* Adjust No Match Message */
+    /* No Matches Container */
+    .no-matches-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    /* Styling for "No Clubs Match" Message */
+    .no-matches {
+        text-align: center;
+        font-size: 1.2em;
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 25px;
+        border-radius: 12px;
+        width: 500px; /* Matches club cards */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        font-weight: bold;
+    }
+
+    /* Matched Interest Count */
+    .matched-interests {
+        font-size: 1em;
+        color: #BBBBBB;
+        margin-top: 10px;
+        font-style: italic;
+    }
+
+    /* Ensure consistent spacing */
+    .clubs-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
 </style>
 
 
@@ -450,7 +490,7 @@ function getToken() {
     // Function to fetch clubs and filter them based on selected interests
     async function fetchAndDisplayClubs(userInterests) {
         try {
-            const URL = `${pythonURI}/api/club`; // Adjust the endpoint if necessary
+            const URL = `${pythonURI}/api/club`; // API to fetch clubs
             const response = await fetch(URL, {
                 method: 'GET',
                 headers: { 'Authorization': getToken() },
@@ -459,14 +499,15 @@ function getToken() {
             if (!response.ok) throw new Error('Failed to fetch clubs');
 
             const clubs = await response.json();
-
-            // Filter clubs based on user interests
-            const matchedClubs = clubs.filter(club =>
-                club.topics.some(topic => userInterests.includes(topic))
-            );
-
             const clubsContainer = document.getElementById('clubs-container');
             clubsContainer.innerHTML = ''; // Clear previous results
+
+            // Process and sort clubs by number of matching interests
+            const matchedClubs = clubs.map(club => {
+                const matchCount = club.topics.filter(topic => userInterests.includes(topic)).length;
+                return { ...club, matchCount }; // Store match count
+            }).filter(club => club.matchCount > 0) // Only show clubs that match at least 1 interest
+            .sort((a, b) => b.matchCount - a.matchCount); // Sort by most matches
 
             if (matchedClubs.length > 0) {
                 matchedClubs.forEach(club => {
@@ -476,12 +517,13 @@ function getToken() {
                         <div class="club-title">${club.name}</div>
                         <div class="club-description">${club.description}</div>
                         <div class="club-founder">Founded by: ${club.user_id}</div>
+                        <div class="matched-interests">Matches ${club.matchCount} of your interests</div>
                     `;
                     clubsContainer.appendChild(clubCard);
                 });
                 document.getElementById('club-results').style.display = 'block';
             } else {
-                document.getElementById('clubs-container').innerHTML = "<p>No clubs match your interests.</p>";
+                clubsContainer.innerHTML = `<div class="no-matches">No clubs match your interests. Try selecting more!</div>`;
                 document.getElementById('club-results').style.display = 'block';
             }
         } catch (error) {

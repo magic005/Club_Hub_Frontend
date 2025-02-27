@@ -1,6 +1,5 @@
 ---
 layout: base
-title: Logout
 permalink: /logout
 search_exclude: true
 ---
