@@ -6,6 +6,72 @@ menu: nav/home.html
 ---
 
 <style>
+    /* Welcome Card - Stylish and Engaging */
+    .welcome-card {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 50px;
+        background: linear-gradient(135deg, #2E2E33, #1E1E22);
+        border-radius: 20px;
+        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        border: 4px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Gradient Border Fix for Welcome Card */
+    .welcome-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        padding: 4px;
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    /* Welcome Title - Gradient Header */
+    .welcome-title {
+        font-size: 2.5em;
+        font-weight: bold;
+        background: linear-gradient(to left, #ff802b, #FF5577);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        margin-bottom: 15px;
+    }
+
+    /* Welcome Description */
+    .welcome-description {
+        font-size: 1.2em;
+        color: #EAEAEA;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    /* Get Started Button */
+    .get-started-btn {
+        display: inline-block;
+        padding: 12px 25px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(to right, #FF4B2B, #FF416C);
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .get-started-btn:hover {
+        background: linear-gradient(to right, #FF5577, #ff802b);
+        transform: scale(1.05);
+    }
+
+
     /* Apply Gradient Border to Body */
     body {
         margin: 0;
@@ -133,6 +199,19 @@ menu: nav/home.html
     <div class="header">
         Welcome to Club Hub
         <p>Your platform for exploring extracurricular activities!</p>
+    </div>
+
+    <!-- Welcome Card -->
+    <div class="welcome-card">
+        <div class="welcome-title">🎉 Welcome to Club Hub! 🎉</div>
+        <div class="welcome-description">
+            Looking to find your community? Club Hub is your go-to platform for exploring, joining, and managing clubs at **Del Norte High School**.
+            <br>✅ **Discover & Join Clubs** that match your interests.  
+            <br>✅ **Create New Clubs** and build your own community.  
+            <br>✅ **Apply for Leadership** to shape your club’s future.  
+            <br>✅ **Stay Updated** with club events and announcements.  
+        </div>
+        <a href="/explore-clubs" class="get-started-btn">Explore Clubs 🚀</a>
     </div>
 
     <!-- Event Section -->
