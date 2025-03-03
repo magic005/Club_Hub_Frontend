@@ -211,7 +211,7 @@ menu: nav/home.html
             <br>✅ Apply for Leadership to shape your club’s future.  
             <br>✅ Stay Updated with club events and announcements.  
         </div>
-        <a href="/explore-clubs" class="get-started-btn">Explore Clubs 🚀</a>
+        <a href="/Club_Hub_Frontend/createclub" class="get-started-btn">Explore Clubs 🚀</a>
     </div>
 
     <!-- Event Section -->
