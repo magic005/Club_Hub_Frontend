@@ -7,64 +7,159 @@ show_reading_time: false
 ---
 
 
-# MCQ
+# Discover Page Feature Blog Write-Up + 5 Things I Did Over 12 Weeks
 
-I scored 63/67 on the MCQ, and thus, most of my focus will be on improving efficiency and time spent on certain questions. I will discuss what I learned, what I can improve, and any corrections I had, as well as in depth explanations as to why I think I got them wrong. 
+## Feature Blog Write-Up
 
-MCQ was completed on time, before the start of class on Monday. Peer cross-checking was completed in class.
+### Purpose
+The **Discover Page** was developed to address the need for a **centralized and personalized club exploration experience**. Many students struggle with finding the right clubs that match their interests, leading to missed opportunities and under-involvement. The Discover Page solves this issue by offering:
+- A **recommendation system** based on user-selected interests.
+- A visually appealing, **filterable list of clubs**.
+- An **intuitive UI** to explore clubs through descriptions, categories, and student reviews.
+- Integration with other ClubHub features, ensuring a seamless experience from discovery to joining.
 
-<img src="{{site.baseurl}}/images/2020_csp_mcq.png">
+I designed and developed this feature from **frontend to backend**, ensuring that it not only functioned smoothly but also integrated well into the overall **Club Hub ecosystem**.
 
-# My Learnings
+I will now, briefly walk through the process of using this feature, 
 
-Through my completion of the quiz, I was able to learn a lot about both the expectations from this cource, and where I stand as a CS student. Mainly, I was able to understand what a College Board MCQ is really like, and what types of questions they tend to ask. I also was able to see how well I currently understand the curriculum, and while I did achieve a decent score, I feel that I have room to improve in both my efficiency and logical approach.
+---
 
-I learned that College Board has 5 big ideas for the class:
-- Creative Development
-- Data
-- Algorithms and Programming
-- Computer Systems
-- Impact of Computing
+## 5 Things I Did Over 12 Weeks
 
-Overall, I learned a lot about the course and my current understanding by taking the practice MCQ. 
+### 1. **Discover Page Frontend**
+- Built the entire **Discover Page UI**, ensuring a clean and user-friendly interface.
+- Integrated a **dynamic filtering system**, allowing users to sort by interests, club type, and popularity.
+- Styled the page to maintain consistency with ClubHub’s theme, emphasizing usability and clarity.
+- Optimized the **loading performance**, ensuring quick rendering of results.
+- Used **JavaScript and Fetch API** to communicate efficiently with the backend.
 
-# Strengths and Weaknesses
+#### Key Code Snippet:
+```javascript
+async function fetchClubs() {
+    const response = await fetch('/api/clubs');
+    const clubs = await response.json();
+    displayClubs(clubs);
+}
+```
 
-In completing the quiz and identifying the types of questions College Board may tend to ask, I was able to find the category of questions on which I can show improvement
+---
 
-## Strengths
+### 2. **Discover Page Backend**
+- Designed and implemented the **API routes** for fetching club data dynamically.
+- Optimized database queries to ensure **low-latency responses**.
+- Integrated a **search algorithm** that prioritizes relevance based on user preferences.
+- Created an **admin panel** for club leaders to manage visibility on the Discover Page.
 
-As I went through the quiz, I found the data, computer systems, impact of computing, and creative development categories to be quite easy, due to prior knowledge and common sense. I feel that these topics are my strenghts, because I had the greatest accuracy and efficiency in doing these types of questions.
+#### Key Code Snippet:
+```python
+@app.route('/api/clubs', methods=['GET'])
+def get_clubs():
+    clubs = Club.query.order_by(Club.popularity.desc()).all()
+    return jsonify([club.to_dict() for club in clubs])
+```
 
-## Weaknesses
+---
 
-I found that, despite attaining a pretty decent score, many of the pseudocode questions (**algorithms and programming category**) took me a decent sum of time, which is obviously less than ideal in a time-bound testing environment. Thus, my weakness is efficiency on the programming logic questions. This weakness stems from my approach in answering the questions, in which I fumbled through the instructions and took way too long to read the actual code blocks. I was also genuinely wrong on a few of the other sections; namely, **Data**, and **Computer Systems** in addition to the previously stated.
+### 3. **Peripheral & Base UI/UX Design for the Entire Site**
+- Led the **site-wide design language**, ensuring consistency across all features.
+- Developed **global CSS styling** and reusable UI components.
+- Implemented **responsive layouts** to ensure a smooth experience on all devices.
+- Created the **navigation system**, integrating routing between key pages.
+- Standardized **color schemes, typography, and button styles**.
 
-Thus can be seen using the College Board analytics, in which I recieved 100% in the first and last catagories, and nearly all perfect scores in subcategories other than topic 2.2, **Developing Algorithms**, and topic 2.3 **Extracting Information from Data**, 3.12 **Calling Procedures**, and 4.2 **Fault Tolerance**
+#### Example of Styling Standardization:
+```css
+.button-primary {
+    background: linear-gradient(45deg, #FF4B2B, #FF416C);
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+}
+```
 
-<img src="{{site.baseurl}}/images/2020_cspmcq_analytics.png">
+---
 
-# Improvements
+### 4. **Effective Use of KanBan & Issue Tracking**
+- As **Scrum Master**, I ensured our team adhered to Agile principles.
+- Maintained a **KanBan board**, assigning tasks based on priority and deadlines.
+- Organized **sprint retrospectives**, adjusting our workflow for efficiency.
+- Used **GitHub Issues** to track progress, ensuring all team members stayed aligned.
 
-I was also able to identify what I can improve within my category of weakness. I feel that my approach when looking at these questions, while logically correct and evidently accurate, was inefficient and took much time. Thus, I think that by spending more time with languages like python, I can deepen my understanding of algorithmic and logical code and answer questions without needing to go through every single step of what it does, and simply recognize it for its purpose and functions.
+This can be seen here:
 
-# Corrections
+---
 
-## Question 11
+### 5. **Scrum Master & Project Coordination**
+- Facilitated **stand-up meetings**, ensuring everyone was aligned on deliverables.
+- Set milestones and deadlines, keeping the team on track.
+- Resolved bottlenecks by helping debug, reviewing pull requests, and mentoring teammates.
+- Ensured the **CI/CD pipeline** ran smoothly, maintaining project integrity.
 
-<img src="{{site.baseurl}}/images/q11_2020.png">
+---
 
-### Explanation
+## How I Met CPT Requirements
 
-My mistake was in immediately looking at the full octets, and nothing beyond them. In doing this, I immediately chose the first option I saw that looked reasonable and involved a 255, 255, ...., which was evidently the incorrect approach. For the 3rd number, the sum would have been 128 + 64 + 32 + 16, summing to 240, revealing an RGB triplet of (255, 255, 240), correlating to ivory.
+### **Big Idea 1.1 & 1.2 - Collaboration, Program Function, and Purpose**
+- Used Agile methodologies to **divide and manage tasks** across team members.
+- Collaborated through **code reviews, Git branches, and real-time debugging**.
+- Designed the Discover Page to **enhance user experience and club engagement**.
 
-## Question 32
+### **Big Idea 1.3 - Program Design and Development**
+- Ensured seamless **frontend-backend integration**, using RESTful APIs.
+- Created a **modular, scalable design** to accommodate future feature additions.
+- **Documented design decisions** using flowcharts and markdown-based technical specs.
 
-<img src="{{site.baseurl}}/images/q32_2020.png">
+### **Big Idea 1.4 - Debugging Code and Fixing Errors**
+- Used **Postman to test API endpoints** for the Discover Page.
+- Fixed CSS inconsistencies and **optimized JavaScript performance**.
+- Debugged backend SQL queries to **reduce response times**.
 
-### Explanation
+### **Big Idea 2 - Data and Database Management**
+- Designed the **Club table schema** in SQLAlchemy for efficiency.
+- Implemented **data backup and restore functionality**.
+- Optimized queries for fast search and filtering performance.
 
-The answer I chose segment subtracts the lowest score from the sum. It erroneously divides this result by the number of scores rather than one less than the number of scores. This is not what the program intended to do, and thus it can not be this option. It must be the option that takes the sum of the individual scores and subtracts the lowest score. To obtain the average, the result is divided by one less than the number of scores (since one score was dropped). This makes option D correct.
+### **Big Idea 4 - Internet & Security**
+- Used **JWT authentication** to secure API requests.
+- Implemented **role-based access controls** for Discover Page admin features.
+- Followed **best practices for API security** to prevent vulnerabilities.
+
+---
+
+## Final Thoughts
+
+Over the course of 12 weeks, I played a crucial role in developing ClubHub, particularly through the **Discover Page, site-wide UI design, Scrum leadership, and efficient project tracking**. The event at Night at the Museum was an excellent opportunity to showcase my work and receive feedback for future improvements. This experience solidified my ability to lead a development project and coordinate effectively with a team.
+
+
+
+# Self Grading
+
+| **Category** | **Points** | **Description** | **Self Grade** |
+|-------------|-----------|----------------|---------------|
+| **Five tasks over 12 weeks** | 5 | List five things completed, including issues addressed, burndown tracking, and presentation work. | 4.5 |
+| **Full Stack Project Demo** | 2 | Demonstrate the project, highlight CPT requirements | 1.8 |
+| **Project Feature Blog Write-up** | 1 | Use CPT/FRQ language to write a structured blog post on project features. | 0.9 |
+| **MCQ Completion** | 1 | Successfully complete and reflect on multiple-choice questions. | 1 |
+| **Retrospective Reflection** | 1 | Reflect on strengths and weaknesses, next steps, engagement with peers, future career thoughts, and final exam prep. | 0.9 |
+| **Total** | 10 | Maximum possible score. | 9.1 |
+
+---
+
+## **Retrospective Reflection Criteria**
+
+- **Reflect on strengths and weaknesses**
+- **Create next steps plans for improvement**
+- **Engage with peer projects and document interests**
+- **Think about future steps in CompSci, classes, college, internships, or career**
+- **Help a new peer with final exam prep or conduct a live review with Ms. Pataki**
+- **Send a detailed summary of review points 24 hours in advance, including a self-grade assessment**
+- **Highlight all 10 points in 3 minutes of Live Review**
+
+---
+
+## **Final Self-Assessment Notes**
+
+I think I my composition reflected my learnings over the course of the trimester fairly well, though, I did come short at a few points in the process. Overall, I think I could have definitely done better in doing an effective demo, as (at least while practicing) it felt a bit boring. The 5 tasks I completed, although strong, aren't necessarily as strong as they could possibly be in that I didn't contribute such an excessive amount that I could generalize every aspect of my contribution and still have 5 total. So, even though I do feel that my reflection is quite strong, I think I could present it better and live up to some more contribution. 
 
 
 

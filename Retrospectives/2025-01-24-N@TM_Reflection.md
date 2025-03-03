@@ -23,9 +23,9 @@ As someone actively involved in the event, I took on multiple responsibilities, 
 
 I made sure to **document my engagement** throughout the night. Below are some moments from the event:
 
-<img src="{{site.baseurl}}/images/ntm1.png">
-<img src="{{site.baseurl}}/images/ntm2.png">
-<img src="{{site.baseurl}}/images/ntm3.png">
+<img src="{{site.baseurl}}/images/ntm1.png" width="10%">
+<img src="{{site.baseurl}}/images/ntm2.png" width="10%">
+<img src="{{site.baseurl}}/images/ntm3.png" width="10%">
 
 ## Our Project: ClubHub
 
@@ -70,10 +70,10 @@ Throughout the event, I took the opportunity to **engage with my peers and offer
 
 Here are some moments where I was actively involved in supporting my peers:
 
-<img src="{{site.baseurl}}/images/fntm1.png">
-<img src="{{site.baseurl}}/images/fntm2.png">
-<img src="{{site.baseurl}}/images/fntm3.png">
-<img src="{{site.baseurl}}/images/fntm4.png">
+<img src="{{site.baseurl}}/images/fntm1.png" width="10%">
+<img src="{{site.baseurl}}/images/fntm2.png" width="10%">
+<img src="{{site.baseurl}}/images/fntm3.png" width="10%">
+<img src="{{site.baseurl}}/images/fntm4.png" width="10%">
 
 ## One particular project...
 
