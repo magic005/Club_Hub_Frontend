@@ -248,33 +248,19 @@ Over the course of 12 weeks, I played a crucial role in developing ClubHub, part
 
 
 # Self Grading
-
 | **Category** | **Points** | **Description** | **Self Grade** |
 |-------------|-----------|----------------|---------------|
-| **Five tasks over 12 weeks** | 5 | List five things completed, including issues addressed, burndown tracking, and presentation work. | 4.5 |
-| **Full Stack Project Demo** | 2 | Demonstrate the project, highlight CPT requirements | 1.8 |
-| **Project Feature Blog Write-up** | 1 | Use CPT/FRQ language to write a structured blog post on project features. | 0.9 |
-| **MCQ Completion** | 1 | Successfully complete and reflect on multiple-choice questions. | 1 |
-| **Retrospective Reflection** | 1 | Reflect on strengths and weaknesses, next steps, engagement with peers, future career thoughts, and final exam prep. | 0.9 |
-| **Total** | 10 | Maximum possible score. | 9.1 |
-
+| **PPR Readiness and CPT fulfillment** | 1 | Demonstrate the project, highlight CPT requirements | 0.9 |
+| **MCQ Reflection** | 1 | Successfully complete and reflect on multiple-choice questions. | 0.9 |
+| **Total** | 2 | Maximum possible score. | 1.8 |
 ---
-
-## **Retrospective Reflection Criteria**
-
+## Reflection Criteria
 - **Reflect on strengths and weaknesses**
 - **Create next steps plans for improvement**
-- **Engage with peer projects and document interests**
-- **Think about future steps in CompSci, classes, college, internships, or career**
-- **Help a new peer with final exam prep or conduct a live review with Ms. Pataki**
-- **Send a detailed summary of review points 24 hours in advance, including a self-grade assessment**
-- **Highlight all 10 points in 3 minutes of Live Review**
+- **Highlight all introspections in 3 minutes of Live Review**
 
 ---
 
 ## **Final Self-Assessment Notes**
-
-I think I my composition reflected my learnings over the course of the trimester fairly well, though, I did come short at a few points in the process. Overall, I think I could have definitely done better in doing an effective demo, as (at least while practicing) it felt a bit boring. The 5 tasks I completed, although strong, aren't necessarily as strong as they could possibly be in that I didn't contribute such an excessive amount that I could generalize every aspect of my contribution and still have 5 total. So, even though I do feel that my reflection is quite strong, I think I could present it better and live up to some more contribution. 
-
-
+I think I my composition reflected my on my work fairly well, thoroughly explaining every aspect of the PPRs and being ready for any one of the CB prompts. Though, I did come short at a few points in the process. Overall, I think I could have definitely done better in my explanations verbally, as (at least while practicing) it felt a bit redundant. So, even though I do feel that my reflection is quite strong, I think I could make it better for CB to genuinely understand my code (edited) 
 
