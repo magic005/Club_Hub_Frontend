@@ -97,7 +97,7 @@ This can be seen here:
 
 ---
 
-## How I Met CPT Requirements
+## Big Ideas (and how I applied them)
 
 ### **Big Idea 1.1 & 1.2 - Collaboration, Program Function, and Purpose**
 - Used Agile methodologies to **divide and manage tasks** across team members.
@@ -123,6 +123,121 @@ This can be seen here:
 - Used **JWT authentication** to secure API requests.
 - Implemented **role-based access controls** for Discover Page admin features.
 - Followed **best practices for API security** to prevent vulnerabilities.
+
+---
+
+## CPT Requirements and Code Snippets
+
+### Input & Output
+
+My Discover Page feature takes **user input** through a filtering system and returns **output** as dynamic club recommendations.
+
+```javascript
+async function submitInterests() {
+    const form = document.forms['quiz-form'];
+    const selected = [];
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox => {
+        selected.push(checkbox.value); // Collect input from user
+    });
+    const URL = `${pythonURI}/api/interests`;
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': getToken(),
+        },
+        body: JSON.stringify({ interests: selected })
+    });
+    fetchAndDisplayInterests(); // Output: show saved interests
+}
+```
+
+Explanation:
+- Input: User interacts with filters (by category, interest).
+- Output: Filtered list of clubs displayed dynamically using displayClubs().
+
+### Algorithm (Sequencing, Selection, Iteration)
+
+I wrote an algorithm that filters clubs based on user-selected interests, combining sequencing, conditionals (selection), and loops (iteration).
+
+```javascript
+    const clubs = await response.json();
+    const clubsContainer = document.getElementById('clubs-container');
+    clubsContainer.innerHTML = ''; // Clear previous results
+
+    // Process and sort clubs by number of matching interests
+    const matchedClubs = clubs.map(club => {
+        const matchCount = club.topics.filter(topic => userInterests.includes(topic)).length;
+        return { ...club, matchCount }; // Store match count
+    }).filter(club => club.matchCount > 0) // Only show clubs that match at least 1 interest
+    .sort((a, b) => b.matchCount - a.matchCount); // Sort by most matches
+```
+
+Explanation:
+- Sequencing (Order of Execution):
+  - fetches the list of clubs and clears any previously displayed clubs (clubsContainer.innerHTML = '';).
+  - processes each club using map() to calculate how many topics match user-selected interests and stores that as matchCount.
+  - filters out clubs with 0 matches using filter().
+  - sorts the remaining clubs in descending order based on how many interests they match.
+- Selection (Conditionals):
+  - Inside the filter(), it selects only those clubs where matchCount > 0.
+  - Inside filter(topic => userInterests.includes(topic)), it checks whether each club topic is in the user’s interests.
+- Iteration (Loops):
+  - map(club => {...}) loops through each club to calculate match count.
+  - filter(topic => userInterests.includes(topic)) loops through each topic of a club to check for matches.
+  - filter(club => club.matchCount > 0) loops through each club again to apply the filter.
+  - sort((a, b) => b.matchCount - a.matchCount) loops through clubs to sort them based on matches.
+
+This algorithm efficiently processes all clubs to recommend the most relevant ones based on user interests.
+
+### Data Abstraction (List/Data Structure)
+
+I used arrays to store lists of user interests and clubs, managing and manipulating them effectively to simplify the matching logic.
+
+```javascript
+const selected = [];
+const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+checkboxes.forEach(checkbox => {
+    selected.push(checkbox.value); // List of user-selected interests
+});
+```
+
+```javascript
+const matchedClubs = clubs.map(club => {
+    const matchCount = club.topics.filter(topic => userInterests.includes(topic)).length;
+    return { ...club, matchCount }; // List of clubs with match counts
+});
+```
+
+Explanation:
+- The selected list holds user interests dynamically.
+- The clubs list holds all clubs fetched from the backend, and is manipulated to add a match count for filtering and sorting.
+
+### Procedure (Function) with Purpose & Managing Complexity
+
+I created multiple procedures (functions) to modularize complex tasks like submitting interests, fetching interests, and filtering clubs — reducing code duplication and increasing clarity.
+
+```javascript
+async function fetchAndDisplayClubs(userInterests) {
+    const URL = `${pythonURI}/api/club`;
+    const response = await fetch(URL, {
+        method: 'GET',
+        headers: { 'Authorization': getToken() },
+    });
+    const clubs = await response.json();
+    const matchedClubs = clubs.map(club => {
+        const matchCount = club.topics.filter(topic => userInterests.includes(topic)).length;
+        return { ...club, matchCount };
+    }).filter(club => club.matchCount > 0)
+      .sort((a, b) => b.matchCount - a.matchCount);
+    // Display matched clubs on the page
+}
+```
+
+Explanation:
+- Purpose: Matches clubs to user interests and dynamically displays results.
+- Managing Complexity: Encapsulates all matching and displaying logic in one function that can be reused anytime user interests change.
 
 ---
 
