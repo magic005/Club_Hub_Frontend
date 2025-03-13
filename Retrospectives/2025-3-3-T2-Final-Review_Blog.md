@@ -4,7 +4,6 @@ title: Final Review Blog - Ansh
 permalink: /final_ansh
 menu: nav/home.html
 show_reading_time: false
-utterances: true
 ---
 
 
@@ -249,16 +248,21 @@ Over the course of 12 weeks, I played a crucial role in developing ClubHub, part
 
 
 # Self Grading
-| **Category** | **Points** | **Description** | **Self Grade** |
+
+| Category | Points | Description | Self Grade |
 |-------------|-----------|----------------|---------------|
 | **PPR Readiness and CPT fulfillment** | 1 | Demonstrate the project, highlight CPT requirements | 0.9 |
 | **MCQ Reflection** | 1 | Successfully complete and reflect on multiple-choice questions. | 0.9 |
 | **Total** | 2 | Maximum possible score. | 1.8 |
+
 ---
+
 ## Reflection Criteria
 - **Reflect on strengths and weaknesses**
 - **Create next steps plans for improvement**
 - **Highlight all introspections in 2 minutes of Peer Review**
+
 ---
+
 ## **Final Self-Assessment Notes**
 I reflected on my work fairly well, thoroughly explaining every aspect of the PPRs and being ready for any of the CB prompts. Though, I did come short at a few points in the process. Overall, I think I could have done better in my explanations and need to comment out my code for helpful references during the actual exam. So, even though I do feel that my reflection is quite strong, I think I could make it better for CB and overall more effective of a resource.
