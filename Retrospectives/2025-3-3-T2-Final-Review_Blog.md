@@ -20,8 +20,6 @@ The **Discover Page** was developed to address the need for a **centralized and 
 
 I designed and developed this feature from **frontend to backend**, ensuring that it not only functioned smoothly but also integrated well into the overall **Club Hub ecosystem**.
 
-I will now, briefly walk through the process of using this feature, 
-
 ---
 
 ## 5 Things I Did Over 12 Weeks
