@@ -4,6 +4,7 @@ title: Final Review Blog - Ansh
 permalink: /final_ansh
 menu: nav/home.html
 show_reading_time: false
+comments: true
 ---
 
 
