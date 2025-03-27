@@ -10,7 +10,7 @@ show_reading_time: false
 
 ## Mango Rating
 
-10/10
+### 10/10, props
 
 ## Popcorn Hack 2
 
