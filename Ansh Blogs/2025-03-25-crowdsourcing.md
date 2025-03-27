@@ -8,6 +8,10 @@ show_reading_time: false
 
 # Crowdsourcing Hacks
 
+## Mango Rating
+
+10/10
+
 ## Popcorn Hack 2
 
 Crowdsourcing isn’t always dependable — while it can generate incredible ideas, it also opens the door to groupthink, biased assumptions, and half-truths. When submissions are unmoderated or contributors lack domain knowledge, platforms can become echo chambers rather than engines for innovation. The quality of the output often depends on the quality of the crowd.
