@@ -434,13 +434,13 @@ function getToken() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': getToken(), // token
+                    'Authorization': getToken(), 
                 },
                 body: JSON.stringify({ interests: selected })
             });
             if (!response.ok) throw new Error('Failed to submit interests');
             alert('Interests saved successfully!');
-            fetchAndDisplayInterests(); // refresh
+            fetchAndDisplayInterests(); 
         } catch (error) {
             console.error('Error submitting interests:', error);
             alert('Error submitting interests.');
@@ -505,9 +505,9 @@ function getToken() {
             // Process and sort clubs by number of matching interests
             const matchedClubs = clubs.map(club => {
                 const matchCount = club.topics.filter(topic => userInterests.includes(topic)).length;
-                return { ...club, matchCount }; // Store match count
-            }).filter(club => club.matchCount > 0) // Only show clubs that match at least 1 interest
-            .sort((a, b) => b.matchCount - a.matchCount); // Sort by most matches
+                return { ...club, matchCount }; 
+            }).filter(club => club.matchCount > 0) 
+            .sort((a, b) => b.matchCount - a.matchCount);
 
             if (matchedClubs.length > 0) {
                 matchedClubs.forEach(club => {
